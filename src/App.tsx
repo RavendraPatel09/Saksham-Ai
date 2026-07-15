@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { AccessibilityProvider } from '@/context/AccessibilityContext';
 import { AppProvider } from '@/context/AppContext';
+import { LanguageProvider } from '@/i18n/LanguageContext';
+import { OfflineProvider } from '@/context/OfflineContext';
 import { Layout } from '@/components/layout/Layout';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { Toaster } from '@/components/ui/sonner';
@@ -79,16 +81,20 @@ function App() {
   return (
     <ErrorBoundary>
       <AccessibilityProvider>
-        <AppProvider>
-          <BrowserRouter>
-            <AccessibilityWizard />
-            <LiveCaptions />
-            <Suspense fallback={<PageLoader />}>
-              <AnimatedRoutes />
-            </Suspense>
-          </BrowserRouter>
-          <Toaster />
-        </AppProvider>
+        <LanguageProvider>
+          <OfflineProvider>
+            <AppProvider>
+              <BrowserRouter>
+                <AccessibilityWizard />
+                <LiveCaptions />
+                <Suspense fallback={<PageLoader />}>
+                  <AnimatedRoutes />
+                </Suspense>
+              </BrowserRouter>
+              <Toaster />
+            </AppProvider>
+          </OfflineProvider>
+        </LanguageProvider>
       </AccessibilityProvider>
     </ErrorBoundary>
   );
