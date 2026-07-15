@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAccessibility } from '@/context/AccessibilityContext';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 type MoreDrawerProps = {
   isOpen: boolean;
@@ -15,6 +16,8 @@ type MoreDrawerProps = {
 
 export const MoreDrawer: React.FC<MoreDrawerProps> = ({ isOpen, onClose }) => {
   const { prefs } = useAccessibility();
+
+  const { t } = useLanguage();
 
   // Close panel on escape key
   React.useEffect(() => {
@@ -27,37 +30,43 @@ export const MoreDrawer: React.FC<MoreDrawerProps> = ({ isOpen, onClose }) => {
 
   const groups = [
     {
-      title: "Career Tools",
+      title: t('more.career_tools'),
       items: [
-        { name: "AI Assessment", path: "/assessment", icon: Compass },
-        { name: "AI Interview Coach", path: "/interview", icon: Users },
-        { name: "Resume Builder", path: "/resume-builder", icon: Briefcase },
-        { name: "Career Roadmap", path: "/career-roadmap", icon: Compass },
+        { name: t('more.menu.assessment'), path: "/assessment", icon: Compass },
+        { name: t('more.menu.interview'), path: "/interview", icon: Users },
+        { name: t('more.menu.resume'), path: "/resume-builder", icon: Briefcase },
+        { name: t('more.menu.roadmap'), path: "/career-roadmap", icon: Compass },
       ]
     },
     {
-      title: "Learning & Growth",
+      title: t('more.accessibility'),
       items: [
-        { name: "Courses", path: "/learning", icon: BookOpen },
-        { name: "Saved Items", path: "/saved", icon: HeartHandshake },
-        { name: "Achievements", path: "/learning", icon: Trophy },
-        { name: "Calendar", path: "/calendar", icon: CalendarIcon },
+        { name: t('more.menu.access_settings'), path: "#accessibility", icon: Settings },
+        { name: t('more.menu.language'), path: "#language", icon: Settings },
+        { name: t('more.menu.communication'), path: "/communication", icon: MessageCircle },
       ]
     },
     {
-      title: "Community",
+      title: t('more.community'),
       items: [
-        { name: "Community Hub", path: "/community", icon: Users },
-        { name: "Mentors", path: "/community", icon: Users },
-        { name: "Discussion Rooms", path: "/community", icon: MessageCircle },
+        { name: t('more.menu.community'), path: "/community", icon: Users },
+        { name: t('more.menu.events'), path: "/events", icon: CalendarIcon },
       ]
     },
     {
-      title: "Support & Accessibility",
+      title: t('more.daily_support'),
       items: [
-        { name: "Government Support", path: "/government-support", icon: HeartHandshake },
-        { name: "Help Center", path: "/", icon: HelpCircle },
-        { name: "Feedback", path: "/", icon: MessageSquare },
+        { name: t('more.menu.offline'), path: "/offline", icon: HeartHandshake },
+        { name: t('more.menu.financial'), path: "/financial", icon: Trophy },
+        { name: t('more.menu.safety'), path: "/safety", icon: HeartHandshake },
+      ]
+    },
+    {
+      title: t('more.help'),
+      items: [
+        { name: t('more.menu.gov_support'), path: "/government-support", icon: HeartHandshake },
+        { name: t('more.menu.feedback'), path: "/", icon: MessageSquare },
+        { name: t('more.menu.help_center'), path: "/", icon: HelpCircle },
       ]
     }
   ];
