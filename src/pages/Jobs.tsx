@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Briefcase, MapPin, Building, Sparkles, Zap, Bookmark, ExternalLink, Loader2, Network, Filter, Accessibility, ChevronDown } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { jobs } from '@/data/mockData';
@@ -40,6 +41,8 @@ const AnimatedCounter = ({ from, to, duration = 1.5 }: { from: number, to: numbe
 
 export const Jobs = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(true);
+  const [explainerOpen, setExplainerOpen] = useState(false);
+  const [selectedJobToExplain, setSelectedJobToExplain] = useState<any>(null);
   const { prefs } = useAccessibility();
 
   useEffect(() => {
@@ -243,12 +246,22 @@ export const Jobs = () => {
                           </div>
                         </div>
                       </CardContent>
-                      <CardFooter className="p-6 pt-5 flex gap-3">
+                      <CardFooter className="p-6 pt-5 flex gap-3 flex-wrap">
                         <Button 
                           className="flex-1 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 transition-all active:scale-95"
                           onClick={() => toast.success(`Application sent to ${job.company}!`)}
                         >
                           Apply Now <ExternalLink className="ml-2 h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="secondary"
+                          className="flex-1 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300 dark:hover:bg-indigo-900/60"
+                          onClick={() => {
+                            setSelectedJobToExplain(job);
+                            setExplainerOpen(true);
+                          }}
+                        >
+                          <Sparkles className="h-4 w-4 mr-2" /> Explain in Simple Words
                         </Button>
                         <Button 
                           variant="outline" 
@@ -267,6 +280,39 @@ export const Jobs = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <Dialog open={explainerOpen} onOpenChange={setExplainerOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-xl">
+              <Sparkles className="w-5 h-5 text-indigo-500" /> AI Job Summary
+            </DialogTitle>
+            <DialogDescription>
+              A simple explanation of the {selectedJobToExplain?.title} role at {selectedJobToExplain?.company}.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="bg-indigo-50 dark:bg-indigo-950/30 p-4 rounded-xl border border-indigo-100 dark:border-indigo-900/50">
+              <h4 className="font-semibold text-indigo-900 dark:text-indigo-200 mb-2">What you will do:</h4>
+              <p className="text-sm text-indigo-800/80 dark:text-indigo-300">
+                You will help build and test their digital products to make sure they are accessible and easy to use for everyone. 
+                This involves checking websites, writing reports, and talking to the team about how to fix problems.
+              </p>
+            </div>
+            <div className="bg-emerald-50 dark:bg-emerald-950/30 p-4 rounded-xl border border-emerald-100 dark:border-emerald-900/50">
+              <h4 className="font-semibold text-emerald-900 dark:text-emerald-200 mb-2">Why it's a good fit for you:</h4>
+              <ul className="text-sm text-emerald-800/80 dark:text-emerald-300 list-disc list-inside space-y-1">
+                <li>They offer full remote work, which you requested.</li>
+                <li>They provide flexible hours and assistive software.</li>
+                <li>You already have the core skills they are looking for.</li>
+              </ul>
+            </div>
+          </div>
+          <div className="flex justify-end pt-2">
+            <Button onClick={() => setExplainerOpen(false)}>Got it, thanks!</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

@@ -44,6 +44,7 @@ const FinancialSupport = lazy(() => import('@/pages/FinancialSupport').then(modu
 const ApplicationTracker = lazy(() => import('@/pages/ApplicationTracker').then(module => ({ default: module.ApplicationTracker })));
 const EmployersDirectory = lazy(() => import('@/pages/EmployersDirectory').then(module => ({ default: module.EmployersDirectory })));
 const ReservedJobs = lazy(() => import('@/pages/ReservedJobs').then(module => ({ default: module.ReservedJobs })));
+const ResumeBank = lazy(() => import('@/pages/ResumeBank').then(module => ({ default: module.ResumeBank })));
 
 // Loading Fallback Component
 const PageLoader = () => (
@@ -87,6 +88,7 @@ function AnimatedRoutes() {
           <Route path="application-tracker" element={<PageWrapper><ApplicationTracker /></PageWrapper>} />
           <Route path="employers-directory" element={<PageWrapper><EmployersDirectory /></PageWrapper>} />
           <Route path="reserved-jobs" element={<PageWrapper><ReservedJobs /></PageWrapper>} />
+          <Route path="resume-bank" element={<PageWrapper><ResumeBank /></PageWrapper>} />
           
           {/* Catch-all 404 Route */}
           <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
