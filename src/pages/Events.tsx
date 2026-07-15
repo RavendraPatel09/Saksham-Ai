@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar as CalendarIcon, MapPin, Users, Wheelchair, Ear, Video, CheckCircle2 } from 'lucide-react';
+import { Calendar as CalendarIcon, MapPin, Users, Accessibility, Ear, Video, CheckCircle2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -17,7 +17,7 @@ export const Events = () => {
       image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop&q=60",
       seats: 120,
       tags: ["Wheelchair Accessible", "Sign-Language"],
-      icon: Wheelchair,
+      icon: Accessibility,
       price: "Free"
     },
     {
