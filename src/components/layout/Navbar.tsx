@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { HeartHandshake, Menu, Search } from 'lucide-react';
+import { Menu, Search, Sun, Moon } from 'lucide-react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { useAppContext } from '@/context/AppContext';
 import { motion } from 'framer-motion';
 import { useAccessibility } from '@/context/AccessibilityContext';
 import { GlobalSearch } from '../ui-custom/GlobalSearch';
 import { LanguageSelector } from '../ui-custom/LanguageSelector';
+import { Logo } from '../ui-custom/Logo';
 
 export const Navbar = () => {
   const { role, setRole } = useAppContext();
-  const { prefs } = useAccessibility();
+  const { prefs, updatePrefs } = useAccessibility();
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -50,16 +51,8 @@ export const Navbar = () => {
       }`}
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-8">
-        <Link to="/" className="flex items-center gap-2 group" aria-label="Saksham AI Home">
-          <motion.div 
-            whileHover={prefs.reducedMotion ? {} : { scale: 1.1, rotate: 5 }} 
-            className="bg-gradient-to-br from-primary to-indigo-600 p-2 rounded-lg shadow-md group-hover:shadow-lg transition-all"
-          >
-            <HeartHandshake className="h-6 w-6 text-white" />
-          </motion.div>
-          <span className="text-xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary to-indigo-600">
-            Saksham AI
-          </span>
+        <Link to="/" aria-label="Saksham AI Home">
+          <Logo />
         </Link>
         
         <div className="hidden md:flex flex-1 items-center justify-center gap-1 lg:gap-4">
@@ -90,6 +83,17 @@ export const Navbar = () => {
           <LanguageSelector />
           <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(true)} className="hover:bg-primary/10 hover:text-primary transition-colors">
             <Search className="w-5 h-5" />
+          </Button>
+
+          {/* Theme Toggle */}
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => updatePrefs({ highContrast: !prefs.highContrast })}
+            className="hover:bg-primary/10 hover:text-primary transition-colors"
+            aria-label="Toggle Theme"
+          >
+            {prefs.highContrast ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </Button>
 
           <div className="hidden md:flex gap-3">
