@@ -174,6 +174,31 @@ export const Employer = () => {
           </motion.div>
         </div>
 
+        {/* Inclusive Toolkit Section */}
+        <motion.div variants={itemVariants} className="mb-10">
+          <Card className="premium-card bg-gradient-to-br from-primary/5 via-transparent to-indigo-600/5">
+            <CardHeader>
+              <CardTitle className="text-xl flex items-center gap-2">
+                <Sparkles className="h-5 w-5 text-indigo-500" />
+                Inclusive Toolkit & Resources
+              </CardTitle>
+              <CardDescription>Resources to improve your workplace accessibility and inclusive hiring practices.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {['WCAG 2.1 Compliance Guide', 'Accessible Interview Practices', 'Workplace Accommodations FAQ'].map((item, i) => (
+                  <Button key={i} variant="outline" className="h-auto py-4 px-4 justify-start text-left whitespace-normal hover:border-primary/50 hover:bg-primary/5 group">
+                    <div className="bg-primary/10 p-2 rounded-lg mr-3 group-hover:bg-primary group-hover:text-white transition-colors">
+                      <FileCheck className="h-4 w-4" />
+                    </div>
+                    <span className="font-medium text-sm">{item}</span>
+                  </Button>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
         <motion.div variants={itemVariants}>
           <Card className="premium-card overflow-hidden">
             <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent border-b">
@@ -187,9 +212,17 @@ export const Employer = () => {
             </CardHeader>
             <CardContent className="p-0">
               <div className="overflow-x-auto">
+                <div className="p-4 bg-muted/20 flex justify-end border-b">
+                  <Button variant="outline" size="sm" className="bg-white dark:bg-slate-900" disabled>
+                    Compare Selected Candidates
+                  </Button>
+                </div>
                 <table className="w-full text-sm text-left">
                   <thead className="text-xs text-muted-foreground uppercase tracking-wider bg-muted/30 border-b">
                     <tr>
+                      <th className="px-6 py-4 font-bold w-10">
+                        <input type="checkbox" className="rounded border-gray-300 text-primary focus:ring-primary" disabled />
+                      </th>
                       <th className="px-6 py-4 font-bold">Candidate</th>
                       <th className="px-6 py-4 font-bold">Disability Profile</th>
                       <th className="px-6 py-4 font-bold">Top Skills</th>
@@ -205,6 +238,9 @@ export const Employer = () => {
                   >
                     {candidates.map((candidate) => (
                       <motion.tr key={candidate.id} variants={itemVariants} className="hover:bg-primary/5 transition-colors group">
+                        <td className="px-6 py-5">
+                          <input type="checkbox" className="rounded border-gray-300 text-primary focus:ring-primary cursor-pointer" />
+                        </td>
                         <td className="px-6 py-5 font-bold text-base group-hover:text-primary transition-colors">{candidate.name}</td>
                         <td className="px-6 py-5">
                           <div className="flex flex-col">

@@ -176,6 +176,31 @@ export const Learning = () => {
           </motion.div>
         </div>
 
+        {/* Achievements Section */}
+        <motion.div variants={itemVariants} className="mb-12">
+          <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+            <Award className="h-6 w-6 text-primary" /> Achievements
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { title: 'Fast Learner', desc: 'Completed 3 courses in a week', icon: Flame, color: 'text-amber-500', bg: 'bg-amber-100 dark:bg-amber-900/30' },
+              { title: 'Accessibility Pro', desc: 'Scored 100% on WCAG Test', icon: CheckCircle2, color: 'text-emerald-500', bg: 'bg-emerald-100 dark:bg-emerald-900/30' },
+              { title: 'Goal Crusher', desc: 'Met 4 weekly goals', icon: Target, color: 'text-blue-500', bg: 'bg-blue-100 dark:bg-blue-900/30' },
+              { title: 'Community Star', desc: 'Helped 5 people in forums', icon: Sparkles, color: 'text-purple-500', bg: 'bg-purple-100 dark:bg-purple-900/30' },
+            ].map((ach, i) => (
+              <Card key={i} className="premium-card text-center hover:border-primary/50 transition-colors">
+                <CardContent className="pt-6">
+                  <div className={`mx-auto w-12 h-12 rounded-full ${ach.bg} ${ach.color} flex items-center justify-center mb-3 shadow-inner`}>
+                    <ach.icon className="w-6 h-6" />
+                  </div>
+                  <h3 className="font-bold text-foreground">{ach.title}</h3>
+                  <p className="text-xs text-muted-foreground mt-1">{ach.desc}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </motion.div>
+
         <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-6">Recommended Courses</motion.h2>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
