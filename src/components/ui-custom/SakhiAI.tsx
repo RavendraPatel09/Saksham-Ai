@@ -4,6 +4,7 @@ import { MessageSquare, X, Mic, Send, Bot, Sparkles, User, Briefcase, Graduation
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { useAccessibility } from '@/context/AccessibilityContext';
+import { VoiceAssistant } from '@/accessibility/VoiceAssistant';
 
 type Message = {
   id: string;
@@ -25,7 +26,9 @@ export const SakhiAI = () => {
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const { prefs } = useAccessibility();
+  const assistant = VoiceAssistant.getInstance();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -55,7 +58,22 @@ export const SakhiAI = () => {
 
       setMessages(prev => [...prev, { id: Date.now().toString(), sender: 'sakhi', text: replyText }]);
       setIsTyping(false);
+      assistant.speak(replyText); // Read response out loud
     }, 1500);
+  };
+
+  const toggleListening = () => {
+    if (isListening) {
+      assistant.stopListening();
+      setIsListening(false);
+    } else {
+      setIsListening(true);
+      assistant.startListening((cmd) => {
+        setInput(cmd);
+        handleSend(cmd);
+        setIsListening(false);
+      });
+    }
   };
 
   return (
@@ -156,8 +174,15 @@ export const SakhiAI = () => {
                   className="flex w-full items-center gap-2"
                   onSubmit={(e) => { e.preventDefault(); handleSend(input); }}
                 >
-                  <Button type="button" variant="ghost" size="icon" className="shrink-0 text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-full">
-                    <Mic className="h-5 w-5" />
+                  <Button 
+                    type="button" 
+                    variant="ghost" 
+                    size="icon" 
+                    className={`shrink-0 rounded-full transition-colors ${isListening ? 'bg-red-100 text-red-600 hover:bg-red-200' : 'text-muted-foreground hover:text-primary hover:bg-primary/5'}`}
+                    onClick={toggleListening}
+                    aria-label={isListening ? "Stop listening" : "Start voice input"}
+                  >
+                    <Mic className={`h-5 w-5 ${isListening ? 'animate-pulse' : ''}`} />
                   </Button>
                   <input
                     type="text"
