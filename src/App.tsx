@@ -42,6 +42,7 @@ const Events = lazy(() => import('@/pages/Events').then(module => ({ default: mo
 const SafetyCenter = lazy(() => import('@/pages/SafetyCenter').then(module => ({ default: module.SafetyCenter })));
 const FinancialSupport = lazy(() => import('@/pages/FinancialSupport').then(module => ({ default: module.FinancialSupport })));
 const ApplicationTracker = lazy(() => import('@/pages/ApplicationTracker').then(module => ({ default: module.ApplicationTracker })));
+const EmployersDirectory = lazy(() => import('@/pages/EmployersDirectory').then(module => ({ default: module.EmployersDirectory })));
 
 // Loading Fallback Component
 const PageLoader = () => (
@@ -83,6 +84,7 @@ function AnimatedRoutes() {
           <Route path="safety" element={<PageWrapper><SafetyCenter /></PageWrapper>} />
           <Route path="financial" element={<PageWrapper><FinancialSupport /></PageWrapper>} />
           <Route path="application-tracker" element={<PageWrapper><ApplicationTracker /></PageWrapper>} />
+          <Route path="employers-directory" element={<PageWrapper><EmployersDirectory /></PageWrapper>} />
           
           {/* Catch-all 404 Route */}
           <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
