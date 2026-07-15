@@ -14,6 +14,7 @@ import { Progress } from '@/components/ui/progress';
 import { useAccessibility } from '@/context/AccessibilityContext';
 import { useAppContext } from '@/context/AppContext';
 import { Link } from 'react-router-dom';
+import { SAVED_DATA } from '@/data/mockData';
 
 export const Dashboard = () => {
   const { prefs } = useAccessibility();
