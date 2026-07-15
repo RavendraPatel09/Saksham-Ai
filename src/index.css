@@ -44,7 +44,67 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 221 83% 53%;
     
-    --radius: 1rem; /* Increase base radius */
+    --radius: 1rem; /* Accessibility Overrides */
+  }
+
+  /* Mobility Mode: Enlarge clickable targets */
+  .mobility-mode button, 
+  .mobility-mode a, 
+  .mobility-mode input, 
+  .mobility-mode select, 
+  .mobility-mode [role="button"] {
+    min-height: 48px !important;
+    min-width: 48px !important;
+  }
+
+  /* Calm Mode: Soften colors and reduce contrast slightly for cognitive ease */
+  .calm-mode {
+    --background: 210 20% 98%; /* Softer off-white */
+    --foreground: 220 15% 30%; /* Softer dark text */
+    --primary: 220 50% 60%; /* Desaturated blue */
+    --primary-foreground: 210 40% 98%;
+    --muted: 210 15% 90%;
+    --muted-foreground: 220 15% 45%;
+    --border: 210 15% 85%;
+  }
+
+  .dark.calm-mode {
+    --background: 220 15% 15%; /* Lighter dark background */
+    --foreground: 210 20% 90%; /* Softer light text */
+    --primary: 220 40% 50%;
+    --primary-foreground: 210 20% 95%;
+    --muted: 220 15% 25%;
+    --muted-foreground: 210 15% 75%;
+    --border: 220 15% 25%;
+  }
+
+  .high-contrast {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
+    --primary: 240 100% 25%;
+    --muted: 0 0% 90%;
+    --border: 0 0% 0%;
+  }
+
+  .dark.high-contrast {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --primary: 240 100% 75%;
+    --muted: 0 0% 20%;
+    --border: 0 0% 100%;
+  }
+
+  .reduced-motion * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Focus Manager Indicator */
+  .keyboard-navigating *:focus-visible {
+    outline: 4px solid hsl(var(--primary)) !important;
+    outline-offset: 4px !important;
   }
 
   .dark {
