@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   X, Compass, BookOpen, Briefcase, Trophy, Calendar as CalendarIcon, 
-  Users, MessageCircle, HeartHandshake, Settings, HelpCircle, MessageSquare, KanbanSquare, Building, Landmark, FileText
+  Users, MessageCircle, HeartHandshake, Settings, HelpCircle, MessageSquare, KanbanSquare, Building, Landmark, FileText, Sparkles, Share2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAccessibility } from '@/context/AccessibilityContext';
@@ -30,6 +30,8 @@ export const MoreDrawer: React.FC<MoreDrawerProps> = ({ isOpen, onClose, onOpenA
         { name: t('more.menu.tracker'), path: "/application-tracker", icon: KanbanSquare },
         { name: t('more.menu.employers'), path: "/employers-directory", icon: Building },
         { name: t('more.menu.resume_bank'), path: "/resume-bank", icon: FileText },
+        { name: t('more.menu.accommodation_letter'), path: "/accommodation-letter", icon: FileText },
+        { name: t('more.menu.interview_brief'), path: "/interview-brief", icon: FileText },
       ]
     },
     {
@@ -45,6 +47,7 @@ export const MoreDrawer: React.FC<MoreDrawerProps> = ({ isOpen, onClose, onOpenA
       items: [
         { name: t('more.menu.community'), path: "/community", icon: Users },
         { name: t('more.menu.events'), path: "/events", icon: CalendarIcon },
+        { name: t('more.menu.mentors'), path: "/mentors", icon: Users },
       ]
     },
     {
@@ -53,6 +56,8 @@ export const MoreDrawer: React.FC<MoreDrawerProps> = ({ isOpen, onClose, onOpenA
         { name: t('more.menu.offline'), path: "/offline", icon: HeartHandshake },
         { name: t('more.menu.financial'), path: "/financial", icon: Trophy },
         { name: t('more.menu.safety'), path: "/safety", icon: HeartHandshake },
+        { name: t('more.menu.simplify_document'), path: "/simplify-document", icon: Sparkles },
+        { name: t('more.menu.share_progress'), path: "/share-progress", icon: Share2 },
       ]
     },
     {

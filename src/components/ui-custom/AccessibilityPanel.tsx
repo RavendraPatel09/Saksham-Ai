@@ -162,7 +162,6 @@ export const AccessibilityPanel = ({ isOpen, onClose }: AccessibilityPanelProps)
                       }}
                     />
                   </div>
-                </div>
 
                 <div className="pt-2 border-t">
                   <h3 className="font-semibold mb-3">Language Preference</h3>
