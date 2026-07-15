@@ -51,7 +51,7 @@ export const Navbar = () => {
       }`}
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-8">
-        <Link to="/" aria-label="Saksham AI Home">
+        <Link to="/" aria-label="Saksham AI Home" className="shrink-0 flex items-center">
           <Logo />
         </Link>
         
