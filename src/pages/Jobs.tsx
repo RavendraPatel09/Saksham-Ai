@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Briefcase, MapPin, Building, Sparkles, Zap, Bookmark, ExternalLink, Loader2, Network } from 'lucide-react';
+import { Briefcase, MapPin, Building, Sparkles, Zap, Bookmark, ExternalLink, Loader2, Network, Filter, Accessibility, ChevronDown } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -119,6 +119,26 @@ export const Jobs = () => {
               </motion.div>
             </div>
 
+            {/* Filters Row */}
+            <motion.div 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex flex-wrap gap-3 mb-8"
+            >
+              <Button variant="outline" className="rounded-full bg-white dark:bg-slate-900 border-border/50 text-muted-foreground hover:text-foreground">
+                <Filter className="w-4 h-4 mr-2" /> All Filters
+              </Button>
+              <Button variant="outline" className="rounded-full bg-white dark:bg-slate-900 border-border/50 text-muted-foreground hover:text-foreground">
+                Work Mode <ChevronDown className="w-4 h-4 ml-2" />
+              </Button>
+              <Button variant="outline" className="rounded-full bg-white dark:bg-slate-900 border-border/50 text-muted-foreground hover:text-foreground">
+                Accessibility <ChevronDown className="w-4 h-4 ml-2" />
+              </Button>
+              <Button variant="outline" className="rounded-full bg-white dark:bg-slate-900 border-border/50 text-muted-foreground hover:text-foreground">
+                Salary Range <ChevronDown className="w-4 h-4 ml-2" />
+              </Button>
+            </motion.div>
+
             <motion.div 
               className="grid lg:grid-cols-2 gap-8"
               variants={containerVariants}
@@ -148,12 +168,20 @@ export const Jobs = () => {
                                 <Building className="h-4 w-4" /> {job.company}
                               </div>
                             </div>
-                            <div className="flex flex-col items-end bg-gradient-to-br from-primary/5 to-primary/10 p-2.5 rounded-xl border border-primary/15 shadow-inner">
-                              <span className="text-2xl font-extrabold text-primary flex items-baseline">
-                                <AnimatedCounter from={0} to={matchScore} />
-                                <span className="text-sm">%</span>
-                              </span>
-                              <span className="text-[10px] uppercase font-bold text-indigo-600/70 tracking-wider">AI Match</span>
+                            <div className="flex gap-3">
+                              <div className="flex flex-col items-end bg-gradient-to-br from-emerald-500/5 to-emerald-500/10 p-2.5 rounded-xl border border-emerald-500/15 shadow-inner">
+                                <span className="text-xl font-extrabold text-emerald-600 flex items-baseline">
+                                  {90 + Math.floor(Math.random() * 10)}<span className="text-sm">/100</span>
+                                </span>
+                                <span className="text-[10px] uppercase font-bold text-emerald-600/70 tracking-wider flex items-center gap-1"><Accessibility className="w-3 h-3" /> A11y Score</span>
+                              </div>
+                              <div className="flex flex-col items-end bg-gradient-to-br from-primary/5 to-primary/10 p-2.5 rounded-xl border border-primary/15 shadow-inner">
+                                <span className="text-2xl font-extrabold text-primary flex items-baseline">
+                                  <AnimatedCounter from={0} to={matchScore} />
+                                  <span className="text-sm">%</span>
+                                </span>
+                                <span className="text-[10px] uppercase font-bold text-indigo-600/70 tracking-wider">AI Match</span>
+                              </div>
                             </div>
                           </div>
 
