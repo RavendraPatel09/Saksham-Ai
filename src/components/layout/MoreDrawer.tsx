@@ -12,9 +12,11 @@ import { useLanguage } from '@/i18n/LanguageContext';
 type MoreDrawerProps = {
   isOpen: boolean;
   onClose: () => void;
+  onOpenAccessibility?: () => void;
+  onOpenLanguage?: () => void;
 };
 
-export const MoreDrawer: React.FC<MoreDrawerProps> = ({ isOpen, onClose }) => {
+export const MoreDrawer: React.FC<MoreDrawerProps> = ({ isOpen, onClose, onOpenAccessibility, onOpenLanguage }) => {
   const { prefs } = useAccessibility();
 
   const { t } = useLanguage();
@@ -109,8 +111,18 @@ export const MoreDrawer: React.FC<MoreDrawerProps> = ({ isOpen, onClose }) => {
                     {group.items.map((item, j) => (
                       <Link 
                         key={j} 
-                        to={item.path}
-                        onClick={onClose}
+                        to={item.path !== '#accessibility' && item.path !== '#language' ? item.path : '#'}
+                        onClick={(e) => {
+                          if (item.path === '#accessibility') {
+                            e.preventDefault();
+                            onOpenAccessibility?.();
+                          } else if (item.path === '#language') {
+                            e.preventDefault();
+                            onOpenLanguage?.();
+                          } else {
+                            onClose();
+                          }
+                        }}
                         className="flex items-center gap-3 p-3 rounded-lg hover:bg-primary/10 text-foreground transition-colors font-medium group"
                       >
                         <div className="bg-primary/5 p-2 rounded-md group-hover:bg-primary/20 transition-colors">

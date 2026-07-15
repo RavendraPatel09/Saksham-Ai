@@ -7,10 +7,14 @@ import { motion } from 'framer-motion';
 import { useAccessibility } from '@/context/AccessibilityContext';
 import { GlobalSearch } from '../ui-custom/GlobalSearch';
 import { Logo } from '../ui-custom/Logo';
+import { useLanguage } from '@/i18n/LanguageContext';
+import { useOffline } from '@/context/OfflineContext';
 
 export const Navbar = ({ onOpenMore, onOpenAccessibility }: { onOpenMore?: () => void, onOpenAccessibility?: () => void }) => {
   const { workspaceMode, setWorkspaceMode } = useAppContext();
   const { prefs, updatePrefs } = useAccessibility();
+  const { t } = useLanguage();
+  const { isOffline } = useOffline();
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -24,12 +28,12 @@ export const Navbar = ({ onOpenMore, onOpenAccessibility }: { onOpenMore?: () =>
   }, []);
 
   const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'Learn', path: '/learning' },
-    { name: 'Jobs', path: '/jobs' },
+    { name: t('nav.home'), path: '/' },
+    { name: t('nav.learn'), path: '/learning' },
+    { name: t('nav.jobs'), path: '/jobs' },
     ...(workspaceMode === 'employer' 
-      ? [{ name: 'Employer Dashboard', path: '/employer' }]
-      : (!workspaceMode ? [{ name: 'Employer Portal', path: '/employer' }] : [])),
+      ? [{ name: t('nav.employer_dashboard'), path: '/employer' }]
+      : (!workspaceMode ? [{ name: t('nav.employer_portal'), path: '/employer' }] : [])),
   ];
 
   return (
@@ -74,11 +78,20 @@ export const Navbar = ({ onOpenMore, onOpenAccessibility }: { onOpenMore?: () =>
             onClick={onOpenMore}
             className="relative px-3 py-2 text-sm font-medium transition-colors hover:text-primary text-muted-foreground"
           >
-            More
+            {t('nav.more')}
           </button>
         </div>
 
         <div className="flex items-center gap-2 md:gap-4">
+          
+          {/* Offline Status */}
+          <div className="hidden lg:flex items-center gap-1.5 mr-2">
+            <div className={`w-2 h-2 rounded-full ${isOffline ? 'bg-orange-500' : 'bg-emerald-500'}`} />
+            <span className="text-xs font-medium text-muted-foreground">
+              {isOffline ? 'Offline' : 'Online'}
+            </span>
+          </div>
+
           <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(true)} className="hover:bg-primary/10 hover:text-primary transition-colors">
             <Search className="w-5 h-5" />
           </Button>
@@ -108,15 +121,15 @@ export const Navbar = ({ onOpenMore, onOpenAccessibility }: { onOpenMore?: () =>
             {!workspaceMode ? (
               <>
                 <Link to="/employer" className={buttonVariants({ variant: "ghost", className: "hover:bg-primary/10 transition-colors" })}>
-                  Employer Login
+                  {t('nav.employer_login')}
                 </Link>
                 <Link to="/register" className={buttonVariants({ className: "shadow-md hover:shadow-lg transition-all bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-600/90" })}>
-                  Get Started
+                  {t('nav.get_started')}
                 </Link>
               </>
             ) : (
               <Button variant="outline" onClick={() => setWorkspaceMode(null)} className="hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 transition-colors">
-                Logout
+                {t('nav.logout')}
               </Button>
             )}
           </div>
