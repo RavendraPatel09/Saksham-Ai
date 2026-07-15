@@ -90,7 +90,7 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <AccessibilityContext.Provider value={{ prefs, updatePrefs, updateProfile, isWizardCompleted, completeWizard }}>
-      <div className={prefs.highContrast || prefs.profile.visual ? 'dark' : ''}>
+      <div className={prefs.darkMode || prefs.highContrast || prefs.profile.visual ? 'dark' : ''}>
         {children}
       </div>
     </AccessibilityContext.Provider>

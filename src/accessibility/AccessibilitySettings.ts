@@ -16,6 +16,7 @@ export interface AccessibilityPreferences {
   dyslexiaFont: boolean;
   reducedMotion: boolean;
   language: string;
+  darkMode: boolean;
 }
 
 export const DEFAULT_PROFILE: AccessibilityProfile = {
@@ -36,6 +37,7 @@ export const DEFAULT_PREFERENCES: AccessibilityPreferences = {
   dyslexiaFont: false,
   reducedMotion: false,
   language: 'en',
+  darkMode: false,
 };
 
 export const ACCESSIBILITY_STORAGE_KEY = 'saksham_accessibility_prefs';
