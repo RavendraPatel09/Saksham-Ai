@@ -20,6 +20,7 @@ const Interview = lazy(() => import('@/pages/Interview').then(module => ({ defau
 const Employer = lazy(() => import('@/pages/Employer').then(module => ({ default: module.Employer })));
 const AccessibilityAudit = lazy(() => import('@/pages/AccessibilityAudit').then(module => ({ default: module.AccessibilityAudit })));
 const PostEmployment = lazy(() => import('@/pages/PostEmployment').then(module => ({ default: module.PostEmployment })));
+const Community = lazy(() => import('@/pages/Community').then(module => ({ default: module.Community })));
 const NotFound = lazy(() => import('@/pages/NotFound').then(module => ({ default: module.NotFound })));
 
 // Loading Fallback Component
@@ -47,6 +48,7 @@ function AnimatedRoutes() {
           <Route path="employer" element={<PageWrapper><Employer /></PageWrapper>} />
           <Route path="employer/audit" element={<PageWrapper><AccessibilityAudit /></PageWrapper>} />
           <Route path="post-employment" element={<PageWrapper><PostEmployment /></PageWrapper>} />
+          <Route path="community" element={<PageWrapper><Community /></PageWrapper>} />
           
           {/* Catch-all 404 Route */}
           <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
