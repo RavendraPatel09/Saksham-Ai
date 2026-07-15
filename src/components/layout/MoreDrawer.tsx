@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
   X, Compass, BookOpen, Briefcase, Trophy, Calendar as CalendarIcon, 
@@ -8,6 +7,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { useAccessibility } from '@/context/AccessibilityContext';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { OverlayWrapper } from '@/context/OverlayContext';
 
 type MoreDrawerProps = {
   isOpen: boolean;
@@ -17,18 +17,7 @@ type MoreDrawerProps = {
 };
 
 export const MoreDrawer: React.FC<MoreDrawerProps> = ({ isOpen, onClose, onOpenAccessibility, onOpenLanguage }) => {
-  const { prefs } = useAccessibility();
-
   const { t } = useLanguage();
-
-  // Close panel on escape key
-  React.useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    if (isOpen) window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
 
   const groups = [
     {
@@ -74,34 +63,8 @@ export const MoreDrawer: React.FC<MoreDrawerProps> = ({ isOpen, onClose, onOpenA
   ];
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <div className="fixed inset-0 z-[100] flex justify-end">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-background/80 backdrop-blur-sm"
-            onClick={onClose}
-          />
-          
-          <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="relative z-10 w-full max-w-sm bg-white dark:bg-slate-950 h-full border-l shadow-2xl flex flex-col"
-          >
-            <div className="flex items-center justify-between p-4 border-b bg-muted/30">
-              <h2 className="text-xl font-bold flex items-center gap-2">
-                Explore More
-              </h2>
-              <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close menu">
-                <X className="w-5 h-5" />
-              </Button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-4 space-y-6 no-scrollbar pb-24 md:pb-4">
+    <OverlayWrapper isOpen={isOpen} onClose={onClose} position="right" title="Explore More">
+      <div className="flex-1 overflow-y-auto p-4 space-y-6 no-scrollbar pb-24 md:pb-4">
               {groups.map((group, i) => (
                 <div key={i}>
                   <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3 ml-2">
@@ -135,9 +98,7 @@ export const MoreDrawer: React.FC<MoreDrawerProps> = ({ isOpen, onClose, onOpenA
                 </div>
               ))}
             </div>
-          </motion.div>
-        </div>
-      )}
-    </AnimatePresence>
+            </div>
+    </OverlayWrapper>
   );
 };
