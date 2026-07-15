@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/i18n/LanguageContext';
+import { OverlayWrapper } from '@/context/OverlayContext';
 
 export const LanguageModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
   const { language, setLanguage, t } = useLanguage();
@@ -19,33 +20,8 @@ export const LanguageModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: (
   ];
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-background/80 backdrop-blur-sm"
-            onClick={onClose}
-          />
-          
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="bg-white dark:bg-slate-950 border rounded-xl shadow-2xl w-full max-w-md relative z-10 overflow-hidden"
-          >
-            <div className="flex items-center justify-between p-4 border-b bg-muted/30">
-              <h2 className="text-lg font-bold flex items-center gap-2">
-                <Globe className="w-5 h-5 text-primary" /> {t('more.menu.language')}
-              </h2>
-              <Button variant="ghost" size="icon" onClick={onClose}>
-                <X className="w-5 h-5" />
-              </Button>
-            </div>
-
-            <div className="p-4 grid grid-cols-2 gap-3">
+    <OverlayWrapper isOpen={isOpen} onClose={onClose} position="center" title={t('more.menu.language')}>
+      <div className="p-4 grid grid-cols-2 gap-3">
               {languages.map(lang => (
                 <Button
                   key={lang.id}
@@ -61,9 +37,7 @@ export const LanguageModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: (
                 </Button>
               ))}
             </div>
-          </motion.div>
-        </div>
-      )}
-    </AnimatePresence>
+      </div>
+    </OverlayWrapper>
   );
 };
