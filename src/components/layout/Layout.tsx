@@ -5,10 +5,12 @@ import { BottomNav } from './BottomNav';
 import { SakhiAI } from '../ui-custom/SakhiAI';
 import { AccessibilityPanel } from '../ui-custom/AccessibilityPanel';
 import { MoreDrawer } from './MoreDrawer';
+import { LanguageModal } from '@/i18n/LanguageModal';
 
 export const Layout = () => {
   const [isMoreOpen, setIsMoreOpen] = useState(false);
   const [isAccessibilityOpen, setIsAccessibilityOpen] = useState(false);
+  const [isLanguageOpen, setIsLanguageOpen] = useState(false);
 
   return (
     <div className="flex flex-col min-h-screen pb-16 md:pb-0 relative">
@@ -22,7 +24,13 @@ export const Layout = () => {
       <BottomNav onOpenMore={() => setIsMoreOpen(true)} />
       <SakhiAI />
       <AccessibilityPanel isOpen={isAccessibilityOpen} onClose={() => setIsAccessibilityOpen(false)} />
-      <MoreDrawer isOpen={isMoreOpen} onClose={() => setIsMoreOpen(false)} />
+      <MoreDrawer 
+        isOpen={isMoreOpen} 
+        onClose={() => setIsMoreOpen(false)} 
+        onOpenAccessibility={() => { setIsMoreOpen(false); setIsAccessibilityOpen(true); }}
+        onOpenLanguage={() => { setIsMoreOpen(false); setIsLanguageOpen(true); }}
+      />
+      <LanguageModal isOpen={isLanguageOpen} onClose={() => setIsLanguageOpen(false)} />
     </div>
   );
 };
