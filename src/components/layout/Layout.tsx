@@ -5,7 +5,6 @@ import { BottomNav } from './BottomNav';
 import { SakhiAI } from '../ui-custom/SakhiAI';
 import { AccessibilityPanel } from '../ui-custom/AccessibilityPanel';
 import { DeadlineBanner } from '../ui-custom/DeadlineBanner';
-import { PanicButton } from '../ui-custom/PanicButton';
 import { MoreDrawer } from './MoreDrawer';
 import { LanguageModal } from '@/i18n/LanguageModal';
 import { GlobalSearch } from '../ui-custom/GlobalSearch';
@@ -23,7 +22,6 @@ export const Layout = () => {
       </main>
       <BottomNav onOpenMore={() => openOverlay('more')} />
       <SakhiAI />
-      <PanicButton />
       <GlobalSearch isOpen={activeOverlay === 'search'} onClose={closeOverlay} />
       <AccessibilityPanel isOpen={activeOverlay === 'accessibility'} onClose={closeOverlay} />
       <MoreDrawer 
