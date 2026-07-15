@@ -25,6 +25,7 @@ const GovernmentSupport = lazy(() => import('@/pages/GovernmentSupport').then(mo
 const ResumeBuilder = lazy(() => import('@/pages/ResumeBuilder').then(module => ({ default: module.ResumeBuilder })));
 const CareerRoadmap = lazy(() => import('@/pages/CareerRoadmap').then(module => ({ default: module.CareerRoadmap })));
 const SavedItems = lazy(() => import('@/pages/SavedItems').then(module => ({ default: module.SavedItems })));
+const CalendarSchedule = lazy(() => import('@/pages/CalendarSchedule').then(module => ({ default: module.CalendarSchedule })));
 const NotFound = lazy(() => import('@/pages/NotFound').then(module => ({ default: module.NotFound })));
 
 // Loading Fallback Component
@@ -57,6 +58,7 @@ function AnimatedRoutes() {
           <Route path="resume-builder" element={<PageWrapper><ResumeBuilder /></PageWrapper>} />
           <Route path="career-roadmap" element={<PageWrapper><CareerRoadmap /></PageWrapper>} />
           <Route path="saved" element={<PageWrapper><SavedItems /></PageWrapper>} />
+          <Route path="calendar" element={<PageWrapper><CalendarSchedule /></PageWrapper>} />
           
           {/* Catch-all 404 Route */}
           <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
