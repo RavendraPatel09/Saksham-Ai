@@ -9,9 +9,11 @@ import { GlobalSearch } from '../ui-custom/GlobalSearch';
 import { Logo } from '../ui-custom/Logo';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useOffline } from '@/context/OfflineContext';
+import { useOverlay } from '@/context/OverlayContext';
 
-export const Navbar = ({ onOpenMore, onOpenAccessibility }: { onOpenMore?: () => void, onOpenAccessibility?: () => void }) => {
+export const Navbar = () => {
   const { workspaceMode, setWorkspaceMode } = useAppContext();
+  const { openOverlay } = useOverlay();
   const { prefs, updatePrefs } = useAccessibility();
   const { t } = useLanguage();
   const { isOffline } = useOffline();
@@ -72,7 +74,7 @@ export const Navbar = ({ onOpenMore, onOpenAccessibility }: { onOpenMore?: () =>
             );
           })}
           <button
-            onClick={onOpenMore}
+            onClick={() => openOverlay('more')}
             className="relative px-3 py-2 text-sm font-medium transition-colors hover:text-primary text-muted-foreground"
           >
             {t('nav.more')}
@@ -80,7 +82,7 @@ export const Navbar = ({ onOpenMore, onOpenAccessibility }: { onOpenMore?: () =>
         </div>
 
         <div className="flex items-center gap-2 md:gap-4">
-          <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(true)} className="hover:bg-primary/10 hover:text-primary transition-colors">
+          <Button variant="ghost" size="icon" onClick={() => openOverlay('search')} className="hover:bg-primary/10 hover:text-primary transition-colors">
             <Search className="w-5 h-5" />
           </Button>
 
@@ -98,7 +100,7 @@ export const Navbar = ({ onOpenMore, onOpenAccessibility }: { onOpenMore?: () =>
           <Button 
             variant="ghost" 
             size="icon" 
-            onClick={onOpenAccessibility}
+            onClick={() => openOverlay('accessibility')}
             className="hover:bg-primary/10 hover:text-primary transition-colors"
             aria-label="Accessibility & Preferences"
           >
@@ -122,13 +124,11 @@ export const Navbar = ({ onOpenMore, onOpenAccessibility }: { onOpenMore?: () =>
             )}
           </div>
           
-          <Button variant="ghost" size="icon" className="md:hidden" aria-label="Menu" onClick={onOpenMore}>
+          <Button variant="ghost" size="icon" className="md:hidden" aria-label="Menu" onClick={() => openOverlay('more')}>
             <Menu className="h-6 w-6" />
           </Button>
         </div>
       </div>
-      
-      <GlobalSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </motion.nav>
   );
 };
