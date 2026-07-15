@@ -115,7 +115,7 @@ export const AccessibilitySwitcher = () => {
             <Label className="text-base flex items-center gap-2">
               <Globe className="h-4 w-4" /> Language Selector
             </Label>
-            <Select value={prefs.language || "en"} onValueChange={(val) => updatePrefs({ language: val })}>
+            <Select value={prefs.language || "en"} onValueChange={(val) => updatePrefs({ language: val as string })}>
               <SelectTrigger>
                 <SelectValue placeholder="Select Language" />
               </SelectTrigger>
