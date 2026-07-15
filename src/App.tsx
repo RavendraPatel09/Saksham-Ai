@@ -13,9 +13,12 @@ import { Loader2 } from 'lucide-react';
 import { AccessibilityWizard } from '@/components/accessibility/AccessibilityWizard';
 import { LiveCaptions } from '@/components/captions/LiveCaptions';
 import { FocusManager } from '@/accessibility/FocusManager';
+import { OnboardingModal } from '@/components/ui-custom/OnboardingModal';
+import { ProtectedRoute } from '@/components/layout/ProtectedRoute';
 
 // Lazy load pages for performance
 const Home = lazy(() => import('@/pages/Home').then(module => ({ default: module.Home })));
+const Dashboard = lazy(() => import('@/pages/Dashboard').then(module => ({ default: module.Dashboard })));
 const Register = lazy(() => import('@/pages/Register').then(module => ({ default: module.Register })));
 const Assessment = lazy(() => import('@/pages/Assessment').then(module => ({ default: module.Assessment })));
 const SkillGap = lazy(() => import('@/pages/SkillGap').then(module => ({ default: module.SkillGap })));
@@ -60,8 +63,11 @@ function AnimatedRoutes() {
           <Route path="learning" element={<PageWrapper><Learning /></PageWrapper>} />
           <Route path="jobs" element={<PageWrapper><Jobs /></PageWrapper>} />
           <Route path="interview" element={<PageWrapper><Interview /></PageWrapper>} />
-          <Route path="employer" element={<PageWrapper><Employer /></PageWrapper>} />
-          <Route path="employer/audit" element={<PageWrapper><AccessibilityAudit /></PageWrapper>} />
+          <Route path="dashboard" element={<PageWrapper><Dashboard /></PageWrapper>} />
+          
+          <Route path="employer" element={<ProtectedRoute allowedRole="employer"><PageWrapper><Employer /></PageWrapper></ProtectedRoute>} />
+          <Route path="employer/audit" element={<ProtectedRoute allowedRole="employer"><PageWrapper><AccessibilityAudit /></PageWrapper></ProtectedRoute>} />
+          
           <Route path="post-employment" element={<PageWrapper><PostEmployment /></PageWrapper>} />
           <Route path="community" element={<PageWrapper><Community /></PageWrapper>} />
           <Route path="government-support" element={<PageWrapper><GovernmentSupport /></PageWrapper>} />
@@ -96,6 +102,7 @@ function App() {
             <AppProvider>
               <BrowserRouter>
                 <AccessibilityWizard />
+                <OnboardingModal />
                 <LiveCaptions />
                 <Suspense fallback={<PageLoader />}>
                   <AnimatedRoutes />
