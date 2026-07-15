@@ -39,8 +39,8 @@ export const Navbar = ({ onOpenMore }: { onOpenMore?: () => void }) => {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className={`sticky top-0 z-40 w-full transition-all duration-300 border-b ${
         scrolled 
-          ? 'bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl shadow-md border-border/50' 
-          : 'bg-background/95 backdrop-blur-sm supports-[backdrop-filter]:bg-background/60 border-transparent shadow-none'
+          ? 'bg-white/80 dark:bg-[#0F172A]/75 backdrop-blur-[20px] shadow-md border-border/50 dark:border-white/[0.06]' 
+          : 'bg-background/95 dark:bg-[#0F172A]/75 backdrop-blur-[20px] supports-[backdrop-filter]:bg-background/60 border-transparent shadow-none dark:border-white/[0.06]'
       }`}
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-8">

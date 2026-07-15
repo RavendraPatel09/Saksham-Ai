@@ -108,21 +108,21 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
+    --background: 222.2 47.4% 11.2%; /* #0F172A */
+    --foreground: 210 40% 98%; /* #F8FAFC */
+    --card: 215 32% 17%; /* #1E293B */
+    --card-foreground: 214.3 31.8% 91.4%; /* #CBD5E1 */
+    --popover: 215 32% 17%;
     --popover-foreground: 210 40% 98%;
     
-    --primary: 221 83% 53%;
+    --primary: 221.2 83.2% 53.3%; /* #3B82F6 */
     --primary-foreground: 210 40% 98%;
     
-    --secondary: 149 80% 20%;
+    --secondary: 217.2 32.6% 17.5%; /* #111827 */
     --secondary-foreground: 210 40% 98%;
     
     --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted-foreground: 215.4 16.3% 46.9%; /* #94A3B8 */
     
     --accent: 199 89% 48%;
     --accent-foreground: 210 40% 98%;
@@ -130,8 +130,8 @@
     --destructive: 25 95% 53%;
     --destructive-foreground: 210 40% 98%;
     
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
+    --border: 215 32% 25%;
+    --input: 215 32% 25%;
     --ring: 221 83% 53%;
   }
 
@@ -140,6 +140,11 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  html.dark body {
+    background: #0F172A;
+  }
+  html:not(.dark) body {
     background: linear-gradient(135deg, #f8fafc, #eff6ff, #f0f9ff);
   }
   html {
@@ -158,22 +163,32 @@
   
   .premium-card {
     @apply rounded-3xl border border-white/30 backdrop-blur-md bg-white/85 shadow-lg transition-all duration-300;
+    border-radius: 24px;
   }
   
   .premium-card:hover {
-    transform: translateY(-6px) scale(1.02);
+    transform: translateY(-4px);
     box-shadow: 0 20px 40px rgba(0,0,0,0.12);
   }
 
   .dark .premium-card {
-    @apply bg-slate-900/85 border-slate-700/30 shadow-black/20;
+    background: rgba(30, 41, 59, 0.85); /* #1E293B */
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+  }
+
+  .dark .premium-card:hover {
+    background: #243044;
+    border-color: rgba(59, 130, 246, 0.25);
   }
   
   .dark .bg-hero-gradient {
-    background: linear-gradient(135deg, #0f172a, #1e1b4b, #064e3b);
+    background: #0F172A; /* Fallback */
+    background: radial-gradient(circle at top center, #1E293B, #0F172A 70%);
   }
   
   .dark .bg-dashboard-gradient {
-    background: linear-gradient(180deg, #020617, #0f172a);
+    background: #0F172A;
   }
 }
