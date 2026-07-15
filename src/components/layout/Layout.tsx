@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Navbar } from './Navbar';
-import { BottomNav } from './BottomNav';
-import { SakhiAI } from '../ui-custom/SakhiAI';
 import { AccessibilityPanel } from '../ui-custom/AccessibilityPanel';
 import { MoreDrawer } from './MoreDrawer';
 import { LanguageModal } from '@/i18n/LanguageModal';
+import { GlobalSearch } from '../ui-custom/GlobalSearch';
 import { useOverlay } from '@/context/OverlayContext';
 
 export const Layout = () => {
@@ -19,6 +18,7 @@ export const Layout = () => {
       </main>
       <BottomNav onOpenMore={() => openOverlay('more')} />
       <SakhiAI />
+      <GlobalSearch isOpen={activeOverlay === 'search'} onClose={closeOverlay} />
       <AccessibilityPanel isOpen={activeOverlay === 'accessibility'} onClose={closeOverlay} />
       <MoreDrawer 
         isOpen={activeOverlay === 'more'} 
