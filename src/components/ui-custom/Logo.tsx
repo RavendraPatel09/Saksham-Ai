@@ -29,11 +29,11 @@ export const Logo = () => {
         </motion.div>
       </div>
       
-      <div className="flex flex-col justify-center">
-        <span className="text-xl md:text-2xl font-extrabold tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-teal-500 dark:from-blue-400 dark:to-teal-300">
+      <div className="flex flex-col justify-center shrink-0">
+        <span className="whitespace-nowrap text-xl md:text-2xl font-extrabold tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-teal-500 dark:from-blue-400 dark:to-teal-300">
           Saksham AI
         </span>
-        <span className="text-[0.55rem] md:text-[0.6rem] font-bold tracking-[0.15em] text-slate-500 dark:text-slate-400 uppercase mt-0.5 hidden sm:block leading-none">
+        <span className="whitespace-nowrap text-[0.55rem] md:text-[0.6rem] font-bold tracking-[0.15em] text-slate-500 dark:text-slate-400 uppercase mt-0.5 hidden sm:block leading-none">
           Empowering Every Ability
         </span>
       </div>
