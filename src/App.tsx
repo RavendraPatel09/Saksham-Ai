@@ -15,6 +15,7 @@ import { LiveCaptions } from '@/components/captions/LiveCaptions';
 import { FocusManager } from '@/accessibility/FocusManager';
 import { OnboardingModal } from '@/components/ui-custom/OnboardingModal';
 import { ProtectedRoute } from '@/components/layout/ProtectedRoute';
+import { OverlayProvider } from '@/context/OverlayContext';
 
 // Lazy load pages for performance
 const Home = lazy(() => import('@/pages/Home').then(module => ({ default: module.Home })));
@@ -100,15 +101,17 @@ function App() {
         <LanguageProvider>
           <OfflineProvider>
             <AppProvider>
-              <BrowserRouter>
-                <AccessibilityWizard />
-                <OnboardingModal />
-                <LiveCaptions />
+              <OverlayProvider>
+                <BrowserRouter>
+                  <AccessibilityWizard />
+                  <OnboardingModal />
+                  <LiveCaptions />
                 <Suspense fallback={<PageLoader />}>
                   <AnimatedRoutes />
                 </Suspense>
               </BrowserRouter>
               <Toaster />
+              </OverlayProvider>
             </AppProvider>
           </OfflineProvider>
         </LanguageProvider>
