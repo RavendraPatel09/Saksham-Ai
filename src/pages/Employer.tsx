@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Building, Users, Briefcase, FileCheck, CheckCircle2, MoreVertical, Plus, TrendingUp } from 'lucide-react';
+import { Building, Users, Briefcase, FileCheck, CheckCircle2, MoreVertical, Plus, TrendingUp, Sparkles } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
