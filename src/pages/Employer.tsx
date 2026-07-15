@@ -157,6 +157,26 @@ export const Employer = () => {
           )}
         </motion.section>
 
+        {/* Quick Actions Row */}
+        <motion.div variants={itemVariants} className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <Button variant="outline" className="h-16 flex flex-col items-center justify-center gap-1 bg-white dark:bg-slate-900 border-border/50 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 hover:text-indigo-600 hover:border-indigo-200">
+            <Plus className="w-5 h-5" />
+            <span className="text-xs">Post Job</span>
+          </Button>
+          <Button variant="outline" className="h-16 flex flex-col items-center justify-center gap-1 bg-white dark:bg-slate-900 border-border/50 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 hover:text-indigo-600 hover:border-indigo-200">
+            <Users className="w-5 h-5" />
+            <span className="text-xs">Invite Candidate</span>
+          </Button>
+          <Button variant="outline" className="h-16 flex flex-col items-center justify-center gap-1 bg-white dark:bg-slate-900 border-border/50 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 hover:text-indigo-600 hover:border-indigo-200">
+            <Calendar className="w-5 h-5" />
+            <span className="text-xs">Schedule Event</span>
+          </Button>
+          <Button variant="outline" className="h-16 flex flex-col items-center justify-center gap-1 bg-white dark:bg-slate-900 border-border/50 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 hover:text-indigo-600 hover:border-indigo-200">
+            <FileCheck className="w-5 h-5" />
+            <span className="text-xs">Run Audit</span>
+          </Button>
+        </motion.div>
+
         {/* SECTION 2 — Sakhi AI Hiring Assistant */}
         <motion.section variants={itemVariants}>
           <Card className="border-2 border-indigo-500/20 shadow-xl overflow-hidden relative">
