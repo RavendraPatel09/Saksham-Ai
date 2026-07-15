@@ -4,7 +4,7 @@ import {
   Briefcase, GraduationCap, CheckCircle, Activity, ChevronRight, 
   BarChart, Users, Landmark, BookOpen, Sparkles, Mic, MessageSquare, 
   Settings, HeartPulse, Calendar, TrendingUp, Award, FileText, CheckCircle2, 
-  MapPin, Clock, ArrowRight, ShieldAlert, Ear, Eye, HandHeart
+  MapPin, Clock, ArrowRight, ShieldAlert, Ear, Eye, HandHeart, Share2
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -58,6 +58,9 @@ export const Dashboard = () => {
               <Badge variant="secondary" className="bg-indigo-500/15 text-indigo-600 hover:bg-indigo-500/25 border-none px-3 py-1">Hindi</Badge>
               <Badge variant="secondary" className="bg-amber-500/15 text-amber-600 hover:bg-amber-500/25 border-none px-3 py-1"><Calendar className="w-3 h-3 mr-1" /> Interview Tomorrow</Badge>
             </div>
+            <Link to="/share-progress" className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
+              <Share2 className="w-4 h-4" /> Share your progress with family / caregiver
+            </Link>
           </div>
           
           <div className="grid grid-cols-2 gap-4">
