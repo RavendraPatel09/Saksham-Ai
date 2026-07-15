@@ -22,6 +22,7 @@ import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 
 export const Learning = () => {
+  const { prefs } = useAccessibility();
   const [showConfetti, setShowConfetti] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [learningSettings, setLearningSettings] = useState({
