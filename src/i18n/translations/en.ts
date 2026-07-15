@@ -47,6 +47,11 @@ export const en = {
   "more.menu.employers": "Inclusive Employers",
   "more.menu.reserved_jobs": "Reserved Govt Jobs",
   "more.menu.resume_bank": "Resume Bank Opt-In",
+  "more.menu.accommodation_letter": "Accommodation Letter",
+  "more.menu.mentors": "Peer Mentors",
+  "more.menu.interview_brief": "Interview Brief",
+  "more.menu.simplify_document": "Simplify Document",
+  "more.menu.share_progress": "Share Progress",
   
   "more.menu.access_settings": "Accessibility Settings",
   "more.menu.language": "Language & Region",

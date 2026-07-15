@@ -45,6 +45,11 @@ const ApplicationTracker = lazy(() => import('@/pages/ApplicationTracker').then(
 const EmployersDirectory = lazy(() => import('@/pages/EmployersDirectory').then(module => ({ default: module.EmployersDirectory })));
 const ReservedJobs = lazy(() => import('@/pages/ReservedJobs').then(module => ({ default: module.ReservedJobs })));
 const ResumeBank = lazy(() => import('@/pages/ResumeBank').then(module => ({ default: module.ResumeBank })));
+const AccommodationLetter = lazy(() => import('@/pages/AccommodationLetter').then(module => ({ default: module.AccommodationLetter })));
+const Mentors = lazy(() => import('@/pages/Mentors').then(module => ({ default: module.Mentors })));
+const InterviewBrief = lazy(() => import('@/pages/InterviewBrief').then(module => ({ default: module.InterviewBrief })));
+const SimplifyDocument = lazy(() => import('@/pages/SimplifyDocument').then(module => ({ default: module.SimplifyDocument })));
+const ShareProgress = lazy(() => import('@/pages/ShareProgress').then(module => ({ default: module.ShareProgress })));
 
 // Loading Fallback Component
 const PageLoader = () => (
@@ -89,6 +94,11 @@ function AnimatedRoutes() {
           <Route path="employers-directory" element={<PageWrapper><EmployersDirectory /></PageWrapper>} />
           <Route path="reserved-jobs" element={<PageWrapper><ReservedJobs /></PageWrapper>} />
           <Route path="resume-bank" element={<PageWrapper><ResumeBank /></PageWrapper>} />
+          <Route path="accommodation-letter" element={<PageWrapper><AccommodationLetter /></PageWrapper>} />
+          <Route path="mentors" element={<PageWrapper><Mentors /></PageWrapper>} />
+          <Route path="interview-brief" element={<PageWrapper><InterviewBrief /></PageWrapper>} />
+          <Route path="simplify-document" element={<PageWrapper><SimplifyDocument /></PageWrapper>} />
+          <Route path="share-progress" element={<PageWrapper><ShareProgress /></PageWrapper>} />
           
           {/* Catch-all 404 Route */}
           <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
