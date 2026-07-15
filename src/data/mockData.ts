@@ -38,3 +38,25 @@ export const candidates = [
   { id: '3', name: 'Rahul Desai', disability: 'Mobility impairment', severity: 'Severe', skills: ['Accounting', 'Data entry'], matchScore: 91 },
   { id: '4', name: 'Anjali Verma', disability: 'Speech impairment', severity: 'Moderate', skills: ['Writing', 'Coding'], matchScore: 85 },
 ];
+
+export type ApplicationStatus = 'Applied' | 'Interview' | 'Offer' | 'Rejected';
+
+export interface SavedItem {
+  id: number;
+  type: 'job' | 'course' | 'mentor' | 'employer';
+  title: string;
+  entity: string;
+  location: string;
+  savedAt: string;
+  status?: ApplicationStatus; // Only applicable to 'job' type for the Application Tracker
+  deadline?: string; // Optional deadline for widgets
+}
+
+export const SAVED_DATA: SavedItem[] = [
+  { id: 1, type: 'job', title: 'Frontend Developer (Accessibility)', entity: 'TechCorp', location: 'Remote', savedAt: '2 days ago', status: 'Interview', deadline: 'Today' },
+  { id: 2, type: 'course', title: 'Advanced Web Accessibility (WCAG 2.1)', entity: 'SkillShare', location: 'Online', savedAt: '5 days ago', deadline: 'Tomorrow' },
+  { id: 3, type: 'mentor', title: 'Priya Sharma', entity: 'Senior UI/UX', location: 'Available', savedAt: '1 week ago' },
+  { id: 4, type: 'employer', title: 'InnovateX Solutions', entity: 'Software & IT', location: 'Mumbai', savedAt: '2 weeks ago' },
+  { id: 5, type: 'job', title: 'Accessibility Tester', entity: 'InclusiveTech', location: 'Remote', savedAt: '1 week ago', status: 'Applied', deadline: 'In 2 days' },
+  { id: 6, type: 'job', title: 'React Developer', entity: 'GlobalSolutions', location: 'Pune', savedAt: '3 weeks ago', status: 'Offer' },
+];
