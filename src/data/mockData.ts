@@ -67,3 +67,12 @@ export const RESERVED_JOBS = [
   { id: 3, title: 'Junior Clerk', department: 'State Bank of India', category: 'HH (Hearing Handicapped)', state: 'Banking Sector', salary: '₹19,900 - ₹63,200', deadline: '10 Sep 2026', docs: ['Disability Certificate', 'Graduation Degree'] },
   { id: 4, title: 'Peon / Attendant', department: 'Maharashtra State Secretariat', category: 'Multiple Disabilities', state: 'Maharashtra', salary: '₹18,000 - ₹56,900', deadline: '05 Aug 2026', docs: ['Disability Certificate', '10th Pass Marksheet'] },
 ];
+
+export const MENTORS = [
+  { id: 1, name: 'Priya Sharma', title: 'Senior UI/UX Designer', disability: 'Hearing impairment', careerPath: 'Design', experience: '8 years', company: 'Infosys', bio: 'Passionate about inclusive design. Mentored 20+ PwD designers into tech careers.', available: true, rating: 4.9, sessions: 45, emoji: '👩‍🎨' },
+  { id: 2, name: 'Aarav Kumar', title: 'Software Engineer', disability: 'Visual impairment', careerPath: 'Engineering', experience: '5 years', company: 'TCS', bio: 'Full-stack developer specializing in accessible web apps. Uses screen reader daily.', available: true, rating: 4.8, sessions: 32, emoji: '👨‍💻' },
+  { id: 3, name: 'Meera Patel', title: 'HR Manager', disability: 'Mobility impairment', careerPath: 'Human Resources', experience: '10 years', company: 'HCL Technologies', bio: 'Helped 50+ PwD candidates navigate the corporate hiring process. Wheelchair user advocate.', available: false, rating: 5.0, sessions: 67, emoji: '👩‍💼' },
+  { id: 4, name: 'Vikram Singh', title: 'Data Analyst', disability: 'Speech impairment', careerPath: 'Data & Analytics', experience: '4 years', company: 'Wipro', bio: 'Communicates via text-based tools. Specializes in Excel, SQL, and Power BI mentoring.', available: true, rating: 4.7, sessions: 18, emoji: '📊' },
+  { id: 5, name: 'Neha Gupta', title: 'Content Writer', disability: 'Dyslexia', careerPath: 'Content & Writing', experience: '6 years', company: 'Freelance', bio: 'Turned dyslexia into a superpower for creative writing. Published author and accessibility blogger.', available: true, rating: 4.9, sessions: 29, emoji: '✍️' },
+  { id: 6, name: 'Rohit Deshmukh', title: 'Accessibility Consultant', disability: 'Visual impairment', careerPath: 'Accessibility', experience: '12 years', company: 'Deque Systems', bio: 'WCAG expert and IAAP-certified. Trains organizations on digital accessibility compliance.', available: true, rating: 5.0, sessions: 91, emoji: '♿' },
+];
