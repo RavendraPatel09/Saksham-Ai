@@ -7,6 +7,7 @@ import { courses } from '@/data/mockData';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAccessibility } from '@/context/AccessibilityContext';
+import { toast } from 'sonner';
 
 export const Learning = () => {
   const { prefs } = useAccessibility();
@@ -245,8 +246,17 @@ export const Learning = () => {
                       />
                     </div>
                     <Button 
-                      className={`w-full shadow-sm hover:shadow-md transition-all ${course.progress === 100 ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-950/30 dark:text-emerald-400 dark:hover:bg-emerald-900/50' : 'bg-primary hover:bg-primary/90'}`}
+                      className={`w-full shadow-sm hover:shadow-md transition-all active:scale-95 ${course.progress === 100 ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-950/30 dark:text-emerald-400 dark:hover:bg-emerald-900/50' : 'bg-primary hover:bg-primary/90'}`}
                       variant={course.progress === 100 ? 'outline' : 'default'}
+                      onClick={() => {
+                        if (course.progress === 100) {
+                          toast.success('Course review started!');
+                        } else if (course.progress > 0) {
+                          toast.info('Resuming course module...');
+                        } else {
+                          toast.success('Enrolled successfully! Redirecting...');
+                        }
+                      }}
                     >
                       {course.progress === 100 ? (
                         <><CheckCircle2 className="mr-2 h-4 w-4" /> Review Course</>

@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { jobs } from '@/data/mockData';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAccessibility } from '@/context/AccessibilityContext';
+import { toast } from 'sonner';
 
 // Animated Counter Component
 const AnimatedCounter = ({ from, to, duration = 1.5 }: { from: number, to: number, duration?: number }) => {
@@ -195,10 +196,18 @@ export const Jobs = () => {
                         </div>
                       </CardContent>
                       <CardFooter className="p-6 pt-5 flex gap-3">
-                        <Button className="flex-1 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 transition-all">
+                        <Button 
+                          className="flex-1 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 transition-all active:scale-95"
+                          onClick={() => toast.success(`Application sent to ${job.company}!`)}
+                        >
                           Apply Now <ExternalLink className="ml-2 h-4 w-4" />
                         </Button>
-                        <Button variant="outline" size="icon" className="hover:bg-primary/5 hover:text-primary hover:border-primary/30 transition-colors">
+                        <Button 
+                          variant="outline" 
+                          size="icon" 
+                          className="hover:bg-primary/5 hover:text-primary hover:border-primary/30 transition-colors active:scale-95"
+                          onClick={() => toast.info(`${job.title} saved to your dashboard.`)}
+                        >
                           <Bookmark className="h-4 w-4" />
                         </Button>
                       </CardFooter>
