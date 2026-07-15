@@ -22,6 +22,7 @@ const AccessibilityAudit = lazy(() => import('@/pages/AccessibilityAudit').then(
 const PostEmployment = lazy(() => import('@/pages/PostEmployment').then(module => ({ default: module.PostEmployment })));
 const Community = lazy(() => import('@/pages/Community').then(module => ({ default: module.Community })));
 const GovernmentSupport = lazy(() => import('@/pages/GovernmentSupport').then(module => ({ default: module.GovernmentSupport })));
+const ResumeBuilder = lazy(() => import('@/pages/ResumeBuilder').then(module => ({ default: module.ResumeBuilder })));
 const NotFound = lazy(() => import('@/pages/NotFound').then(module => ({ default: module.NotFound })));
 
 // Loading Fallback Component
@@ -51,6 +52,7 @@ function AnimatedRoutes() {
           <Route path="post-employment" element={<PageWrapper><PostEmployment /></PageWrapper>} />
           <Route path="community" element={<PageWrapper><Community /></PageWrapper>} />
           <Route path="government-support" element={<PageWrapper><GovernmentSupport /></PageWrapper>} />
+          <Route path="resume-builder" element={<PageWrapper><ResumeBuilder /></PageWrapper>} />
           
           {/* Catch-all 404 Route */}
           <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />

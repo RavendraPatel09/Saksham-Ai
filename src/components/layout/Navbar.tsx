@@ -28,6 +28,7 @@ export const Navbar = () => {
     { name: 'Interview Coach', path: '/interview' },
     { name: 'Community', path: '/community' },
     { name: 'Gov Support', path: '/government-support' },
+    { name: 'Resume', path: '/resume-builder' },
     { name: 'Employer Portal', path: '/employer' },
   ];
 
