@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import FocusTrap from 'focus-trap-react';
 
 type OverlayType = 'search' | 'accessibility' | 'more' | 'language' | null;
 
@@ -75,29 +76,31 @@ export const OverlayWrapper: React.FC<{
           
           {/* Content Wrapper */}
           <div className={`relative z-10 w-full pointer-events-none flex ${position === 'right' ? 'justify-end' : 'items-center justify-center p-4'}`}>
-            <motion.div
-              variants={variants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              className={`pointer-events-auto bg-card shadow-2xl flex flex-col overflow-hidden ${
-                position === 'right' 
-                  ? 'h-full w-full sm:w-[400px] border-l' 
-                  : 'w-full max-w-2xl max-h-[85vh] rounded-xl border'
-              }`}
-            >
-              {title && (
-                <div className="flex items-center justify-between p-4 border-b shrink-0">
-                  <h2 className="text-lg font-bold">{title}</h2>
-                  <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close">
-                    <X className="h-5 w-5" />
-                  </Button>
+            <FocusTrap active={isOpen} focusTrapOptions={{ initialFocus: false, fallbackFocus: 'body' }}>
+              <motion.div
+                variants={variants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className={`pointer-events-auto bg-card shadow-2xl flex flex-col overflow-hidden ${
+                  position === 'right' 
+                    ? 'h-full w-full sm:w-[400px] border-l' 
+                    : 'w-full max-w-2xl max-h-[85vh] rounded-xl border'
+                }`}
+              >
+                {title && (
+                  <div className="flex items-center justify-between p-4 border-b shrink-0">
+                    <h2 className="text-lg font-bold">{title}</h2>
+                    <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close">
+                      <X className="h-5 w-5" />
+                    </Button>
+                  </div>
+                )}
+                <div className="flex-1 overflow-y-auto">
+                  {children}
                 </div>
-              )}
-              <div className="flex-1 overflow-y-auto">
-                {children}
-              </div>
-            </motion.div>
+              </motion.div>
+            </FocusTrap>
           </div>
         </div>
       )}
