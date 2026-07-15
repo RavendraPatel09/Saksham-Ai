@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-type UserRole = 'candidate' | 'employer' | null;
+type WorkspaceMode = 'candidate' | 'employer' | 'accessibility' | null;
 
 type AppContextType = {
-  role: UserRole;
-  setRole: (role: UserRole) => void;
+  workspaceMode: WorkspaceMode;
+  setWorkspaceMode: (mode: WorkspaceMode) => void;
   candidateProfile: any;
   setCandidateProfile: (data: any) => void;
   assessmentScores: any;
@@ -15,8 +15,8 @@ type AppContextType = {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [role, setRole] = useState<UserRole>(() => {
-    return (localStorage.getItem('userRole') as UserRole) || null;
+  const [workspaceMode, setWorkspaceMode] = useState<WorkspaceMode>(() => {
+    return (localStorage.getItem('workspaceMode') as WorkspaceMode) || null;
   });
 
   const [candidateProfile, setCandidateProfile] = useState<any>(() => {
@@ -30,9 +30,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   });
 
   useEffect(() => {
-    if (role) localStorage.setItem('userRole', role);
-    else localStorage.removeItem('userRole');
-  }, [role]);
+    if (workspaceMode) localStorage.setItem('workspaceMode', workspaceMode);
+    else localStorage.removeItem('workspaceMode');
+  }, [workspaceMode]);
 
   useEffect(() => {
     if (candidateProfile) localStorage.setItem('candidateProfile', JSON.stringify(candidateProfile));
@@ -49,8 +49,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   return (
     <AppContext.Provider
       value={{
-        role,
-        setRole,
+        workspaceMode,
+        setWorkspaceMode,
         candidateProfile,
         setCandidateProfile,
         assessmentScores,
