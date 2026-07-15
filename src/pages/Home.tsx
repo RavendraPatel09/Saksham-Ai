@@ -48,13 +48,11 @@ export const Home = () => {
       <section className="relative overflow-hidden px-4 py-16 md:py-24 bg-background border-b border-border">
         
         {/* Dot grid background as an absolute layer confined to hero */}
-        {!prefs.simplifyMode && (
-          <div className="absolute inset-0 z-0 pointer-events-none" style={{
-            backgroundImage: 'radial-gradient(hsl(var(--muted-foreground)) 1px, transparent 1px)',
-            backgroundSize: '24px 24px',
-            opacity: 0.15
-          }} />
-        )}
+        <div className="absolute inset-0 z-0 pointer-events-none dot-grid-layer" style={{
+          backgroundImage: 'radial-gradient(hsl(var(--muted-foreground)) 1px, transparent 1px)',
+          backgroundSize: '24px 24px',
+          opacity: 0.15
+        }} />
 
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-12 relative z-10">
           
@@ -85,38 +83,36 @@ export const Home = () => {
           </motion.div>
 
           {/* Right Column (~45%) - Icon Cluster */}
-          {!prefs.simplifyMode && (
-            <div className="w-full md:w-[45%] flex justify-center items-center relative h-72 md:h-96 mt-12 md:mt-0 pointer-events-none">
-              <div className="relative w-full max-w-sm h-full flex items-center justify-center">
-                {/* Static Connecting Lines (SVG) */}
-                <svg className="absolute inset-0 w-full h-full text-border z-0" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
-                  <line x1="20" y1="20" x2="50" y2="50" stroke="currentColor" strokeWidth="0.5" />
-                  <line x1="80" y1="20" x2="50" y2="50" stroke="currentColor" strokeWidth="0.5" />
-                  <line x1="20" y1="80" x2="50" y2="50" stroke="currentColor" strokeWidth="0.5" />
-                  <line x1="80" y1="80" x2="50" y2="50" stroke="currentColor" strokeWidth="0.5" />
-                </svg>
-                
-                {/* Central Hub */}
-                <div className="absolute z-10 w-20 h-20 md:w-24 md:h-24 bg-primary/10 rounded-full flex items-center justify-center border border-primary/20 backdrop-blur-sm">
-                  <Briefcase className="w-8 h-8 md:w-10 md:h-10 text-primary" />
-                </div>
-                
-                {/* Peripheral Icons */}
-                <div className="absolute top-[10%] left-[10%] w-12 h-12 md:w-16 md:h-16 bg-blue-500/10 rounded-full flex items-center justify-center border border-blue-500/20 backdrop-blur-sm">
-                  <Accessibility className="w-6 h-6 md:w-8 md:h-8 text-blue-500" />
-                </div>
-                <div className="absolute top-[10%] right-[10%] w-12 h-12 md:w-16 md:h-16 bg-green-500/10 rounded-full flex items-center justify-center border border-green-500/20 backdrop-blur-sm">
-                  <Ear className="w-6 h-6 md:w-8 md:h-8 text-green-500" />
-                </div>
-                <div className="absolute bottom-[10%] left-[10%] w-12 h-12 md:w-16 md:h-16 bg-purple-500/10 rounded-full flex items-center justify-center border border-purple-500/20 backdrop-blur-sm">
-                  <Eye className="w-6 h-6 md:w-8 md:h-8 text-purple-500" />
-                </div>
-                <div className="absolute bottom-[10%] right-[10%] w-12 h-12 md:w-16 md:h-16 bg-amber-500/10 rounded-full flex items-center justify-center border border-amber-500/20 backdrop-blur-sm">
-                  <Brain className="w-6 h-6 md:w-8 md:h-8 text-amber-500" />
-                </div>
+          <div className="w-full md:w-[45%] flex justify-center items-center relative h-72 md:h-96 mt-12 md:mt-0 pointer-events-none icon-cluster-layer">
+            <div className="relative w-full max-w-sm h-full flex items-center justify-center">
+              {/* Static Connecting Lines (SVG) */}
+              <svg className="absolute inset-0 w-full h-full text-border z-0" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+                <line x1="20" y1="20" x2="50" y2="50" stroke="currentColor" strokeWidth="0.5" />
+                <line x1="80" y1="20" x2="50" y2="50" stroke="currentColor" strokeWidth="0.5" />
+                <line x1="20" y1="80" x2="50" y2="50" stroke="currentColor" strokeWidth="0.5" />
+                <line x1="80" y1="80" x2="50" y2="50" stroke="currentColor" strokeWidth="0.5" />
+              </svg>
+              
+              {/* Central Hub */}
+              <div className="absolute z-10 w-20 h-20 md:w-24 md:h-24 bg-primary/10 rounded-full flex items-center justify-center border border-primary/20 backdrop-blur-sm">
+                <Briefcase className="w-8 h-8 md:w-10 md:h-10 text-primary" />
+              </div>
+              
+              {/* Peripheral Icons */}
+              <div className="absolute top-[10%] left-[10%] w-12 h-12 md:w-16 md:h-16 bg-blue-500/10 rounded-full flex items-center justify-center border border-blue-500/20 backdrop-blur-sm">
+                <Accessibility className="w-6 h-6 md:w-8 md:h-8 text-blue-500" />
+              </div>
+              <div className="absolute top-[10%] right-[10%] w-12 h-12 md:w-16 md:h-16 bg-green-500/10 rounded-full flex items-center justify-center border border-green-500/20 backdrop-blur-sm">
+                <Ear className="w-6 h-6 md:w-8 md:h-8 text-green-500" />
+              </div>
+              <div className="absolute bottom-[10%] left-[10%] w-12 h-12 md:w-16 md:h-16 bg-purple-500/10 rounded-full flex items-center justify-center border border-purple-500/20 backdrop-blur-sm">
+                <Eye className="w-6 h-6 md:w-8 md:h-8 text-purple-500" />
+              </div>
+              <div className="absolute bottom-[10%] right-[10%] w-12 h-12 md:w-16 md:h-16 bg-amber-500/10 rounded-full flex items-center justify-center border border-amber-500/20 backdrop-blur-sm">
+                <Brain className="w-6 h-6 md:w-8 md:h-8 text-amber-500" />
               </div>
             </div>
-          )}
+          </div>
         </div>
       </section>
 
@@ -172,9 +168,7 @@ export const Home = () => {
         
         <div className="relative max-w-5xl mx-auto">
           {/* Horizontal Line behind cards */}
-          {!prefs.simplifyMode && (
-            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-[1px] bg-border -translate-y-1/2 z-0" />
-          )}
+          <div className="hidden md:block absolute top-1/2 left-0 right-0 h-[1px] bg-border -translate-y-1/2 z-0 connecting-line-layer" />
           
           <motion.div 
             className="grid md:grid-cols-3 gap-8 relative z-10"
