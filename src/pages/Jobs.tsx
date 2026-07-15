@@ -1,90 +1,215 @@
-import React from 'react';
-import { Briefcase, MapPin, Building, Sparkles, Zap, Bookmark, ExternalLink } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Briefcase, MapPin, Building, Sparkles, Zap, Bookmark, ExternalLink, Loader2, Network } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { jobs } from '@/data/mockData';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useAccessibility } from '@/context/AccessibilityContext';
+
+// Animated Counter Component
+const AnimatedCounter = ({ from, to, duration = 1.5 }: { from: number, to: number, duration?: number }) => {
+  const [count, setCount] = useState(from);
+  const { prefs } = useAccessibility();
+  
+  useEffect(() => {
+    if (prefs.reducedMotion) {
+      setCount(to);
+      return;
+    }
+    
+    let startTime: number;
+    const updateCount = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = (timestamp - startTime) / (duration * 1000);
+      
+      if (progress < 1) {
+        setCount(Math.floor(from + (to - from) * progress));
+        requestAnimationFrame(updateCount);
+      } else {
+        setCount(to);
+      }
+    };
+    
+    requestAnimationFrame(updateCount);
+  }, [from, to, duration, prefs.reducedMotion]);
+
+  return <>{count}</>;
+};
 
 export const Jobs = () => {
-  // Simulate AI Match Score logic
-  const getMatchScore = (index: number) => 94 - index * 2; // Mock scores from 94 downwards
+  const [isAnalyzing, setIsAnalyzing] = useState(true);
+  const { prefs } = useAccessibility();
+
+  useEffect(() => {
+    const t = setTimeout(() => setIsAnalyzing(false), 2500);
+    return () => clearTimeout(t);
+  }, []);
+
+  const getMatchScore = (index: number) => 94 - index * 2;
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: prefs.reducedMotion ? 0.05 : 0.15
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: prefs.reducedMotion ? 0 : 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-        <div>
-          <h1 className="text-3xl font-bold mb-2">Recommended Jobs</h1>
-          <p className="text-muted-foreground">AI-curated opportunities matching your skills and accessibility needs.</p>
-        </div>
-        <div className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full font-medium">
-          <Sparkles className="h-5 w-5" /> 15 New Matches
-        </div>
-      </div>
+    <div className="container mx-auto px-4 py-8 relative min-h-[80vh]">
+      <AnimatePresence mode="wait">
+        {isAnalyzing ? (
+          <motion.div 
+            key="analyzing"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm z-10"
+          >
+            <div className="relative">
+              <motion.div 
+                animate={prefs.reducedMotion ? {} : { rotate: 360 }} 
+                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-0 border-4 border-dashed border-primary/30 rounded-full"
+              />
+              <div className="bg-gradient-to-br from-primary/20 to-indigo-600/20 p-8 rounded-full shadow-[0_0_40px_rgba(37,99,235,0.2)]">
+                <Network className="h-16 w-16 text-primary" />
+              </div>
+            </div>
+            
+            <h2 className="mt-8 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-indigo-600">
+              Analyzing compatibility...
+            </h2>
+            <div className="mt-4 flex gap-2">
+              <span className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '0ms' }} />
+              <span className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '150ms' }} />
+              <span className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '300ms' }} />
+            </div>
+            <p className="mt-6 text-muted-foreground text-center max-w-md">
+              Matching your skills, experience, and accessibility needs with our network of inclusive employers.
+            </p>
+          </motion.div>
+        ) : (
+          <motion.div 
+            key="results"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+              <div>
+                <h1 className="text-3xl font-bold mb-2">Recommended Jobs</h1>
+                <p className="text-muted-foreground">AI-curated opportunities matching your skills and accessibility needs.</p>
+              </div>
+              <motion.div 
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="flex items-center gap-2 bg-gradient-to-r from-primary/10 to-indigo-600/10 border border-primary/20 text-primary px-5 py-2.5 rounded-full font-medium shadow-sm"
+              >
+                <Sparkles className="h-5 w-5" /> 15 New Matches
+              </motion.div>
+            </div>
 
-      <div className="grid lg:grid-cols-2 gap-6">
-        {jobs.map((job, index) => {
-          const matchScore = getMatchScore(index);
-          return (
-            <Card key={job.id} className={`overflow-hidden transition-all hover:shadow-md ${index === 0 ? 'border-primary ring-1 ring-primary/20' : ''}`}>
-              <CardContent className="p-0">
-                <div className="p-6 pb-4">
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <h3 className="text-xl font-bold mb-1">{job.title}</h3>
-                      <div className="flex items-center text-muted-foreground text-sm gap-2">
-                        <Building className="h-4 w-4" /> {job.company}
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-end bg-primary/5 p-2 rounded-lg border border-primary/10">
-                      <span className="text-xl font-bold text-primary">{matchScore}%</span>
-                      <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">AI Match</span>
-                    </div>
-                  </div>
+            <motion.div 
+              className="grid lg:grid-cols-2 gap-8"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              {jobs.map((job, index) => {
+                const matchScore = getMatchScore(index);
+                return (
+                  <motion.div key={job.id} variants={itemVariants}>
+                    <Card className={`premium-card h-full flex flex-col ${index === 0 ? 'ring-2 ring-primary/30 shadow-[0_0_30px_rgba(37,99,235,0.15)]' : ''}`}>
+                      <CardContent className="p-0 flex-1">
+                        <div className="p-6 pb-4 relative overflow-hidden">
+                          {/* Animated Match Background for top match */}
+                          {index === 0 && !prefs.reducedMotion && (
+                            <motion.div 
+                              className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl -z-10 pointer-events-none"
+                              animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
+                              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                            />
+                          )}
+                          
+                          <div className="flex justify-between items-start mb-4">
+                            <div>
+                              <h3 className="text-xl font-bold mb-1 group-hover:text-primary transition-colors">{job.title}</h3>
+                              <div className="flex items-center text-muted-foreground text-sm gap-2">
+                                <Building className="h-4 w-4" /> {job.company}
+                              </div>
+                            </div>
+                            <div className="flex flex-col items-end bg-gradient-to-br from-primary/5 to-primary/10 p-2.5 rounded-xl border border-primary/15 shadow-inner">
+                              <span className="text-2xl font-extrabold text-primary flex items-baseline">
+                                <AnimatedCounter from={0} to={matchScore} />
+                                <span className="text-sm">%</span>
+                              </span>
+                              <span className="text-[10px] uppercase font-bold text-indigo-600/70 tracking-wider">AI Match</span>
+                            </div>
+                          </div>
 
-                  <div className="flex flex-wrap gap-4 text-sm mb-4">
-                    <div className="flex items-center gap-1"><MapPin className="h-4 w-4 text-muted-foreground" /> {job.location}</div>
-                    <div className="flex items-center gap-1"><Briefcase className="h-4 w-4 text-muted-foreground" /> {job.workMode}</div>
-                    <div className="font-medium text-foreground">{job.salary}</div>
-                  </div>
+                          <div className="flex flex-wrap gap-4 text-sm mb-6 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-border/50">
+                            <div className="flex items-center gap-1.5"><MapPin className="h-4 w-4 text-indigo-500" /> {job.location}</div>
+                            <div className="flex items-center gap-1.5"><Briefcase className="h-4 w-4 text-emerald-500" /> {job.workMode}</div>
+                            <div className="font-semibold text-foreground bg-primary/10 px-2 py-0.5 rounded text-primary">{job.salary}</div>
+                          </div>
 
-                  <div className="space-y-3">
-                    <div>
-                      <div className="text-xs font-semibold mb-1.5 text-muted-foreground">Required Skills:</div>
-                      <div className="flex flex-wrap gap-2">
-                        {job.requiredSkills.map(s => <Badge key={s} variant="secondary">{s}</Badge>)}
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-xs font-semibold mb-1.5 text-muted-foreground">Accessibility Support:</div>
-                      <div className="flex flex-wrap gap-2">
-                        {job.accessibility.map(a => <Badge key={a} variant="outline" className="border-green-200 bg-green-50 text-green-700 dark:bg-green-900/20 dark:border-green-800 dark:text-green-400">{a}</Badge>)}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="bg-muted/30 px-6 py-4 border-t border-b">
-                  <div className="flex gap-3">
-                    <Zap className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                    <div>
-                      <span className="text-sm font-semibold">Why this matches:</span>
-                      <ul className="text-sm text-muted-foreground list-disc pl-4 mt-1 space-y-1">
-                        <li>Matches your preferred work mode ({job.workMode})</li>
-                        <li>Provides {job.accessibility[0]} as requested</li>
-                        <li>Strong alignment with your core skills</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-              <CardFooter className="p-6 pt-4 flex gap-3">
-                <Button className="flex-1">Apply Now <ExternalLink className="ml-2 h-4 w-4" /></Button>
-                <Button variant="outline" size="icon"><Bookmark className="h-4 w-4" /></Button>
-              </CardFooter>
-            </Card>
-          );
-        })}
-      </div>
+                          <div className="space-y-4">
+                            <div>
+                              <div className="text-xs font-semibold mb-2 text-muted-foreground uppercase tracking-wider">Required Skills</div>
+                              <div className="flex flex-wrap gap-2">
+                                {job.requiredSkills.map(s => <Badge key={s} variant="secondary" className="bg-secondary/50 hover:bg-secondary/70 transition-colors">{s}</Badge>)}
+                              </div>
+                            </div>
+                            <div>
+                              <div className="text-xs font-semibold mb-2 text-muted-foreground uppercase tracking-wider">Accessibility Support</div>
+                              <div className="flex flex-wrap gap-2">
+                                {job.accessibility.map(a => <Badge key={a} variant="outline" className="border-emerald-200 bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:border-emerald-800 dark:text-emerald-400">{a}</Badge>)}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="bg-gradient-to-r from-muted/40 to-transparent px-6 py-4 border-y">
+                          <div className="flex gap-3">
+                            <div className="bg-amber-100 dark:bg-amber-900/30 p-1.5 rounded-full shrink-0 h-fit mt-0.5">
+                              <Zap className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                            </div>
+                            <div>
+                              <span className="text-sm font-semibold text-foreground/90">Why this matches:</span>
+                              <ul className="text-sm text-muted-foreground list-disc pl-4 mt-1.5 space-y-1">
+                                <li>Matches your preferred work mode ({job.workMode})</li>
+                                <li>Provides {job.accessibility[0]} as requested</li>
+                                <li>Strong alignment with your core skills</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                      <CardFooter className="p-6 pt-5 flex gap-3">
+                        <Button className="flex-1 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 transition-all">
+                          Apply Now <ExternalLink className="ml-2 h-4 w-4" />
+                        </Button>
+                        <Button variant="outline" size="icon" className="hover:bg-primary/5 hover:text-primary hover:border-primary/30 transition-colors">
+                          <Bookmark className="h-4 w-4" />
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
