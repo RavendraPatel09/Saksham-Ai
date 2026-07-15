@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Timer, BrainCircuit, ArrowRight, Activity, Zap, CheckCircle2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { assessmentQuestions } from '@/data/mockData';
@@ -29,7 +29,7 @@ export const Assessment = () => {
     return (
       <div className="container mx-auto px-4 py-20 text-center">
         <h2 className="text-3xl font-bold mb-4">Please register first</h2>
-        <Button asChild><Link to="/register">Go to Registration</Link></Button>
+        <Link to="/register" className={buttonVariants()}>Go to Registration</Link>
       </div>
     );
   }

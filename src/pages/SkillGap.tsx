@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Briefcase, Target, Map, BookOpen, AlertCircle, ArrowRight, Zap, TrendingUp } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 
@@ -140,9 +140,9 @@ export const SkillGap = () => {
             </div>
           </CardContent>
           <CardFooter className="bg-muted/50 border-t mt-4 p-6">
-            <Button className="w-full text-lg h-12" asChild>
-              <Link to="/learning">Start Learning <BookOpen className="ml-2 h-5 w-5" /></Link>
-            </Button>
+            <Link to="/learning" className={buttonVariants({ className: "w-full text-lg h-12" })}>
+              Start Learning <BookOpen className="ml-2 h-5 w-5" />
+            </Link>
           </CardFooter>
         </Card>
       </div>
