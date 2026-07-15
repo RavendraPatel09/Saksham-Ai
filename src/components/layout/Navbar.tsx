@@ -30,6 +30,8 @@ export const Navbar = () => {
     { name: 'Gov Support', path: '/government-support' },
     { name: 'Resume', path: '/resume-builder' },
     { name: 'Roadmap', path: '/career-roadmap' },
+    { name: 'Saved', path: '/saved' },
+    { name: 'Calendar', path: '/calendar' },
     { name: 'Employer Portal', path: '/employer' },
   ];
 
