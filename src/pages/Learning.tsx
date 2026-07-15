@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   PlayCircle, Target, Flame, Award, Sparkles, CheckCircle2,
   Bot, Mic, MessageSquare, Ear, Eye, Check, Lock, ChevronRight,
-  BarChart, MapPin, Activity, BookOpen, Clock, Download, Volume2, Calendar, TrendingUp, ShieldAlert, Users, Zap, Search, Briefcase
+  BarChart, MapPin, Activity, BookOpen, Clock, Download, Volume2, Calendar, TrendingUp, ShieldAlert, Users, Zap, Search, Briefcase, Trophy
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -389,6 +389,48 @@ export const Learning = () => {
             </Card>
           </motion.div>
         </div>
+
+        {/* SECTION X — Leaderboard */}
+        <motion.div variants={itemVariants}>
+          <h2 className="text-2xl font-bold mb-6 flex items-center gap-2"><Trophy className="w-6 h-6 text-amber-500" /> Weekly Leaderboard</h2>
+          <Card className="premium-card overflow-hidden">
+            <CardContent className="p-0">
+              <div className="divide-y divide-border">
+                {[
+                  { rank: 1, name: "Rahul (You)", xp: "2,450 XP", badge: "Gold" },
+                  { rank: 2, name: "Priya S.", xp: "2,300 XP", badge: "Silver" },
+                  { rank: 3, name: "Arun K.", xp: "2,150 XP", badge: "Bronze" },
+                  { rank: 4, name: "Neha D.", xp: "1,900 XP", badge: "" },
+                  { rank: 5, name: "Vikram M.", xp: "1,850 XP", badge: "" },
+                ].map((user, i) => (
+                  <div key={i} className={`flex items-center justify-between p-4 transition-colors ${user.rank === 1 ? 'bg-primary/5 border-l-4 border-l-primary' : 'hover:bg-muted/30'}`}>
+                    <div className="flex items-center gap-4">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
+                        user.rank === 1 ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-500' :
+                        user.rank === 2 ? 'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-400' :
+                        user.rank === 3 ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-500' :
+                        'bg-muted text-muted-foreground'
+                      }`}>
+                        #{user.rank}
+                      </div>
+                      <div className="font-semibold">{user.name}</div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      {user.badge && (
+                        <Badge variant="outline" className={
+                          user.badge === 'Gold' ? 'border-amber-200 text-amber-600 bg-amber-50 dark:bg-amber-900/10' :
+                          user.badge === 'Silver' ? 'border-slate-200 text-slate-600 bg-slate-50 dark:bg-slate-900/10' :
+                          'border-orange-200 text-orange-600 bg-orange-50 dark:bg-orange-900/10'
+                        }>{user.badge}</Badge>
+                      )}
+                      <span className="font-mono text-sm text-muted-foreground">{user.xp}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
 
         {/* SECTION 7 — Jobs You Can Unlock */}
         <motion.div variants={itemVariants}>
