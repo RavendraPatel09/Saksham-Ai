@@ -49,17 +49,15 @@ export const OverlayWrapper: React.FC<{
     };
   }, [isOpen]);
 
-  const variants = position === 'right' 
-    ? {
-        hidden: { x: '100%', opacity: 0 },
-        visible: { x: 0, opacity: 1, transition: { type: 'spring', damping: 25, stiffness: 200 } },
-        exit: { x: '100%', opacity: 0, transition: { type: 'spring', damping: 25, stiffness: 200 } }
-      }
-    : {
-        hidden: { scale: 0.95, opacity: 0, y: 20 },
-        visible: { scale: 1, opacity: 1, y: 0, transition: { type: 'spring', damping: 25, stiffness: 200 } },
-        exit: { scale: 0.95, opacity: 0, y: 20, transition: { type: 'spring', damping: 25, stiffness: 200 } }
-      };
+  const variants = position === 'center' ? {
+    hidden: { scale: 0.95, opacity: 0, y: 10 },
+    visible: { scale: 1, opacity: 1, y: 0, transition: { type: "spring" as const, damping: 25, stiffness: 300 } },
+    exit: { scale: 0.95, opacity: 0, transition: { duration: 0.2 } }
+  } : {
+    hidden: { x: position === 'right' ? '100%' : '-100%', opacity: 0 },
+    visible: { x: 0, opacity: 1, transition: { type: "spring" as const, damping: 25, stiffness: 300 } },
+    exit: { x: position === 'right' ? '100%' : '-100%', opacity: 0, transition: { duration: 0.2 } }
+  };
 
   return (
     <AnimatePresence>
