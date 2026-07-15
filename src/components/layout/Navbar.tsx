@@ -6,6 +6,7 @@ import { useAppContext } from '@/context/AppContext';
 import { motion } from 'framer-motion';
 import { useAccessibility } from '@/context/AccessibilityContext';
 import { GlobalSearch } from '../ui-custom/GlobalSearch';
+import { LanguageSelector } from '../ui-custom/LanguageSelector';
 
 export const Navbar = () => {
   const { role, setRole } = useAppContext();
@@ -85,7 +86,8 @@ export const Navbar = () => {
           })}
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
+          <LanguageSelector />
           <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(true)} className="hover:bg-primary/10 hover:text-primary transition-colors">
             <Search className="w-5 h-5" />
           </Button>
