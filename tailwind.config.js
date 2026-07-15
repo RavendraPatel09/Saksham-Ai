@@ -18,8 +18,9 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        sans: ['"Inter Variable"', 'sans-serif'],
+        sans: ['"Geist Variable"', 'sans-serif'],
         heading: ['"Space Grotesk Variable"', 'sans-serif'],
+        inter: ['"Inter Variable"', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

@@ -9,7 +9,7 @@
 @layer base {
   .theme {
     --font-heading: 'Space Grotesk Variable', sans-serif;
-    --font-sans: 'Inter Variable', sans-serif;
+    --font-sans: 'Geist Variable', sans-serif;
   }
   
   :root {
@@ -165,7 +165,7 @@
   }
   
   .v2-card {
-    @apply bg-white border border-[#E2E8F0] rounded-2xl transition-all duration-300 relative z-10;
+    @apply bg-white border border-border rounded-2xl transition-all duration-300 relative z-10;
     border-width: 0.5px;
   }
 
