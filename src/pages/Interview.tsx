@@ -52,7 +52,7 @@ export const Interview = () => {
 
   const itemVariants = {
     hidden: { opacity: 0, y: prefs.reducedMotion ? 0 : 20 },
-    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+    visible: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 300, damping: 24 } }
   };
 
   return (
@@ -215,7 +215,7 @@ export const Interview = () => {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                  transition={{ type: "spring" as const, stiffness: 300, damping: 25 }}
                 >
                   <Card className="premium-card border-emerald-500/20 bg-gradient-to-r from-emerald-500/5 to-teal-500/5">
                     <CardHeader className="pb-4">

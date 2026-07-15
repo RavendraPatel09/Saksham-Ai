@@ -40,7 +40,7 @@ export const Learning = () => {
 
   const itemVariants = {
     hidden: { opacity: 0, y: prefs.reducedMotion ? 0 : 20 },
-    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+    visible: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 300, damping: 24 } }
   };
 
   return (
@@ -158,7 +158,7 @@ export const Learning = () => {
                   </div>
                 </div>
                 <div className="w-32 h-32 hidden sm:block relative">
-                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", delay: 0.2 }}>
+                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring" as const, delay: 0.2 }}>
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie data={chartData} innerRadius={35} outerRadius={50} paddingAngle={4} dataKey="value" stroke="none">
@@ -196,7 +196,7 @@ export const Learning = () => {
                   <div className="flex justify-between items-start mb-3">
                     <h3 className="font-bold text-xl leading-tight group-hover:text-primary transition-colors">{course.title}</h3>
                     {course.progress === 100 && (
-                      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring" }}>
+                      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring" as const }}>
                         <Award className="h-6 w-6 text-amber-500 shrink-0 drop-shadow-sm" />
                       </motion.div>
                     )}

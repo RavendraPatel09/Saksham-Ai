@@ -135,7 +135,7 @@ export const AccessibilityAudit = () => {
     
     const itemVariants = {
       hidden: { opacity: 0, y: prefs.reducedMotion ? 0 : 20 },
-      visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+      visible: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 300, damping: 24 } }
     };
 
     return (
@@ -256,7 +256,7 @@ export const AccessibilityAudit = () => {
           <motion.div 
             className="absolute bottom-[2px] w-4 h-4 bg-white border-2 border-primary rounded-full shadow" 
             animate={{ left: `calc(${(step / 4) * 100}% - 8px)` }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            transition={{ type: "spring" as const, stiffness: 300, damping: 30 }}
           />
         </div>
       </div>
