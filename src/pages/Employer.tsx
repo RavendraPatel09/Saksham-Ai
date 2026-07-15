@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Building, Users, Briefcase, FileCheck, CheckCircle2, MoreVertical, Plus } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { candidates } from '@/data/mockData';
@@ -39,11 +39,9 @@ export const Employer = () => {
           <p className="text-muted-foreground">Manage your inclusive hiring pipeline and accessibility scores.</p>
         </div>
         <div className="flex gap-4">
-          <Button variant="outline" asChild>
-            <Link to="/employer/audit">
-              <FileCheck className="mr-2 h-4 w-4" /> Run Accessibility Audit
-            </Link>
-          </Button>
+          <Link to="/employer/audit" className={buttonVariants({ variant: "outline" })}>
+            <FileCheck className="mr-2 h-4 w-4" /> Run Accessibility Audit
+          </Link>
           <Button>
             <Plus className="mr-2 h-4 w-4" /> Post New Job
           </Button>
