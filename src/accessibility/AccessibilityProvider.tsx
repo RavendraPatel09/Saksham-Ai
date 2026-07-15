@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { AccessibilityContext } from './AccessibilityContext';
 import { 
-  AccessibilityPreferences, 
-  AccessibilityProfile, 
   DEFAULT_PREFERENCES, 
   ACCESSIBILITY_STORAGE_KEY,
   WIZARD_COMPLETED_KEY 
 } from './AccessibilitySettings';
+import type { AccessibilityPreferences, AccessibilityProfile } from './AccessibilitySettings';
 
 export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [prefs, setPrefs] = useState<AccessibilityPreferences>(() => {

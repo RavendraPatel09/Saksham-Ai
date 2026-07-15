@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAccessibility } from '@/context/AccessibilityContext';
-import { AccessibilityProfile } from '@/accessibility/AccessibilitySettings';
+import type { AccessibilityProfile } from '@/accessibility/AccessibilitySettings';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { CheckCircle2, Eye, Ear, Activity, Brain, Speech, ArrowRight } from 'lucide-react';
