@@ -89,11 +89,11 @@ export const Navbar = () => {
           <Button 
             variant="ghost" 
             size="icon" 
-            onClick={() => updatePrefs({ highContrast: !prefs.highContrast })}
+            onClick={() => updatePrefs({ darkMode: !prefs.darkMode })}
             className="hover:bg-primary/10 hover:text-primary transition-colors"
             aria-label="Toggle Theme"
           >
-            {prefs.highContrast ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            {prefs.darkMode || prefs.highContrast || prefs.profile.visual ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </Button>
 
           <div className="hidden md:flex gap-3">
