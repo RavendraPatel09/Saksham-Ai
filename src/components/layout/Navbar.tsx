@@ -112,6 +112,8 @@ export const Navbar = () => {
           </Button>
         </div>
       </div>
+      
+      <GlobalSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </motion.nav>
   );
 };
