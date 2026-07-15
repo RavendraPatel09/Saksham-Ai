@@ -18,6 +18,14 @@ export class CognitiveMode {
     document.body.classList.remove('focus-mode');
   }
 
+  public enableSimplifyMode() {
+    document.body.classList.add('simplify-mode');
+  }
+
+  public disableSimplifyMode() {
+    document.body.classList.remove('simplify-mode');
+  }
+
   public enableGuidedMode(stepText: string) {
     // Dispatch an event or set a state that a GuidedMode overlay can read
     window.dispatchEvent(new CustomEvent('accessibility:guided-mode', { detail: { stepText } }));

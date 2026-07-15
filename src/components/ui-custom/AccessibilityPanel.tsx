@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Settings, Eye, Ear, Activity, Brain, Type, Sun, Volume2, X, Speech, CheckCircle2, Mic, Monitor } from 'lucide-react';
+import { Settings, Eye, Ear, Activity, Brain, Type, Sun, Volume2, X, Speech, CheckCircle2, Mic, Monitor, Layers } from 'lucide-react';
+import { CognitiveMode } from '@/accessibility/CognitiveMode';
 import { useAccessibility } from '@/context/AccessibilityContext';
 import type { AccessibilityProfile } from '@/context/AccessibilityContext';
 import { Button } from '@/components/ui/button';
@@ -143,6 +144,22 @@ export const AccessibilityPanel = ({ isOpen, onClose }: AccessibilityPanelProps)
                       className="toggle" 
                       checked={prefs.screenReader}
                       onChange={(e) => updatePrefs({ screenReader: e.target.checked })}
+                    />
+                  </div>
+                </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Layers className="w-4 h-4 text-muted-foreground" />
+                      <label className="text-sm font-medium">Simplify Page</label>
+                    </div>
+                    <input 
+                      type="checkbox" 
+                      className="toggle" 
+                      onChange={(e) => {
+                        const cm = CognitiveMode.getInstance();
+                        if (e.target.checked) { cm.enableSimplifyMode(); } else { cm.disableSimplifyMode(); }
+                      }}
                     />
                   </div>
                 </div>
