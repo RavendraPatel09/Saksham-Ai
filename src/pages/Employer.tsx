@@ -41,11 +41,11 @@ const AnimatedCounter = ({ from, to, duration = 1.5 }: { from: number, to: numbe
 };
 
 export const Employer = () => {
-  const { setRole } = useAppContext();
+  const { setWorkspaceMode } = useAppContext();
   const { prefs } = useAccessibility();
 
   useEffect(() => {
-    setRole('employer');
+    setWorkspaceMode('employer');
   }, []);
 
   const hiringTrends = [

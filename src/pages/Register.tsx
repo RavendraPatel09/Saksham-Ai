@@ -11,7 +11,7 @@ import { useAppContext } from '@/context/AppContext';
 
 export const Register = () => {
   const navigate = useNavigate();
-  const { setRole, setCandidateProfile } = useAppContext();
+  const { setWorkspaceMode, setCandidateProfile } = useAppContext();
   const [step, setStep] = useState(1);
   const totalSteps = 5;
   const [isGenerating, setIsGenerating] = useState(false);
@@ -36,7 +36,7 @@ export const Register = () => {
         ...formData,
         aiSummary: "Based on your profile, you possess strong potential in technical and communication fields. Your required accommodations are noted, and we will prioritize employers with accessible infrastructure."
       });
-      setRole('candidate');
+      setWorkspaceMode('candidate');
       setIsGenerating(false);
       navigate('/assessment');
     }, 2000);
