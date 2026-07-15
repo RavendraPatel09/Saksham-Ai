@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   X, Compass, BookOpen, Briefcase, Trophy, Calendar as CalendarIcon, 
-  Users, MessageCircle, HeartHandshake, Settings, HelpCircle, MessageSquare, KanbanSquare
+  Users, MessageCircle, HeartHandshake, Settings, HelpCircle, MessageSquare, KanbanSquare, Building, Landmark, FileText
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAccessibility } from '@/context/AccessibilityContext';
@@ -28,6 +28,8 @@ export const MoreDrawer: React.FC<MoreDrawerProps> = ({ isOpen, onClose, onOpenA
         { name: t('more.menu.resume'), path: "/resume-builder", icon: Briefcase },
         { name: t('more.menu.roadmap'), path: "/career-roadmap", icon: Compass },
         { name: t('more.menu.tracker'), path: "/application-tracker", icon: KanbanSquare },
+        { name: t('more.menu.employers'), path: "/employers-directory", icon: Building },
+        { name: t('more.menu.resume_bank'), path: "/resume-bank", icon: FileText },
       ]
     },
     {
@@ -57,6 +59,7 @@ export const MoreDrawer: React.FC<MoreDrawerProps> = ({ isOpen, onClose, onOpenA
       title: t('more.help'),
       items: [
         { name: t('more.menu.gov_support'), path: "/government-support", icon: HeartHandshake },
+        { name: t('more.menu.reserved_jobs'), path: "/reserved-jobs", icon: Landmark },
         { name: t('more.menu.feedback'), path: "/", icon: MessageSquare },
         { name: t('more.menu.help_center'), path: "/", icon: HelpCircle },
       ]
