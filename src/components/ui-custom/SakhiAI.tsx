@@ -6,6 +6,8 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/componen
 import { useAccessibility } from '@/context/AccessibilityContext';
 import { VoiceAssistant } from '@/accessibility/VoiceAssistant';
 
+import { Link } from 'react-router-dom';
+
 type Message = {
   id: string;
   sender: 'user' | 'sakhi';
@@ -21,6 +23,7 @@ const SUGGESTIONS = [
 
 export const SakhiAI = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { id: '1', sender: 'sakhi', text: 'Namaste! I am Sakhi, your AI assistant. How can I help you today?' }
   ]);
@@ -84,21 +87,55 @@ export const SakhiAI = () => {
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
-            className="fixed bottom-20 md:bottom-8 right-4 md:right-8 z-50"
+            className="fixed bottom-20 md:bottom-8 right-4 md:right-8 z-50 flex flex-col items-end"
           >
+            <AnimatePresence>
+              {showMenu && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.9 }}
+                  className="mb-4 bg-white dark:bg-slate-900 border shadow-2xl rounded-2xl p-2 flex flex-col gap-1 w-48"
+                >
+                  <Link to="/communication" onClick={() => setShowMenu(false)}>
+                    <Button variant="ghost" className="w-full justify-start h-9 text-sm"><Mic className="w-4 h-4 mr-2 text-blue-500" /> Speak / Translate</Button>
+                  </Link>
+                  <Link to="/resume-builder" onClick={() => setShowMenu(false)}>
+                    <Button variant="ghost" className="w-full justify-start h-9 text-sm"><Briefcase className="w-4 h-4 mr-2 text-emerald-500" /> Resume Builder</Button>
+                  </Link>
+                  <Link to="/jobs" onClick={() => setShowMenu(false)}>
+                    <Button variant="ghost" className="w-full justify-start h-9 text-sm"><Briefcase className="w-4 h-4 mr-2 text-indigo-500" /> Find Jobs</Button>
+                  </Link>
+                  <Link to="/safety" onClick={() => setShowMenu(false)}>
+                    <Button variant="ghost" className="w-full justify-start h-9 text-sm text-destructive hover:text-destructive hover:bg-destructive/10"><Sparkles className="w-4 h-4 mr-2 text-destructive" /> Emergency SOS</Button>
+                  </Link>
+                  <div className="h-px bg-border my-1 w-full" />
+                  <Button 
+                    variant="ghost" 
+                    className="w-full justify-start h-9 text-sm text-primary"
+                    onClick={() => { setShowMenu(false); setIsOpen(true); }}
+                  >
+                    <MessageSquare className="w-4 h-4 mr-2" /> Ask AI
+                  </Button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             <Button 
-              onClick={() => setIsOpen(true)}
-              className="h-16 w-16 rounded-full shadow-lg shadow-primary/30 bg-gradient-to-br from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-600/90 text-white relative overflow-hidden group"
+              onClick={() => showMenu ? setShowMenu(false) : setShowMenu(true)}
+              className="h-16 w-16 rounded-full shadow-lg shadow-primary/30 bg-gradient-to-br from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-600/90 text-white relative overflow-hidden group ml-auto"
             >
               <div className="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors" />
-              <Bot className="h-8 w-8 relative z-10" />
-              <motion.div 
-                className="absolute top-0 right-0 p-1"
-                animate={prefs.reducedMotion ? {} : { rotate: 360 }}
-                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-              >
-                <Sparkles className="h-4 w-4 text-yellow-300" />
-              </motion.div>
+              {showMenu ? <X className="h-8 w-8 relative z-10" /> : <Bot className="h-8 w-8 relative z-10" />}
+              {!showMenu && (
+                <motion.div 
+                  className="absolute top-0 right-0 p-1"
+                  animate={prefs.reducedMotion ? {} : { rotate: 360 }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                >
+                  <Sparkles className="h-4 w-4 text-yellow-300" />
+                </motion.div>
+              )}
             </Button>
           </motion.div>
         )}
