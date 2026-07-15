@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Navbar } from './Navbar';
+import { BottomNav } from './BottomNav';
+import { SakhiAI } from '../ui-custom/SakhiAI';
 import { AccessibilityPanel } from '../ui-custom/AccessibilityPanel';
 import { MoreDrawer } from './MoreDrawer';
 import { LanguageModal } from '@/i18n/LanguageModal';
