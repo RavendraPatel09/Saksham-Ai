@@ -9,7 +9,7 @@ export interface CandidateProfile {
 }
 
 export interface AssessmentScores {
-  [category: string]: number;
+  [category: string]: number | string;
 }
 
 type WorkspaceMode = 'candidate' | 'employer' | 'accessibility' | null;
