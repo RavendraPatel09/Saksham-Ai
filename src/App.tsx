@@ -64,7 +64,6 @@ function AnimatedRoutes() {
           <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
         </Route>
       </Routes>
-      <Toaster />
     </AnimatePresence>
   );
 }
