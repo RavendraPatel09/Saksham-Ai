@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import FocusTrap from 'focus-trap-react';
+import FocusTrapComponent from 'focus-trap-react';
 
 type OverlayType = 'search' | 'accessibility' | 'more' | 'language' | null;
 
@@ -76,7 +76,7 @@ export const OverlayWrapper: React.FC<{
           
           {/* Content Wrapper */}
           <div className={`relative z-10 w-full pointer-events-none flex ${position === 'right' ? 'justify-end' : 'items-center justify-center p-4'}`}>
-            <FocusTrap active={isOpen} focusTrapOptions={{ initialFocus: false, fallbackFocus: 'body' }}>
+            <FocusTrapComponent active={isOpen} focusTrapOptions={{ initialFocus: false, fallbackFocus: 'body' }}>
               <motion.div
                 variants={variants}
                 initial="hidden"
@@ -100,7 +100,7 @@ export const OverlayWrapper: React.FC<{
                   {children}
                 </div>
               </motion.div>
-            </FocusTrap>
+            </FocusTrapComponent>
           </div>
         </div>
       )}

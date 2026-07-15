@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useAccessibility } from '@/context/AccessibilityContext';
-import { SAVED_DATA, ApplicationStatus, SavedItem } from '@/data/mockData';
+import { SAVED_DATA } from '@/data/mockData';
+import type { ApplicationStatus, SavedItem } from '@/data/mockData';
 
 export const ApplicationTracker = () => {
   const { prefs } = useAccessibility();
