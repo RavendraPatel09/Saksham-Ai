@@ -23,7 +23,7 @@ export const Dashboard = () => {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 15 },
-    visible: { opacity: 1, y: 0 }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" as const } }
   };
 
   return (
@@ -39,10 +39,10 @@ export const Dashboard = () => {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
         >
           {[
-            { title: isEmployer ? 'Active Jobs' : 'Applications', value: isEmployer ? '12' : '3', icon: Briefcase, color: 'bg-blue-500/10 text-blue-500' },
-            { title: isEmployer ? 'Candidates' : 'Learning Progress', value: isEmployer ? '48' : '65%', icon: GraduationCap, color: 'bg-emerald-500/10 text-emerald-500' },
-            { title: 'Accessibility Score', value: '92/100', icon: Activity, color: 'bg-purple-500/10 text-purple-500' },
-            { title: isEmployer ? 'Interviews' : 'Assessments', value: isEmployer ? '5' : '1', icon: CheckCircle, color: 'bg-amber-500/10 text-amber-500' },
+            { title: isEmployer ? 'Active Jobs' : 'Applications', value: isEmployer ? '12' : '3', icon: Briefcase, color: 'text-blue-500', grad: 'from-blue-500/15 to-purple-500/10', shadow: 'shadow-blue-500/20' },
+            { title: isEmployer ? 'Candidates' : 'Learning Progress', value: isEmployer ? '48' : '65%', icon: GraduationCap, color: 'text-emerald-500', grad: 'from-emerald-500/15 to-teal-500/10', shadow: 'shadow-emerald-500/20' },
+            { title: 'Accessibility Score', value: '92/100', icon: Activity, color: 'text-purple-500', grad: 'from-purple-500/15 to-pink-500/10', shadow: 'shadow-purple-500/20' },
+            { title: isEmployer ? 'Interviews' : 'Assessments', value: isEmployer ? '5' : '1', icon: CheckCircle, color: 'text-amber-500', grad: 'from-amber-500/15 to-orange-500/10', shadow: 'shadow-amber-500/20' },
           ].map((stat, i) => (
             <motion.div key={i} variants={itemVariants}>
               <Card className="hover:shadow-md transition-shadow">
@@ -51,7 +51,7 @@ export const Dashboard = () => {
                     <p className="text-sm font-medium text-muted-foreground mb-1">{stat.title}</p>
                     <h3 className="text-3xl font-bold">{stat.value}</h3>
                   </div>
-                  <div className={`p-4 rounded-full ${stat.color}`}>
+                  <div className={`p-4 rounded-full bg-gradient-to-br ${stat.grad} ${stat.color} shadow-lg ${stat.shadow}`}>
                     <stat.icon className="w-6 h-6" />
                   </div>
                 </CardContent>
@@ -75,29 +75,33 @@ export const Dashboard = () => {
               title: isEmployer ? 'Review Candidates for UI Engineer' : 'Finish your AI Assessment', 
               desc: isEmployer ? '3 new highly matched candidates' : 'Unlock personalized career paths', 
               action: isEmployer ? 'Review' : 'Resume', 
-              path: isEmployer ? '/employer' : '/assessment'
+              path: isEmployer ? '/employer' : '/assessment',
+              theme: 'border-blue-500 from-blue-500/10'
             },
             { 
               title: isEmployer ? 'Complete Accessibility Audit' : 'Complete React Basics Course', 
               desc: isEmployer ? 'Ensure your workplace is compliant' : 'You are 80% done', 
               action: isEmployer ? 'Start Audit' : 'Continue', 
-              path: isEmployer ? '/employer/audit' : '/learning'
+              path: isEmployer ? '/employer/audit' : '/learning',
+              theme: 'border-emerald-500 from-emerald-500/10'
             },
             { 
               title: isEmployer ? 'Post a new Job' : 'Practice AI Interview', 
               desc: 'Reach out to diverse talent', 
               action: isEmployer ? 'Post Job' : 'Practice', 
-              path: isEmployer ? '/employer' : '/interview' 
+              path: isEmployer ? '/employer' : '/interview',
+              theme: 'border-amber-500 from-amber-500/10'
             },
             { 
               title: isEmployer ? 'View Diversity Analytics' : 'Review Job Matches', 
               desc: 'Track your inclusive hiring goals', 
               action: 'View', 
-              path: isEmployer ? '/employer' : '/jobs'
+              path: isEmployer ? '/employer' : '/jobs',
+              theme: 'border-purple-500 from-purple-500/10'
             },
           ].map((action, i) => (
             <motion.div key={i} variants={itemVariants}>
-              <Card className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 hover:border-primary/50 transition-colors">
+              <Card className={`flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 hover:border-primary/50 transition-colors border-l-4 ${action.theme} bg-gradient-to-r to-transparent`}>
                 <div className="mb-4 sm:mb-0">
                   <h3 className="text-lg font-bold">{action.title}</h3>
                   <p className="text-muted-foreground">{action.desc}</p>
