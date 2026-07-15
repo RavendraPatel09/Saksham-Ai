@@ -34,6 +34,8 @@ export const Register = () => {
     setTimeout(() => {
       setCandidateProfile({
         ...formData,
+        id: Math.random().toString(36).substr(2, 9),
+        accommodations: formData.accessibilityNeeds || [],
         aiSummary: "Based on your profile, you possess strong potential in technical and communication fields. Your required accommodations are noted, and we will prioritize employers with accessible infrastructure."
       });
       setWorkspaceMode('candidate');
