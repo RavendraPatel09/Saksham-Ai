@@ -6,31 +6,27 @@ import { SakhiAI } from '../ui-custom/SakhiAI';
 import { AccessibilityPanel } from '../ui-custom/AccessibilityPanel';
 import { MoreDrawer } from './MoreDrawer';
 import { LanguageModal } from '@/i18n/LanguageModal';
+import { useOverlay } from '@/context/OverlayContext';
 
 export const Layout = () => {
-  const [isMoreOpen, setIsMoreOpen] = useState(false);
-  const [isAccessibilityOpen, setIsAccessibilityOpen] = useState(false);
-  const [isLanguageOpen, setIsLanguageOpen] = useState(false);
+  const { activeOverlay, closeOverlay, openOverlay } = useOverlay();
 
   return (
     <div className="flex flex-col min-h-screen pb-16 md:pb-0 relative">
-      <Navbar 
-        onOpenMore={() => setIsMoreOpen(true)} 
-        onOpenAccessibility={() => setIsAccessibilityOpen(true)} 
-      />
+      <Navbar />
       <main className="flex-1">
         <Outlet />
       </main>
-      <BottomNav onOpenMore={() => setIsMoreOpen(true)} />
+      <BottomNav onOpenMore={() => openOverlay('more')} />
       <SakhiAI />
-      <AccessibilityPanel isOpen={isAccessibilityOpen} onClose={() => setIsAccessibilityOpen(false)} />
+      <AccessibilityPanel isOpen={activeOverlay === 'accessibility'} onClose={closeOverlay} />
       <MoreDrawer 
-        isOpen={isMoreOpen} 
-        onClose={() => setIsMoreOpen(false)} 
-        onOpenAccessibility={() => { setIsMoreOpen(false); setIsAccessibilityOpen(true); }}
-        onOpenLanguage={() => { setIsMoreOpen(false); setIsLanguageOpen(true); }}
+        isOpen={activeOverlay === 'more'} 
+        onClose={closeOverlay} 
+        onOpenAccessibility={() => openOverlay('accessibility')}
+        onOpenLanguage={() => openOverlay('language')}
       />
-      <LanguageModal isOpen={isLanguageOpen} onClose={() => setIsLanguageOpen(false)} />
+      <LanguageModal isOpen={activeOverlay === 'language'} onClose={closeOverlay} />
     </div>
   );
 };
