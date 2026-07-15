@@ -17,6 +17,7 @@ export const GovernmentSupport = () => {
   const { prefs } = useAccessibility();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [expandedId, setExpandedId] = useState<number | null>(null);
   
   const categories = ['All', 'Education', 'Healthcare', 'Startup/Business', 'Mobility'];
 
@@ -104,36 +105,50 @@ export const GovernmentSupport = () => {
                         {scheme.state}
                       </span>
                     </div>
-                    <CardTitle className="text-xl leading-tight">{scheme.title}</CardTitle>
+                    <div className="flex justify-between items-center cursor-pointer" onClick={() => setExpandedId(expandedId === scheme.id ? null : scheme.id)}>
+                      <CardTitle className="text-xl leading-tight hover:text-primary transition-colors">{scheme.title}</CardTitle>
+                      <ChevronRight className={`w-5 h-5 transition-transform ${expandedId === scheme.id ? 'rotate-90' : ''}`} />
+                    </div>
                   </CardHeader>
-                  <CardContent className="flex-1 space-y-4">
-                    <div>
-                      <h4 className="text-sm font-semibold mb-1 flex items-center text-foreground">
-                        <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-500" /> Benefits
-                      </h4>
-                      <p className="text-sm text-muted-foreground ml-6">{scheme.benefits}</p>
-                    </div>
-                    
-                    <div>
-                      <h4 className="text-sm font-semibold mb-1 flex items-center text-foreground">
-                        <FileText className="w-4 h-4 mr-2 text-primary" /> Required Docs
-                      </h4>
-                      <ul className="text-sm text-muted-foreground ml-6 list-disc list-inside">
-                        {scheme.docs.map(doc => (
-                          <li key={doc}>{doc}</li>
-                        ))}
-                      </ul>
-                    </div>
+                  <AnimatePresence>
+                    {expandedId === scheme.id && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <CardContent className="space-y-4 pt-0">
+                          <div>
+                            <h4 className="text-sm font-semibold mb-1 flex items-center text-foreground">
+                              <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-500" /> Benefits
+                            </h4>
+                            <p className="text-sm text-muted-foreground ml-6">{scheme.benefits}</p>
+                          </div>
+                          
+                          <div>
+                            <h4 className="text-sm font-semibold mb-1 flex items-center text-foreground">
+                              <FileText className="w-4 h-4 mr-2 text-primary" /> Required Docs
+                            </h4>
+                            <ul className="text-sm text-muted-foreground ml-6 list-disc list-inside">
+                              {scheme.docs.map(doc => (
+                                <li key={doc}>{doc}</li>
+                              ))}
+                            </ul>
+                          </div>
 
-                    <div className="flex items-center text-sm font-medium text-amber-600 bg-amber-50 dark:bg-amber-950/30 p-2 rounded-md">
-                      <CalendarDays className="w-4 h-4 mr-2" /> Deadline: {scheme.deadline}
-                    </div>
-                  </CardContent>
-                  <CardFooter className="pt-4 border-t">
-                    <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
-                      View Details & Apply <ExternalLink className="w-4 h-4 ml-2" />
-                    </Button>
-                  </CardFooter>
+                          <div className="flex items-center text-sm font-medium text-amber-600 bg-amber-50 dark:bg-amber-950/30 p-2 rounded-md">
+                            <CalendarDays className="w-4 h-4 mr-2" /> Deadline: {scheme.deadline}
+                          </div>
+                        </CardContent>
+                        <CardFooter className="pt-4 border-t">
+                          <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
+                            View Details & Apply <ExternalLink className="w-4 h-4 ml-2" />
+                          </Button>
+                        </CardFooter>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </Card>
               </motion.div>
             ))
