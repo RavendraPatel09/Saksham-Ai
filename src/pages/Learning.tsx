@@ -22,8 +22,8 @@ import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 
 export const Learning = () => {
-  const { prefs } = useAccessibility();
   const [showConfetti, setShowConfetti] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [learningSettings, setLearningSettings] = useState({
     audioLessons: true,
     dyslexiaMode: false,
@@ -33,11 +33,12 @@ export const Learning = () => {
   });
 
   useEffect(() => {
-    const t = setTimeout(() => {
+    const t1 = setTimeout(() => setIsLoading(false), 1500);
+    const t2 = setTimeout(() => {
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 4000);
-    }, 1000);
-    return () => clearTimeout(t);
+    }, 2500);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
   }, []);
 
   const chartData = [
@@ -101,9 +102,27 @@ export const Learning = () => {
             ))}
           </motion.div>
         )}
-      </AnimatePresence>
-
-      <motion.div initial="hidden" animate="visible" variants={staggerVariants} className="space-y-12">
+      <AnimatePresence mode="wait">
+        {isLoading ? (
+          <motion.div 
+            key="skeleton"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="space-y-12"
+          >
+            <div className="rounded-3xl bg-muted/20 animate-pulse h-[400px] w-full border border-border/50" />
+            <div className="rounded-3xl bg-muted/20 animate-pulse h-[300px] w-full border border-border/50" />
+            <div className="grid lg:grid-cols-3 gap-6">
+              <div className="rounded-2xl bg-muted/20 animate-pulse h-[350px] lg:col-span-2 border border-border/50" />
+              <div className="space-y-4">
+                <div className="rounded-2xl bg-muted/20 animate-pulse h-[100px] w-full border border-border/50" />
+                <div className="rounded-2xl bg-muted/20 animate-pulse h-[100px] w-full border border-border/50" />
+              </div>
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div key="content" initial="hidden" animate="visible" variants={staggerVariants} className="space-y-12">
         
         {/* SECTION 1 — Personalized Learning Hero */}
         <motion.section variants={itemVariants} className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-500/10 via-background to-teal-500/10 border p-8 md:p-12 shadow-sm">
@@ -669,6 +688,8 @@ export const Learning = () => {
         </motion.div>
 
       </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
