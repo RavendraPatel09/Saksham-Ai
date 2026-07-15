@@ -6,12 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter }
 import { Badge } from '@/components/ui/badge';
 import { useAccessibility } from '@/context/AccessibilityContext';
 
-const SAVED_DATA = [
-  { id: 1, type: 'job', title: 'Frontend Developer (Accessibility)', entity: 'TechCorp', location: 'Remote', savedAt: '2 days ago' },
-  { id: 2, type: 'course', title: 'Advanced Web Accessibility (WCAG 2.1)', entity: 'SkillShare', location: 'Online', savedAt: '5 days ago' },
-  { id: 3, type: 'mentor', title: 'Priya Sharma', entity: 'Senior UI/UX', location: 'Available', savedAt: '1 week ago' },
-  { id: 4, type: 'employer', title: 'InnovateX Solutions', entity: 'Software & IT', location: 'Mumbai', savedAt: '2 weeks ago' },
-];
+import { SAVED_DATA } from '@/data/mockData';
 
 export const SavedItems = () => {
   const { prefs } = useAccessibility();
