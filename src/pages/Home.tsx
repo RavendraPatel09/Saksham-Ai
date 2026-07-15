@@ -5,9 +5,12 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { motion } from 'framer-motion';
 import { useAccessibility } from '@/context/AccessibilityContext';
+import { useAppContext } from '@/context/AppContext';
+import { Dashboard } from './Dashboard';
 
 export const Home = () => {
   const { prefs } = useAccessibility();
+  const { workspaceMode } = useAppContext();
   const transition = prefs.reducedMotion ? { duration: 0.1 } : { duration: 0.8, ease: "easeOut" as const };
 
   const containerVariants = {
@@ -33,6 +36,10 @@ export const Home = () => {
       ease: "easeInOut" as const
     }
   };
+
+  if (workspaceMode) {
+    return <Dashboard />;
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
