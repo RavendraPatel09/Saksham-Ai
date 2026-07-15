@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles, Building, Briefcase, GraduationCap, Users } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
 export const Home = () => {
@@ -16,17 +16,15 @@ export const Home = () => {
           Helping people with disabilities build skills, discover opportunities, and connect with inclusive employers.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-          <Button size="lg" className="w-full sm:w-auto text-lg h-14 px-8" asChild>
-            <Link to="/register">
-              Get Started <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </Button>
-          <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg h-14 px-8" asChild>
-            <Link to="/jobs">Explore Jobs</Link>
-          </Button>
-          <Button size="lg" variant="secondary" className="w-full sm:w-auto text-lg h-14 px-8" asChild>
-            <Link to="/employer">Employer Portal</Link>
-          </Button>
+          <Link to="/register" className={buttonVariants({ size: "lg", className: "w-full sm:w-auto text-lg h-14 px-8" })}>
+            Get Started <ArrowRight className="ml-2 h-5 w-5" />
+          </Link>
+          <Link to="/jobs" className={buttonVariants({ size: "lg", variant: "outline", className: "w-full sm:w-auto text-lg h-14 px-8" })}>
+            Explore Jobs
+          </Link>
+          <Link to="/employer" className={buttonVariants({ size: "lg", variant: "secondary", className: "w-full sm:w-auto text-lg h-14 px-8" })}>
+            Employer Portal
+          </Link>
         </div>
       </section>
 

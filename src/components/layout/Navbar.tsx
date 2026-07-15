@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { HeartHandshake, Menu } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { useAppContext } from '@/context/AppContext';
 
 export const Navbar = () => {
@@ -45,12 +45,12 @@ export const Navbar = () => {
           <div className="hidden md:flex gap-2">
             {!role ? (
               <>
-                <Button variant="ghost" asChild>
-                  <Link to="/employer">Employer Login</Link>
-                </Button>
-                <Button asChild>
-                  <Link to="/register">Get Started</Link>
-                </Button>
+                <Link to="/employer" className={buttonVariants({ variant: "ghost" })}>
+                  Employer Login
+                </Link>
+                <Link to="/register" className={buttonVariants()}>
+                  Get Started
+                </Link>
               </>
             ) : (
               <Button variant="outline" onClick={() => setRole(null)}>
