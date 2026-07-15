@@ -159,7 +159,7 @@
   }
   
   .dot-grid {
-    background-image: radial-gradient(rgba(37, 99, 235, 0.15) 1px, transparent 1px);
+    background-image: radial-gradient(hsl(var(--border) / 0.8) 1px, transparent 1px);
     background-size: 24px 24px;
     background-position: center;
   }
