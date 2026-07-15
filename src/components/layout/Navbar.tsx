@@ -12,7 +12,7 @@ import { useOffline } from '@/context/OfflineContext';
 import { useOverlay } from '@/context/OverlayContext';
 
 export const Navbar = () => {
-  const { workspaceMode, setWorkspaceMode } = useAppContext();
+  const { workspaceMode, isRegistered, logout } = useAppContext();
   const { openOverlay } = useOverlay();
   const { prefs, updatePrefs } = useAccessibility();
   const { t } = useLanguage();
@@ -108,14 +108,14 @@ export const Navbar = () => {
           </Button>
 
           <div className="hidden md:flex gap-3">
-            {workspaceMode !== 'employer' ? (
+            {!workspaceMode && !isRegistered ? (
               <>
                 <Link to="/register" className={buttonVariants({ variant: "ghost", className: "hover:bg-primary/10 transition-colors" })}>
                   {t('nav.get_started')}
                 </Link>
               </>
             ) : (
-              <Button variant="outline" onClick={() => setWorkspaceMode(null)} className="hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 transition-colors">
+              <Button variant="outline" onClick={logout} className="hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 transition-colors">
                 {t('nav.logout')}
               </Button>
             )}

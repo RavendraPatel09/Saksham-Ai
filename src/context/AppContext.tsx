@@ -22,6 +22,7 @@ type AppContextType = {
   assessmentScores: AssessmentScores | null;
   setAssessmentScores: (scores: AssessmentScores | null) => void;
   isRegistered: boolean;
+  logout: () => void;
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -58,6 +59,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const isRegistered = !!candidateProfile;
 
+  const logout = React.useCallback(() => {
+    setWorkspaceMode(null);
+    setCandidateProfile(null);
+    setAssessmentScores(null);
+  }, []);
+
   const value = React.useMemo(() => ({
     workspaceMode,
     setWorkspaceMode,
@@ -66,7 +73,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     assessmentScores,
     setAssessmentScores,
     isRegistered,
-  }), [workspaceMode, candidateProfile, assessmentScores, isRegistered]);
+    logout,
+  }), [workspaceMode, candidateProfile, assessmentScores, isRegistered, logout]);
 
   return (
     <AppContext.Provider value={value}>
