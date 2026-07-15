@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { AccessibilityPreferences, AccessibilityProfile } from './AccessibilitySettings';
+import type { AccessibilityPreferences, AccessibilityProfile } from './AccessibilitySettings';
 
 export interface AccessibilityContextType {
   prefs: AccessibilityPreferences;
