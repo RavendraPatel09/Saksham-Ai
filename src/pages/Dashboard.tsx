@@ -247,6 +247,39 @@ export const Dashboard = () => {
             </div>
           </CardContent>
         </Card>
+        
+        {/* Today's 3 Tasks Widget */}
+        <Card className="premium-card h-fit">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5 text-primary" /> Today's 3 Tasks
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <ul className="space-y-3">
+              {SAVED_DATA.filter(item => item.deadline).slice(0, 3).map((task, i) => (
+                <li key={i} className="flex justify-between items-center p-3 bg-muted/30 rounded-lg border hover:border-primary/30 transition-colors">
+                  <div>
+                    <span className="text-sm font-semibold">{task.title}</span>
+                    <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                      {task.type === 'job' && <Briefcase className="w-3 h-3" />}
+                      {task.type === 'course' && <BookOpen className="w-3 h-3" />}
+                      {task.type === 'employer' && <Landmark className="w-3 h-3" />}
+                      {task.type === 'mentor' && <Users className="w-3 h-3" />}
+                      {task.entity}
+                    </p>
+                  </div>
+                  <Badge variant="outline" className="bg-amber-500/10 text-amber-600 border-none shrink-0 text-xs">
+                    {task.deadline}
+                  </Badge>
+                </li>
+              ))}
+            </ul>
+            <Link to="/saved" className="block mt-4">
+              <Button variant="outline" className="w-full text-xs">View All Tasks</Button>
+            </Link>
+          </CardContent>
+        </Card>
 
       </div>
 
