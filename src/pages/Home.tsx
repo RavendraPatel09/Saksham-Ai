@@ -86,20 +86,28 @@ export const Home = () => {
                 {t('nav.get_started')} <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </motion.div>
-            
             <motion.div whileHover={prefs.reducedMotion ? {} : { scale: 1.05 }} whileTap={prefs.reducedMotion ? {} : { scale: 0.95 }}>
               <Link to="/jobs" className={buttonVariants({ size: "lg", variant: "outline", className: "w-full sm:w-auto text-lg h-14 px-8 bg-white/50 backdrop-blur-sm border-primary/20 hover:bg-white/80 transition-colors" })}>
                 {t('hero.explore_jobs')}
               </Link>
             </motion.div>
-
-            <motion.div whileHover={prefs.reducedMotion ? {} : { scale: 1.05 }} whileTap={prefs.reducedMotion ? {} : { scale: 0.95 }}>
-              <Link to="/employer" className={buttonVariants({ size: "lg", variant: "secondary", className: "w-full sm:w-auto text-lg h-14 px-8 bg-white/60 backdrop-blur-sm hover:bg-white/90 transition-colors" })}>
-                {t('hero.employer_portal')}
-              </Link>
-            </motion.div>
           </motion.div>
         </motion.div>
+      </section>
+
+      {/* Trusted Companies */}
+      <section className="py-12 bg-white/30 dark:bg-slate-900/30 border-b">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-sm font-semibold text-muted-foreground uppercase tracking-widest mb-8">Trusted by Inclusive Employers</p>
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+            {/* Mock Company Logos using text for simplicity */}
+            <h3 className="text-2xl font-black">Google</h3>
+            <h3 className="text-2xl font-black">Microsoft</h3>
+            <h3 className="text-2xl font-black">Amazon</h3>
+            <h3 className="text-2xl font-black">TCS</h3>
+            <h3 className="text-2xl font-black">Infosys</h3>
+          </div>
+        </div>
       </section>
 
       {/* Statistics */}
@@ -239,7 +247,54 @@ export const Home = () => {
             </motion.div>
           ))}
         </motion.div>
+      {/* FAQ Section */}
+      <section className="py-24 container mx-auto px-4">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">Frequently Asked Questions</h2>
+        <div className="max-w-3xl mx-auto space-y-4">
+          {[
+            { q: "Is Saksham AI completely free?", a: "Yes, Saksham AI is completely free for all job seekers and learners." },
+            { q: "Do I need a disability certificate to apply for jobs?", a: "Some government and corporate schemes require it, but many private employers hire based on skills alone." },
+            { q: "How does the AI Accessibility Audit work?", a: "Employers can scan their company website and policies, and our AI will provide actionable feedback to make them compliant with WCAG standards." },
+            { q: "Can I use voice commands?", a: "Yes! Enable the voice assistant from the Accessibility settings to navigate the entire platform using your voice." }
+          ].map((faq, i) => (
+            <div key={i} className="p-6 rounded-2xl border bg-card hover:border-primary/50 transition-colors">
+              <h3 className="text-lg font-bold mb-2">{faq.q}</h3>
+              <p className="text-muted-foreground">{faq.a}</p>
+            </div>
+          ))}
+        </div>
       </section>
+
+      {/* Footer */}
+      <footer className="border-t bg-white dark:bg-slate-950 py-12 mt-12">
+        <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="md:col-span-2">
+            <h2 className="text-2xl font-black tracking-tighter text-primary mb-4">Saksham AI</h2>
+            <p className="text-muted-foreground max-w-sm">Empowering every individual to achieve their full potential through accessible AI and inclusive opportunities.</p>
+          </div>
+          <div>
+            <h4 className="font-bold mb-4">Platform</h4>
+            <ul className="space-y-2 text-muted-foreground">
+              <li><Link to="/jobs" className="hover:text-primary">Jobs</Link></li>
+              <li><Link to="/learning" className="hover:text-primary">Learning</Link></li>
+              <li><Link to="/employer" className="hover:text-primary">Employers</Link></li>
+              <li><Link to="/community" className="hover:text-primary">Community</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-bold mb-4">Legal</h4>
+            <ul className="space-y-2 text-muted-foreground">
+              <li><a href="#" className="hover:text-primary">Privacy Policy</a></li>
+              <li><a href="#" className="hover:text-primary">Terms of Service</a></li>
+              <li><a href="#" className="hover:text-primary">Accessibility Statement</a></li>
+              <li><a href="#" className="hover:text-primary">Contact Us</a></li>
+            </ul>
+          </div>
+        </div>
+        <div className="container mx-auto px-4 mt-12 pt-8 border-t text-center text-muted-foreground text-sm">
+          &copy; {new Date().getFullYear()} Saksham AI. All rights reserved.
+        </div>
+      </footer>
     </div>
   );
 };
