@@ -110,9 +110,6 @@ export const Navbar = () => {
           <div className="hidden md:flex gap-3">
             {workspaceMode !== 'employer' ? (
               <>
-                <Link to="/employer" className={buttonVariants({ variant: "ghost", className: "hover:bg-primary/10 transition-colors" })}>
-                  For Employers
-                </Link>
                 <Link to="/register" className={buttonVariants({ variant: "ghost", className: "hover:bg-primary/10 transition-colors" })}>
                   {t('nav.get_started')}
                 </Link>
