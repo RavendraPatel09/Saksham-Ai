@@ -30,7 +30,7 @@ export const Home = () => {
       duration: 3,
       repeat: Infinity,
       repeatType: "reverse" as const,
-      ease: "easeInOut"
+      ease: "easeInOut" as const
     }
   };
 
@@ -44,7 +44,7 @@ export const Home = () => {
           <motion.div 
             className="absolute top-20 right-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[100px] -z-10 pointer-events-none"
             animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" as const }}
           />
         )}
 
