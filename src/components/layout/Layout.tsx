@@ -4,6 +4,7 @@ import { Navbar } from './Navbar';
 import { BottomNav } from './BottomNav';
 import { SakhiAI } from '../ui-custom/SakhiAI';
 import { AccessibilityPanel } from '../ui-custom/AccessibilityPanel';
+import { DeadlineBanner } from '../ui-custom/DeadlineBanner';
 import { MoreDrawer } from './MoreDrawer';
 import { LanguageModal } from '@/i18n/LanguageModal';
 import { GlobalSearch } from '../ui-custom/GlobalSearch';
@@ -15,6 +16,7 @@ export const Layout = () => {
   return (
     <div className="flex flex-col min-h-screen pb-16 md:pb-0 relative">
       <Navbar />
+      <DeadlineBanner />
       <main className="flex-1">
         <Outlet />
       </main>
