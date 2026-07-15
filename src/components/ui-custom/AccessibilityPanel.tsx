@@ -7,18 +7,22 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { LanguageSelector } from './LanguageSelector';
 
-export const AccessibilityPanel = () => {
+interface AccessibilityPanelProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export const AccessibilityPanel = ({ isOpen, onClose }: AccessibilityPanelProps) => {
   const { prefs, updatePrefs, updateProfile } = useAccessibility();
-  const [isOpen, setIsOpen] = useState(false);
 
   // Close panel on escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setIsOpen(false);
+      if (e.key === 'Escape') onClose();
     };
     if (isOpen) window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
   const profiles: { id: keyof AccessibilityProfile; label: string; icon: any }[] = [
     { id: 'visual', label: 'Low Vision', icon: Eye },
@@ -33,43 +37,34 @@ export const AccessibilityPanel = () => {
 
   return (
     <>
-      <Button
-        variant="outline"
-        size="icon"
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 left-6 z-50 h-14 w-14 rounded-full bg-background shadow-lg shadow-primary/20 border-primary/20 hover:bg-primary/10 hover:border-primary/50 transition-all"
-        aria-label="Accessibility Settings"
-      >
-        <Settings className="w-6 h-6 text-primary" />
-      </Button>
-
       <AnimatePresence>
         {isOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-[100] flex justify-end">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="fixed inset-0 bg-background/80 backdrop-blur-sm"
-              onClick={() => setIsOpen(false)}
+              onClick={onClose}
             />
             
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-white dark:bg-slate-950 border rounded-xl shadow-2xl w-full max-w-md relative z-10 overflow-hidden"
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="bg-white dark:bg-slate-950 border-l shadow-2xl w-full max-w-sm relative z-10 h-full flex flex-col"
             >
               <div className="flex items-center justify-between p-4 border-b bg-muted/30">
-                <h2 className="text-xl font-bold flex items-center gap-2">
-                  <Settings className="w-5 h-5 text-primary" /> Accessibility Settings
+                <h2 className="text-lg font-bold flex items-center gap-2">
+                  <Settings className="w-5 h-5 text-primary" /> Accessibility & Preferences
                 </h2>
-                <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
+                <Button variant="ghost" size="icon" onClick={onClose}>
                   <X className="w-5 h-5" />
                 </Button>
               </div>
 
-              <div className="p-6 space-y-6 max-h-[80vh] overflow-y-auto no-scrollbar">
+              <div className="p-6 space-y-6 flex-1 overflow-y-auto no-scrollbar">
                 
                 <div>
                   <h3 className="font-semibold mb-3">Accessibility Profiles</h3>

@@ -191,4 +191,29 @@
   .dark .bg-dashboard-gradient {
     background: #0F172A;
   }
+
+  /* Button Overrides */
+  .dark .bg-primary {
+    background: linear-gradient(90deg, #2563EB, #4F46E5) !important;
+    border: none;
+    color: #F8FAFC !important;
+    transition: all 0.3s ease;
+  }
+  
+  .dark .bg-primary:hover {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+    transform: scale(1.02);
+  }
+
+  .dark .bg-secondary {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #F8FAFC !important;
+    transition: all 0.3s ease;
+  }
+
+  .dark .bg-secondary:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    transform: scale(1.02);
+  }
 }

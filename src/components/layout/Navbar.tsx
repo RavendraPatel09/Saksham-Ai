@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, Search, Sun, Moon } from 'lucide-react';
+import { Menu, Search, Sun, Moon, Settings } from 'lucide-react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { useAppContext } from '@/context/AppContext';
 import { motion } from 'framer-motion';
@@ -8,7 +8,7 @@ import { useAccessibility } from '@/context/AccessibilityContext';
 import { GlobalSearch } from '../ui-custom/GlobalSearch';
 import { Logo } from '../ui-custom/Logo';
 
-export const Navbar = ({ onOpenMore }: { onOpenMore?: () => void }) => {
+export const Navbar = ({ onOpenMore, onOpenAccessibility }: { onOpenMore?: () => void, onOpenAccessibility?: () => void }) => {
   const { workspaceMode, setWorkspaceMode } = useAppContext();
   const { prefs, updatePrefs } = useAccessibility();
   const location = useLocation();
@@ -92,6 +92,16 @@ export const Navbar = ({ onOpenMore }: { onOpenMore?: () => void }) => {
             aria-label="Toggle Theme"
           >
             {prefs.darkMode || prefs.highContrast || prefs.profile.visual ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          </Button>
+
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={onOpenAccessibility}
+            className="hover:bg-primary/10 hover:text-primary transition-colors"
+            aria-label="Accessibility & Preferences"
+          >
+            <Settings className="w-5 h-5" />
           </Button>
 
           <div className="hidden md:flex gap-3">

@@ -8,16 +8,20 @@ import { MoreDrawer } from './MoreDrawer';
 
 export const Layout = () => {
   const [isMoreOpen, setIsMoreOpen] = useState(false);
+  const [isAccessibilityOpen, setIsAccessibilityOpen] = useState(false);
 
   return (
     <div className="flex flex-col min-h-screen pb-16 md:pb-0 relative">
-      <Navbar onOpenMore={() => setIsMoreOpen(true)} />
+      <Navbar 
+        onOpenMore={() => setIsMoreOpen(true)} 
+        onOpenAccessibility={() => setIsAccessibilityOpen(true)} 
+      />
       <main className="flex-1">
         <Outlet />
       </main>
       <BottomNav onOpenMore={() => setIsMoreOpen(true)} />
       <SakhiAI />
-      <AccessibilityPanel />
+      <AccessibilityPanel isOpen={isAccessibilityOpen} onClose={() => setIsAccessibilityOpen(false)} />
       <MoreDrawer isOpen={isMoreOpen} onClose={() => setIsMoreOpen(false)} />
     </div>
   );

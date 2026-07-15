@@ -173,18 +173,20 @@ export const Home = () => {
         </motion.div>
       </section>
 
-      {/* Partners */}
-      <section className="py-16 bg-muted/30">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl font-bold mb-8 text-muted-foreground">Trusted by Inclusive Employers</h2>
-          <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
-            {['Infosys', 'Wipro', 'TCS', 'HCL', 'Tech Mahindra'].map((partner, i) => (
-              <div key={i} className="text-2xl font-bold text-muted-foreground flex items-center gap-2">
-                <Building className="h-6 w-6" />
-                {partner}
-              </div>
-            ))}
-          </div>
+      {/* Decorative Transition */}
+      <section className="py-12 relative overflow-hidden flex justify-center items-center">
+        {!prefs.reducedMotion && (
+          <motion.div 
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent dark:via-primary/10"
+            animate={{ opacity: [0.3, 0.6, 0.3] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" as const }}
+          />
+        )}
+        <div className="flex gap-12 text-primary/20 dark:text-primary/30 z-10">
+          <Brain className="w-8 h-8 md:w-12 md:h-12 animate-pulse" style={{ animationDelay: '0s' }} />
+          <Sparkles className="w-8 h-8 md:w-12 md:h-12 animate-pulse" style={{ animationDelay: '1s' }} />
+          <Eye className="w-8 h-8 md:w-12 md:h-12 animate-pulse" style={{ animationDelay: '2s' }} />
+          <Ear className="w-8 h-8 md:w-12 md:h-12 animate-pulse" style={{ animationDelay: '3s' }} />
         </div>
       </section>
 
