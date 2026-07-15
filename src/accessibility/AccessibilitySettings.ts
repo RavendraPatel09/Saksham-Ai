@@ -17,6 +17,9 @@ export interface AccessibilityPreferences {
   reducedMotion: boolean;
   language: string;
   darkMode: boolean;
+  textToSpeech: boolean;
+  speechToText: boolean;
+  screenReader: boolean;
 }
 
 export const DEFAULT_PROFILE: AccessibilityProfile = {
@@ -38,6 +41,9 @@ export const DEFAULT_PREFERENCES: AccessibilityPreferences = {
   reducedMotion: false,
   language: 'en',
   darkMode: false,
+  textToSpeech: false,
+  speechToText: false,
+  screenReader: false,
 };
 
 export const ACCESSIBILITY_STORAGE_KEY = 'saksham_accessibility_prefs';

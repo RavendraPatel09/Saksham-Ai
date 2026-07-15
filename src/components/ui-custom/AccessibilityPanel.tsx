@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Settings, Eye, Ear, Activity, Brain, Type, Sun, Volume2, X, Speech, CheckCircle2 } from 'lucide-react';
+import { Settings, Eye, Ear, Activity, Brain, Type, Sun, Volume2, X, Speech, CheckCircle2, Mic, Monitor } from 'lucide-react';
 import { useAccessibility } from '@/context/AccessibilityContext';
 import type { AccessibilityProfile } from '@/context/AccessibilityContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { LanguageSelector } from './LanguageSelector';
 
 export const AccessibilityPanel = () => {
   const { prefs, updatePrefs, updateProfile } = useAccessibility();
@@ -145,6 +146,51 @@ export const AccessibilityPanel = () => {
                     />
                   </div>
 
+                </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Volume2 className="w-4 h-4 text-muted-foreground" />
+                      <label className="text-sm font-medium">Text-to-Speech (TTS)</label>
+                    </div>
+                    <input 
+                      type="checkbox" 
+                      className="toggle" 
+                      checked={prefs.textToSpeech}
+                      onChange={(e) => updatePrefs({ textToSpeech: e.target.checked })}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Mic className="w-4 h-4 text-muted-foreground" />
+                      <label className="text-sm font-medium">Speech-to-Text / Voice Commands</label>
+                    </div>
+                    <input 
+                      type="checkbox" 
+                      className="toggle" 
+                      checked={prefs.speechToText}
+                      onChange={(e) => updatePrefs({ speechToText: e.target.checked })}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Monitor className="w-4 h-4 text-muted-foreground" />
+                      <label className="text-sm font-medium">Screen Reader Mode</label>
+                    </div>
+                    <input 
+                      type="checkbox" 
+                      className="toggle" 
+                      checked={prefs.screenReader}
+                      onChange={(e) => updatePrefs({ screenReader: e.target.checked })}
+                    />
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t">
+                  <h3 className="font-semibold mb-3">Language Preference</h3>
+                  <LanguageSelector />
                 </div>
 
                 {/* Voice Navigation Mock Toggle */}
