@@ -20,7 +20,7 @@ export const AccessibilitySwitcher = () => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+      <DialogTrigger render={
         <Button
           variant="outline"
           size="icon"
@@ -29,7 +29,7 @@ export const AccessibilitySwitcher = () => {
         >
           <Settings className="h-6 w-6 text-primary" />
         </Button>
-      </DialogTrigger>
+      } />
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
@@ -115,7 +115,7 @@ export const AccessibilitySwitcher = () => {
             <Label className="text-base flex items-center gap-2">
               <Globe className="h-4 w-4" /> Language Selector
             </Label>
-            <Select value={prefs.language} onValueChange={(val) => updatePrefs({ language: val })}>
+            <Select value={prefs.language || "en"} onValueChange={(val) => updatePrefs({ language: val })}>
               <SelectTrigger>
                 <SelectValue placeholder="Select Language" />
               </SelectTrigger>
