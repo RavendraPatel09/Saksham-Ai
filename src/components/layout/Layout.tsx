@@ -21,9 +21,4 @@ export const Layout = () => {
       <MoreDrawer isOpen={isMoreOpen} onClose={() => setIsMoreOpen(false)} />
     </div>
   );
-};      <BottomNav />
-      <SakhiAI />
-      <AccessibilityPanel />
-    </div>
-  );
 };

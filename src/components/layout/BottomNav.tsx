@@ -1,23 +1,19 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Briefcase, BookOpen, User, Building } from 'lucide-react';
+import { Home, Briefcase, BookOpen, Menu } from 'lucide-react';
 import { useAppContext } from '@/context/AppContext';
 import { motion } from 'framer-motion';
 import { useAccessibility } from '@/context/AccessibilityContext';
 
-export const BottomNav = () => {
-  const { role } = useAppContext();
+export const BottomNav = ({ onOpenMore }: { onOpenMore?: () => void }) => {
+  const { workspaceMode } = useAppContext();
   const location = useLocation();
   const { prefs } = useAccessibility();
 
   const links = [
     { name: 'Home', path: '/', icon: Home },
+    { name: 'Learn', path: '/learning', icon: BookOpen },
     { name: 'Jobs', path: '/jobs', icon: Briefcase },
-    { name: 'Learning', path: '/learning', icon: BookOpen },
-    ...(role === 'employer' 
-      ? [{ name: 'Employer', path: '/employer', icon: Building }]
-      : [{ name: 'Profile', path: '/assessment', icon: User }]
-    ),
   ];
 
   return (
@@ -52,6 +48,18 @@ export const BottomNav = () => {
             </Link>
           );
         })}
+        <button
+          onClick={onOpenMore}
+          className="relative flex flex-col items-center justify-center w-full h-full gap-1 p-2 transition-colors z-10 text-muted-foreground hover:text-foreground"
+        >
+          <motion.div 
+            whileTap={{ scale: 0.9 }}
+            className="flex flex-col items-center gap-1"
+          >
+            <Menu className="h-5 w-5" />
+            <span className="text-[10px] font-medium">More</span>
+          </motion.div>
+        </button>
       </div>
     </nav>
   );
