@@ -74,13 +74,33 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const updateProfile = (profileUpdates: Partial<AccessibilityProfile>) => {
-    setPrefs((prev) => ({
-      ...prev,
-      profile: {
-        ...prev.profile,
-        ...profileUpdates
+    setPrefs((prev) => {
+      let nextPrefs = { ...prev };
+      
+      // Auto-enable related manual settings when a profile is enabled
+      if (profileUpdates.visual) {
+        nextPrefs.highContrast = true;
+        nextPrefs.largeText = true;
+        nextPrefs.screenReader = true;
       }
-    }));
+      if (profileUpdates.dyslexia) {
+        nextPrefs.dyslexiaFont = true;
+      }
+      if (profileUpdates.cognitive || profileUpdates.autism) {
+        nextPrefs.reducedMotion = true;
+      }
+      if (profileUpdates.hearing) {
+        nextPrefs.speechToText = true;
+      }
+
+      return {
+        ...nextPrefs,
+        profile: {
+          ...nextPrefs.profile,
+          ...profileUpdates
+        }
+      };
+    });
   };
 
   const completeWizard = () => {
