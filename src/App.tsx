@@ -32,6 +32,11 @@ const CareerRoadmap = lazy(() => import('@/pages/CareerRoadmap').then(module => 
 const SavedItems = lazy(() => import('@/pages/SavedItems').then(module => ({ default: module.SavedItems })));
 const CalendarSchedule = lazy(() => import('@/pages/CalendarSchedule').then(module => ({ default: module.CalendarSchedule })));
 const NotFound = lazy(() => import('@/pages/NotFound').then(module => ({ default: module.NotFound })));
+const CommunicationAssistant = lazy(() => import('@/pages/CommunicationAssistant').then(module => ({ default: module.CommunicationAssistant })));
+const OfflineMode = lazy(() => import('@/pages/OfflineMode').then(module => ({ default: module.OfflineMode })));
+const Events = lazy(() => import('@/pages/Events').then(module => ({ default: module.Events })));
+const SafetyCenter = lazy(() => import('@/pages/SafetyCenter').then(module => ({ default: module.SafetyCenter })));
+const FinancialSupport = lazy(() => import('@/pages/FinancialSupport').then(module => ({ default: module.FinancialSupport })));
 
 // Loading Fallback Component
 const PageLoader = () => (
@@ -64,6 +69,11 @@ function AnimatedRoutes() {
           <Route path="career-roadmap" element={<PageWrapper><CareerRoadmap /></PageWrapper>} />
           <Route path="saved" element={<PageWrapper><SavedItems /></PageWrapper>} />
           <Route path="calendar" element={<PageWrapper><CalendarSchedule /></PageWrapper>} />
+          <Route path="communication" element={<PageWrapper><CommunicationAssistant /></PageWrapper>} />
+          <Route path="offline" element={<PageWrapper><OfflineMode /></PageWrapper>} />
+          <Route path="events" element={<PageWrapper><Events /></PageWrapper>} />
+          <Route path="safety" element={<PageWrapper><SafetyCenter /></PageWrapper>} />
+          <Route path="financial" element={<PageWrapper><FinancialSupport /></PageWrapper>} />
           
           {/* Catch-all 404 Route */}
           <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
