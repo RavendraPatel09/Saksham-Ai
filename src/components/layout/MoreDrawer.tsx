@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   X, Compass, BookOpen, Briefcase, Trophy, Calendar as CalendarIcon, 
-  Users, MessageCircle, HeartHandshake, Settings, HelpCircle, MessageSquare
+  Users, MessageCircle, HeartHandshake, Settings, HelpCircle, MessageSquare, KanbanSquare
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAccessibility } from '@/context/AccessibilityContext';
@@ -27,6 +27,7 @@ export const MoreDrawer: React.FC<MoreDrawerProps> = ({ isOpen, onClose, onOpenA
         { name: t('more.menu.interview'), path: "/interview", icon: Users },
         { name: t('more.menu.resume'), path: "/resume-builder", icon: Briefcase },
         { name: t('more.menu.roadmap'), path: "/career-roadmap", icon: Compass },
+        { name: t('more.menu.tracker'), path: "/application-tracker", icon: KanbanSquare },
       ]
     },
     {

@@ -43,6 +43,7 @@ export const en = {
   "more.menu.interview": "Interview Coach",
   "more.menu.resume": "Resume Builder",
   "more.menu.roadmap": "Roadmap",
+  "more.menu.tracker": "Application Tracker",
   
   "more.menu.access_settings": "Accessibility Settings",
   "more.menu.language": "Language & Region",
