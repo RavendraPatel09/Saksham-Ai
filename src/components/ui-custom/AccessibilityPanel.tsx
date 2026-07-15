@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Settings, Eye, Ear, Activity, Brain, Type, Sun, Volume2, X } from 'lucide-react';
-import { useAccessibility, AccessibilityProfile } from '@/context/AccessibilityContext';
+import { useAccessibility, type AccessibilityProfile } from '@/context/AccessibilityContext';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 export const AccessibilityPanel = () => {
   const { prefs, updatePrefs, setProfile } = useAccessibility();
