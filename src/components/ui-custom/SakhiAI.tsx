@@ -4,6 +4,7 @@ import { MessageSquare, X, Mic, Send, Bot, Sparkles, User, Briefcase, Graduation
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { useAccessibility } from '@/context/AccessibilityContext';
+import { useAppContext } from '@/context/AppContext';
 import { VoiceAssistant } from '@/accessibility/VoiceAssistant';
 
 import { Link } from 'react-router-dom';
@@ -31,6 +32,7 @@ export const SakhiAI = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const { prefs } = useAccessibility();
+  const { workspaceMode } = useAppContext();
   const assistant = VoiceAssistant.getInstance();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -97,18 +99,34 @@ export const SakhiAI = () => {
                   exit={{ opacity: 0, y: 10, scale: 0.9 }}
                   className="mb-4 bg-white dark:bg-slate-900 border shadow-2xl rounded-2xl p-2 flex flex-col gap-1 w-48"
                 >
-                  <Link to="/communication" onClick={() => setShowMenu(false)}>
-                    <Button variant="ghost" className="w-full justify-start h-9 text-sm"><Mic className="w-4 h-4 mr-2 text-blue-500" /> Speak / Translate</Button>
-                  </Link>
-                  <Link to="/resume-builder" onClick={() => setShowMenu(false)}>
-                    <Button variant="ghost" className="w-full justify-start h-9 text-sm"><Briefcase className="w-4 h-4 mr-2 text-emerald-500" /> Resume Builder</Button>
-                  </Link>
-                  <Link to="/jobs" onClick={() => setShowMenu(false)}>
-                    <Button variant="ghost" className="w-full justify-start h-9 text-sm"><Briefcase className="w-4 h-4 mr-2 text-indigo-500" /> Find Jobs</Button>
-                  </Link>
-                  <Link to="/safety" onClick={() => setShowMenu(false)}>
-                    <Button variant="ghost" className="w-full justify-start h-9 text-sm text-destructive hover:text-destructive hover:bg-destructive/10"><Sparkles className="w-4 h-4 mr-2 text-destructive" /> Emergency SOS</Button>
-                  </Link>
+                  {workspaceMode === 'employer' ? (
+                    <>
+                      <Link to="/employer" onClick={() => setShowMenu(false)}>
+                        <Button variant="ghost" className="w-full justify-start h-9 text-sm"><Briefcase className="w-4 h-4 mr-2 text-indigo-500" /> Post Job</Button>
+                      </Link>
+                      <Link to="/employer" onClick={() => setShowMenu(false)}>
+                        <Button variant="ghost" className="w-full justify-start h-9 text-sm"><User className="w-4 h-4 mr-2 text-emerald-500" /> Find Candidates</Button>
+                      </Link>
+                      <Link to="/employer/audit" onClick={() => setShowMenu(false)}>
+                        <Button variant="ghost" className="w-full justify-start h-9 text-sm"><Sparkles className="w-4 h-4 mr-2 text-purple-500" /> Run Audit</Button>
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <Link to="/communication" onClick={() => setShowMenu(false)}>
+                        <Button variant="ghost" className="w-full justify-start h-9 text-sm"><Mic className="w-4 h-4 mr-2 text-blue-500" /> Speak / Translate</Button>
+                      </Link>
+                      <Link to="/resume-builder" onClick={() => setShowMenu(false)}>
+                        <Button variant="ghost" className="w-full justify-start h-9 text-sm"><Briefcase className="w-4 h-4 mr-2 text-emerald-500" /> Resume Builder</Button>
+                      </Link>
+                      <Link to="/jobs" onClick={() => setShowMenu(false)}>
+                        <Button variant="ghost" className="w-full justify-start h-9 text-sm"><Briefcase className="w-4 h-4 mr-2 text-indigo-500" /> Find Jobs</Button>
+                      </Link>
+                      <Link to="/safety" onClick={() => setShowMenu(false)}>
+                        <Button variant="ghost" className="w-full justify-start h-9 text-sm text-destructive hover:text-destructive hover:bg-destructive/10"><Sparkles className="w-4 h-4 mr-2 text-destructive" /> Emergency SOS</Button>
+                      </Link>
+                    </>
+                  )}
                   <div className="h-px bg-border my-1 w-full" />
                   <Button 
                     variant="ghost" 
