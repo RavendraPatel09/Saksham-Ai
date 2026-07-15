@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { HeartHandshake, Menu } from 'lucide-react';
+import { HeartHandshake, Menu, Search } from 'lucide-react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { useAppContext } from '@/context/AppContext';
 import { motion } from 'framer-motion';
 import { useAccessibility } from '@/context/AccessibilityContext';
+import { GlobalSearch } from '../ui-custom/GlobalSearch';
 
 export const Navbar = () => {
   const { role, setRole } = useAppContext();
   const { prefs } = useAccessibility();
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -84,6 +86,10 @@ export const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-4">
+          <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(true)} className="hover:bg-primary/10 hover:text-primary transition-colors">
+            <Search className="w-5 h-5" />
+          </Button>
+
           <div className="hidden md:flex gap-3">
             {!role ? (
               <>
