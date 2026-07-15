@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mic, Video, Type, Play, Square, RotateCcw, MessageSquare, Bot, Activity, Sparkles } from 'lucide-react';
+import { Mic, Video, Type, Play, Square, RotateCcw, MessageSquare, Bot, Activity, Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';

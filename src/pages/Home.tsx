@@ -29,7 +29,7 @@ export const Home = () => {
     y: {
       duration: 3,
       repeat: Infinity,
-      repeatType: "reverse",
+      repeatType: "reverse" as const,
       ease: "easeInOut"
     }
   };
