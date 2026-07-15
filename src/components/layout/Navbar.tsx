@@ -26,6 +26,7 @@ export const Navbar = () => {
     { name: 'Assessment', path: '/assessment' },
     { name: 'Learning', path: '/learning' },
     { name: 'Interview Coach', path: '/interview' },
+    { name: 'Community', path: '/community' },
     { name: 'Employer Portal', path: '/employer' },
   ];
 
