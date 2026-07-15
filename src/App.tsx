@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { AccessibilityProvider } from '@/context/AccessibilityContext';
@@ -6,17 +6,29 @@ import { AppProvider } from '@/context/AppContext';
 import { Layout } from '@/components/layout/Layout';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { Toaster } from '@/components/ui/sonner';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { Loader2 } from 'lucide-react';
 
-import { Home } from '@/pages/Home';
-import { Register } from '@/pages/Register';
-import { Assessment } from '@/pages/Assessment';
-import { SkillGap } from '@/pages/SkillGap';
-import { Learning } from '@/pages/Learning';
-import { Jobs } from '@/pages/Jobs';
-import { Interview } from '@/pages/Interview';
-import { Employer } from '@/pages/Employer';
-import { AccessibilityAudit } from '@/pages/AccessibilityAudit';
-import { PostEmployment } from '@/pages/PostEmployment';
+// Lazy load pages for performance
+const Home = lazy(() => import('@/pages/Home').then(module => ({ default: module.Home })));
+const Register = lazy(() => import('@/pages/Register').then(module => ({ default: module.Register })));
+const Assessment = lazy(() => import('@/pages/Assessment').then(module => ({ default: module.Assessment })));
+const SkillGap = lazy(() => import('@/pages/SkillGap').then(module => ({ default: module.SkillGap })));
+const Learning = lazy(() => import('@/pages/Learning').then(module => ({ default: module.Learning })));
+const Jobs = lazy(() => import('@/pages/Jobs').then(module => ({ default: module.Jobs })));
+const Interview = lazy(() => import('@/pages/Interview').then(module => ({ default: module.Interview })));
+const Employer = lazy(() => import('@/pages/Employer').then(module => ({ default: module.Employer })));
+const AccessibilityAudit = lazy(() => import('@/pages/AccessibilityAudit').then(module => ({ default: module.AccessibilityAudit })));
+const PostEmployment = lazy(() => import('@/pages/PostEmployment').then(module => ({ default: module.PostEmployment })));
+const NotFound = lazy(() => import('@/pages/NotFound').then(module => ({ default: module.NotFound })));
+
+// Loading Fallback Component
+const PageLoader = () => (
+  <div className="min-h-[80vh] flex flex-col items-center justify-center">
+    <Loader2 className="h-12 w-12 text-primary animate-spin mb-4" />
+    <p className="text-muted-foreground font-medium animate-pulse">Loading experience...</p>
+  </div>
+);
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -35,6 +47,9 @@ function AnimatedRoutes() {
           <Route path="employer" element={<PageWrapper><Employer /></PageWrapper>} />
           <Route path="employer/audit" element={<PageWrapper><AccessibilityAudit /></PageWrapper>} />
           <Route path="post-employment" element={<PageWrapper><PostEmployment /></PageWrapper>} />
+          
+          {/* Catch-all 404 Route */}
+          <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
         </Route>
       </Routes>
     </AnimatePresence>
@@ -43,14 +58,18 @@ function AnimatedRoutes() {
 
 function App() {
   return (
-    <AccessibilityProvider>
-      <AppProvider>
-        <BrowserRouter>
-          <AnimatedRoutes />
-        </BrowserRouter>
-        <Toaster />
-      </AppProvider>
-    </AccessibilityProvider>
+    <ErrorBoundary>
+      <AccessibilityProvider>
+        <AppProvider>
+          <BrowserRouter>
+            <Suspense fallback={<PageLoader />}>
+              <AnimatedRoutes />
+            </Suspense>
+          </BrowserRouter>
+          <Toaster />
+        </AppProvider>
+      </AccessibilityProvider>
+    </ErrorBoundary>
   );
 }
 
