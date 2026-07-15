@@ -7,10 +7,12 @@ import { motion } from 'framer-motion';
 import { useAccessibility } from '@/context/AccessibilityContext';
 import { useAppContext } from '@/context/AppContext';
 import { Dashboard } from './Dashboard';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 export const Home = () => {
   const { prefs } = useAccessibility();
   const { workspaceMode } = useAppContext();
+  const { t } = useLanguage();
   const transition = prefs.reducedMotion ? { duration: 0.1 } : { duration: 0.8, ease: "easeOut" as const };
 
   const containerVariants = {
@@ -71,29 +73,29 @@ export const Home = () => {
           variants={containerVariants}
         >
           <motion.h1 variants={itemVariants} className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 text-foreground drop-shadow-sm">
-            Empowering Every Ability with <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-indigo-600">AI</span>
+            {t('hero.title_part1')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-indigo-600">{t('hero.title_part2')}</span>
           </motion.h1>
           
           <motion.p variants={itemVariants} className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto">
-            Helping people with disabilities build skills, discover opportunities, and connect with inclusive employers.
+            {t('hero.subtitle')}
           </motion.p>
           
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center items-center">
             <motion.div whileHover={prefs.reducedMotion ? {} : { scale: 1.05 }} whileTap={prefs.reducedMotion ? {} : { scale: 0.95 }}>
               <Link to="/register" className={buttonVariants({ size: "lg", className: "w-full sm:w-auto text-lg h-14 px-8 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-shadow" })}>
-                Get Started <ArrowRight className="ml-2 h-5 w-5" />
+                {t('nav.get_started')} <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </motion.div>
             
             <motion.div whileHover={prefs.reducedMotion ? {} : { scale: 1.05 }} whileTap={prefs.reducedMotion ? {} : { scale: 0.95 }}>
               <Link to="/jobs" className={buttonVariants({ size: "lg", variant: "outline", className: "w-full sm:w-auto text-lg h-14 px-8 bg-white/50 backdrop-blur-sm border-primary/20 hover:bg-white/80 transition-colors" })}>
-                Explore Jobs
+                {t('hero.explore_jobs')}
               </Link>
             </motion.div>
 
             <motion.div whileHover={prefs.reducedMotion ? {} : { scale: 1.05 }} whileTap={prefs.reducedMotion ? {} : { scale: 0.95 }}>
               <Link to="/employer" className={buttonVariants({ size: "lg", variant: "secondary", className: "w-full sm:w-auto text-lg h-14 px-8 bg-white/60 backdrop-blur-sm hover:bg-white/90 transition-colors" })}>
-                Employer Portal
+                {t('hero.employer_portal')}
               </Link>
             </motion.div>
           </motion.div>
@@ -110,10 +112,10 @@ export const Home = () => {
           variants={containerVariants}
         >
           {[
-            { label: 'Active Users', value: '10,000+' },
-            { label: 'Jobs Posted', value: '5,000+' },
-            { label: 'Inclusive Employers', value: '500+' },
-            { label: 'Success Stories', value: '2,500+' },
+            { label: t('stat.users'), value: '10,000+' },
+            { label: t('stat.jobs'), value: '5,000+' },
+            { label: t('stat.employers'), value: '500+' },
+            { label: t('stat.stories'), value: '2,500+' },
           ].map((stat, i) => (
             <motion.div key={i} variants={itemVariants} className="flex flex-col items-center p-4">
               <span className="text-4xl font-bold text-primary mb-2 drop-shadow-sm">{stat.value}</span>
@@ -144,18 +146,18 @@ export const Home = () => {
           {[
             {
               icon: Sparkles,
-              title: 'AI Assessment',
-              desc: 'Discover your strengths and get personalized career recommendations through our inclusive assessment.'
+              title: t('feature.assessment.title'),
+              desc: t('feature.assessment.desc')
             },
             {
               icon: GraduationCap,
-              title: 'Skill Building',
-              desc: 'Access curated courses and AI interview coaching to bridge the gap and prepare for your dream job.'
+              title: t('feature.skills.title'),
+              desc: t('feature.skills.desc')
             },
             {
               icon: Building,
-              title: 'Inclusive Matching',
-              desc: 'Get matched with employers who provide the exact accessibility accommodations you need.'
+              title: t('feature.matching.title'),
+              desc: t('feature.matching.desc')
             }
           ].map((feature, i) => (
             <motion.div key={i} variants={itemVariants}>
