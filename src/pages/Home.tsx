@@ -8,7 +8,7 @@ import { useAccessibility } from '@/context/AccessibilityContext';
 
 export const Home = () => {
   const { prefs } = useAccessibility();
-  const transition = prefs.reducedMotion ? { duration: 0.1 } : { duration: 0.8, ease: "easeOut" };
+  const transition = prefs.reducedMotion ? { duration: 0.1 } : { duration: 0.8, ease: "easeOut" as const };
 
   const containerVariants = {
     hidden: { opacity: 0 },
