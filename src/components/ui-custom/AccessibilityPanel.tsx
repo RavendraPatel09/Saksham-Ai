@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Settings, Eye, Ear, Activity, Brain, Type, Sun, Volume2, X } from 'lucide-react';
-import { useAccessibility, type AccessibilityProfile } from '@/context/AccessibilityContext';
+import { Settings, Eye, Ear, Activity, Brain, Type, Sun, Volume2, X, Speech, CheckCircle2 } from 'lucide-react';
+import { useAccessibility } from '@/context/AccessibilityContext';
+import type { AccessibilityProfile } from '@/context/AccessibilityContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
 export const AccessibilityPanel = () => {
-  const { prefs, updatePrefs, setProfile } = useAccessibility();
+  const { prefs, updatePrefs, updateProfile } = useAccessibility();
   const [isOpen, setIsOpen] = useState(false);
 
   // Close panel on escape key
@@ -18,12 +19,15 @@ export const AccessibilityPanel = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen]);
 
-  const profiles: { id: AccessibilityProfile; label: string; icon: any }[] = [
-    { id: 'default', label: 'Default', icon: Settings },
-    { id: 'low-vision', label: 'Low Vision', icon: Eye },
+  const profiles: { id: keyof AccessibilityProfile; label: string; icon: any }[] = [
+    { id: 'visual', label: 'Low Vision', icon: Eye },
     { id: 'hearing', label: 'Hearing', icon: Ear },
-    { id: 'motor', label: 'Motor', icon: Activity },
+    { id: 'speech', label: 'Speech', icon: Speech },
+    { id: 'mobility', label: 'Motor', icon: Activity },
+    { id: 'dyslexia', label: 'Dyslexia', icon: Brain },
+    { id: 'autism', label: 'Autism', icon: Brain },
     { id: 'cognitive', label: 'Cognitive', icon: Brain },
+    { id: 'multiple', label: 'Multiple', icon: CheckCircle2 },
   ];
 
   return (
@@ -69,17 +73,20 @@ export const AccessibilityPanel = () => {
                 <div>
                   <h3 className="font-semibold mb-3">Accessibility Profiles</h3>
                   <div className="grid grid-cols-2 gap-3">
-                    {profiles.map(p => (
-                      <Button
-                        key={p.id}
-                        variant={prefs.profile === p.id ? 'default' : 'outline'}
-                        className={`justify-start h-auto py-3 ${prefs.profile === p.id ? 'shadow-md bg-primary' : ''}`}
-                        onClick={() => setProfile(p.id)}
-                      >
-                        <p.icon className="w-4 h-4 mr-2 shrink-0" />
-                        <span className="truncate">{p.label}</span>
-                      </Button>
-                    ))}
+                    {profiles.map(p => {
+                      const isActive = !!prefs.profile[p.id];
+                      return (
+                        <Button
+                          key={p.id}
+                          variant={isActive ? 'default' : 'outline'}
+                          className={`justify-start h-auto py-3 ${isActive ? 'shadow-md bg-primary' : ''}`}
+                          onClick={() => updateProfile({ [p.id]: !isActive })}
+                        >
+                          <p.icon className="w-4 h-4 mr-2 shrink-0" />
+                          <span className="truncate">{p.label}</span>
+                        </Button>
+                      )
+                    })}
                   </div>
                 </div>
 
