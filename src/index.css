@@ -248,12 +248,14 @@ body.simplify-mode .dot-grid {
 }
 
 body.simplify-mode .premium-card:hover,
-body.simplify-mode .v2-card:hover,
+body.simplify-mode .v2-card:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
 body.simplify-mode .dot-grid-layer,
 body.simplify-mode .icon-cluster-layer,
 body.simplify-mode .connecting-line-layer {
-  transform: none !important;
-  box-shadow: none !important;
   display: none !important;
 }
 
