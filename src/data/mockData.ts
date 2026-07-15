@@ -60,3 +60,10 @@ export const SAVED_DATA: SavedItem[] = [
   { id: 5, type: 'job', title: 'Accessibility Tester', entity: 'InclusiveTech', location: 'Remote', savedAt: '1 week ago', status: 'Applied', deadline: 'In 2 days' },
   { id: 6, type: 'job', title: 'React Developer', entity: 'GlobalSolutions', location: 'Pune', savedAt: '3 weeks ago', status: 'Offer' },
 ];
+
+export const RESERVED_JOBS = [
+  { id: 1, title: 'Data Entry Operator (Grade B)', department: 'Ministry of Finance', category: 'OH (Orthopedically Handicapped)', state: 'Central Govt', salary: '₹25,500 - ₹81,100', deadline: '15 Aug 2026', docs: ['Disability Certificate', '12th Pass Marksheet', 'Aadhar Card'] },
+  { id: 2, title: 'Assistant Section Officer', department: 'Staff Selection Commission (SSC)', category: 'VH (Visually Handicapped)', state: 'Central Govt', salary: '₹44,900 - ₹1,42,400', deadline: '30 Aug 2026', docs: ['Disability Certificate', 'Graduation Degree', 'Scribe Request Form (Optional)'] },
+  { id: 3, title: 'Junior Clerk', department: 'State Bank of India', category: 'HH (Hearing Handicapped)', state: 'Banking Sector', salary: '₹19,900 - ₹63,200', deadline: '10 Sep 2026', docs: ['Disability Certificate', 'Graduation Degree'] },
+  { id: 4, title: 'Peon / Attendant', department: 'Maharashtra State Secretariat', category: 'Multiple Disabilities', state: 'Maharashtra', salary: '₹18,000 - ₹56,900', deadline: '05 Aug 2026', docs: ['Disability Certificate', '10th Pass Marksheet'] },
+];
