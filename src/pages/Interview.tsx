@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Mic, Video, Type, Play, Square, RotateCcw, MessageSquare, Bot, Activity, Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Mic, Video, Type, Play, Square, RotateCcw, MessageSquare, Bot, Activity, Sparkles, ArrowRight, CheckCircle2, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
@@ -61,6 +62,9 @@ export const Interview = () => {
         <motion.div variants={itemVariants} className="mb-10">
           <h1 className="text-3xl md:text-4xl font-extrabold mb-3 text-foreground drop-shadow-sm">AI Interview Coach</h1>
           <p className="text-lg text-muted-foreground max-w-2xl">Practice your interview skills in a safe, stress-free environment with real-time AI feedback.</p>
+          <Link to="/interview-brief" className="inline-flex items-center gap-2 mt-4 text-sm font-medium text-primary hover:underline">
+            <FileText className="w-4 h-4" /> Create an "How to Interview Me" brief for your interviewer →
+          </Link>
         </motion.div>
 
         <motion.div variants={itemVariants} className="flex flex-wrap gap-4 mb-8 bg-muted/30 p-2 rounded-2xl w-fit border border-border/50">
