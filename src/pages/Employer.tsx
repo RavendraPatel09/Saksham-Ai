@@ -14,6 +14,7 @@ import { candidates } from '@/data/mockData';
 import { useAppContext } from '@/context/AppContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAccessibility } from '@/context/AccessibilityContext';
+import { OverlayWrapper } from '@/context/OverlayContext';
 
 // Animated Counter Component
 const AnimatedCounter = ({ from, to, duration = 1.5 }: { from: number, to: number, duration?: number }) => {
@@ -48,6 +49,7 @@ const AnimatedCounter = ({ from, to, duration = 1.5 }: { from: number, to: numbe
 export const Employer = () => {
   const { setWorkspaceMode } = useAppContext();
   const { prefs } = useAccessibility();
+  const [showAuditModal, setShowAuditModal] = useState(false);
 
   useEffect(() => {
     setWorkspaceMode('employer');
@@ -171,7 +173,7 @@ export const Employer = () => {
             <Calendar className="w-5 h-5" />
             <span className="text-xs">Schedule Event</span>
           </Button>
-          <Button variant="outline" className="h-16 flex flex-col items-center justify-center gap-1 bg-white dark:bg-slate-900 border-border/50 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 hover:text-indigo-600 hover:border-indigo-200">
+          <Button onClick={() => setShowAuditModal(true)} variant="outline" className="h-16 flex flex-col items-center justify-center gap-1 bg-white dark:bg-slate-900 border-border/50 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 hover:text-indigo-600 hover:border-indigo-200">
             <FileCheck className="w-5 h-5" />
             <span className="text-xs">Run Audit</span>
           </Button>
@@ -216,11 +218,9 @@ export const Employer = () => {
                   <Button className="w-full justify-start h-12 text-md shadow-md bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-500/90 hover:to-purple-600/90 text-white">
                     <Users className="w-5 h-5 mr-3" /> Review Candidates
                   </Button>
-                  <Link to="/employer/audit" className="w-full">
-                    <Button variant="outline" className="w-full justify-start h-12 text-md">
-                      <FileCheck className="w-5 h-5 mr-3" /> Run AI Audit
-                    </Button>
-                  </Link>
+                  <Button onClick={() => setShowAuditModal(true)} variant="outline" className="w-full justify-start h-12 text-md">
+                    <FileCheck className="w-5 h-5 mr-3" /> Run AI Audit
+                  </Button>
                   <div className="grid grid-cols-2 gap-3">
                     <Button variant="secondary" className="w-full h-12"><MessageSquare className="w-4 h-4 mr-2" /> Ask AI</Button>
                     <Button variant="secondary" className="w-full h-12"><PieChartIcon className="w-4 h-4 mr-2" /> View Insights</Button>
@@ -462,9 +462,7 @@ export const Employer = () => {
                 </div>
               </div>
               <div className="mt-8 flex justify-end">
-                <Link to="/employer/audit">
-                  <Button variant="outline"><FileCheck className="w-4 h-4 mr-2" /> View Detailed Audit Report</Button>
-                </Link>
+                <Button onClick={() => setShowAuditModal(true)} variant="outline"><FileCheck className="w-4 h-4 mr-2" /> View Detailed Audit Report</Button>
               </div>
             </CardContent>
           </Card>
@@ -633,6 +631,71 @@ export const Employer = () => {
         </motion.div>
 
       </motion.div>
+
+      {/* AI Accessibility Audit Modal */}
+      <OverlayWrapper isOpen={showAuditModal} onClose={() => setShowAuditModal(false)} position="center" title="AI Accessibility Audit">
+        <div className="p-4 md:p-6 w-full max-h-[80vh] overflow-y-auto no-scrollbar">
+          <div className="flex items-center gap-4 mb-6 pb-4 border-b">
+            <div className="p-3 bg-indigo-500/10 rounded-xl">
+              <Bot className="w-8 h-8 text-indigo-500" />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold">Sakhi AI Audit Report</h2>
+              <p className="text-sm text-muted-foreground">Generated on {new Date().toLocaleDateString()}</p>
+            </div>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <Card className="border-emerald-500/20 bg-emerald-500/5">
+              <CardContent className="p-4 flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-bold text-muted-foreground mb-1">Overall Score</p>
+                  <div className="text-3xl font-black text-emerald-600">92/100</div>
+                </div>
+                <div className="p-3 bg-emerald-500/20 rounded-full text-emerald-600">
+                  <CheckCircle2 className="w-6 h-6" />
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="border-amber-500/20 bg-amber-500/5">
+              <CardContent className="p-4 flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-bold text-muted-foreground mb-1">Critical Issues</p>
+                  <div className="text-3xl font-black text-amber-600">3</div>
+                </div>
+                <div className="p-3 bg-amber-500/20 rounded-full text-amber-600">
+                  <ShieldAlert className="w-6 h-6" />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <h3 className="font-bold mb-4 flex items-center gap-2"><Activity className="w-5 h-5 text-primary" /> Actionable Recommendations</h3>
+          <div className="space-y-3">
+            <div className="p-4 border border-amber-200 bg-amber-50 dark:bg-amber-950/20 dark:border-amber-900 rounded-xl">
+              <div className="flex items-start gap-3">
+                <ShieldAlert className="w-5 h-5 text-amber-600 mt-0.5" />
+                <div>
+                  <h4 className="font-bold text-amber-900 dark:text-amber-400">Add tactile navigation to 2nd floor</h4>
+                  <p className="text-sm text-amber-700/80 dark:text-amber-400/80 mt-1">Required for full RPWD Act physical compliance. Estimated cost: $500.</p>
+                  <Button size="sm" className="mt-3 bg-amber-600 hover:bg-amber-700 text-white">View Vendors</Button>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-4 border border-indigo-200 bg-indigo-50 dark:bg-indigo-950/20 dark:border-indigo-900 rounded-xl">
+              <div className="flex items-start gap-3">
+                <Bot className="w-5 h-5 text-indigo-600 mt-0.5" />
+                <div>
+                  <h4 className="font-bold text-indigo-900 dark:text-indigo-400">Upgrade screen-reader support on internal tools</h4>
+                  <p className="text-sm text-indigo-700/80 dark:text-indigo-400/80 mt-1">HR portal has missing ARIA labels on forms affecting 4 employees.</p>
+                  <Button size="sm" className="mt-3 bg-indigo-600 hover:bg-indigo-700 text-white">Generate Jira Tickets</Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </OverlayWrapper>
     </div>
   );
 };

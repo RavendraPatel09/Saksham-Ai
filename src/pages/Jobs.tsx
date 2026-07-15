@@ -119,25 +119,45 @@ export const Jobs = () => {
               </motion.div>
             </div>
 
+            {/* Tabs for Job Categories */}
+            <div className="flex border-b border-border mb-8 overflow-x-auto no-scrollbar">
+              {['Recommended', 'Saved Jobs', 'Applied'].map((tab) => (
+                <button
+                  key={tab}
+                  className={`px-6 py-3 font-medium text-sm transition-colors relative whitespace-nowrap ${tab === 'Recommended' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}
+                >
+                  {tab}
+                  {tab === 'Recommended' && (
+                    <motion.div
+                      layoutId="job-tab-indicator"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+                    />
+                  )}
+                  {tab === 'Saved Jobs' && <Badge variant="secondary" className="ml-2 bg-muted">3</Badge>}
+                  {tab === 'Applied' && <Badge variant="secondary" className="ml-2 bg-muted">12</Badge>}
+                </button>
+              ))}
+            </div>
+
             {/* Filters Row */}
-            <motion.div 
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex flex-wrap gap-3 mb-8"
-            >
-              <Button variant="outline" className="rounded-full bg-white dark:bg-slate-900 border-border/50 text-muted-foreground hover:text-foreground">
-                <Filter className="w-4 h-4 mr-2" /> All Filters
-              </Button>
-              <Button variant="outline" className="rounded-full bg-white dark:bg-slate-900 border-border/50 text-muted-foreground hover:text-foreground">
-                Work Mode <ChevronDown className="w-4 h-4 ml-2" />
-              </Button>
-              <Button variant="outline" className="rounded-full bg-white dark:bg-slate-900 border-border/50 text-muted-foreground hover:text-foreground">
-                Accessibility <ChevronDown className="w-4 h-4 ml-2" />
-              </Button>
-              <Button variant="outline" className="rounded-full bg-white dark:bg-slate-900 border-border/50 text-muted-foreground hover:text-foreground">
-                Salary Range <ChevronDown className="w-4 h-4 ml-2" />
-              </Button>
-            </motion.div>
+            <div className="bg-muted/30 border border-border/50 rounded-2xl p-4 mb-8">
+              <div className="flex flex-wrap gap-3 items-center justify-between">
+                <div className="flex flex-wrap gap-3">
+                  <Button variant="outline" className="rounded-full bg-white dark:bg-slate-900 border-border/50 text-muted-foreground hover:text-foreground shadow-sm">
+                    Work Mode: Any <ChevronDown className="w-4 h-4 ml-2 opacity-50" />
+                  </Button>
+                  <Button variant="outline" className="rounded-full bg-white dark:bg-slate-900 border-border/50 text-muted-foreground hover:text-foreground shadow-sm">
+                    Accessibility Needs <ChevronDown className="w-4 h-4 ml-2 opacity-50" />
+                  </Button>
+                  <Button variant="outline" className="rounded-full bg-white dark:bg-slate-900 border-border/50 text-muted-foreground hover:text-foreground shadow-sm">
+                    Salary Range <ChevronDown className="w-4 h-4 ml-2 opacity-50" />
+                  </Button>
+                </div>
+                <Button variant="ghost" className="text-primary hover:bg-primary/10 transition-colors">
+                  <Filter className="w-4 h-4 mr-2" /> Advanced Filters
+                </Button>
+              </div>
+            </div>
 
             <motion.div 
               className="grid lg:grid-cols-2 gap-8"
