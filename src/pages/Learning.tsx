@@ -102,6 +102,8 @@ export const Learning = () => {
             ))}
           </motion.div>
         )}
+      </AnimatePresence>
+
       <AnimatePresence mode="wait">
         {isLoading ? (
           <motion.div 
