@@ -80,14 +80,17 @@ export const Home = () => {
             {t('hero.subtitle')}
           </motion.p>
           
-          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center items-center">
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto justify-center items-center mt-4">
             <motion.div whileHover={prefs.reducedMotion ? {} : { scale: 1.05 }} whileTap={prefs.reducedMotion ? {} : { scale: 0.95 }}>
-              <Link to="/register" className={buttonVariants({ size: "lg", className: "w-full sm:w-auto text-lg h-14 px-8 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-shadow" })}>
+              <Link to="/register" className={buttonVariants({ size: "lg", className: "w-full sm:w-auto text-lg h-14 px-10 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-shadow" })}>
                 {t('nav.get_started')} <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </motion.div>
+            
+            {/* The "For Employers" (hero.employer_portal) button has been permanently removed from this section per instructions, keeping only Get Started and Explore Jobs */}
+            
             <motion.div whileHover={prefs.reducedMotion ? {} : { scale: 1.05 }} whileTap={prefs.reducedMotion ? {} : { scale: 0.95 }}>
-              <Link to="/jobs" className={buttonVariants({ size: "lg", variant: "outline", className: "w-full sm:w-auto text-lg h-14 px-8 bg-white/50 backdrop-blur-sm border-primary/20 hover:bg-white/80 transition-colors" })}>
+              <Link to="/jobs" className={buttonVariants({ size: "lg", variant: "outline", className: "w-full sm:w-auto text-lg h-14 px-10 bg-white/50 backdrop-blur-sm border-primary/20 hover:bg-white/80 transition-colors" })}>
                 {t('hero.explore_jobs')}
               </Link>
             </motion.div>
