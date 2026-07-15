@@ -217,3 +217,33 @@
     transform: scale(1.02);
   }
 }
+
+/* Simplify Mode — hides decorative elements, standardizes typography */
+body.simplify-mode .bg-clip-text {
+  -webkit-text-fill-color: unset !important;
+  background: none !important;
+  color: inherit !important;
+}
+
+body.simplify-mode .bg-hero-gradient,
+body.simplify-mode .bg-dashboard-gradient {
+  background: var(--background) !important;
+}
+
+body.simplify-mode .premium-card:hover {
+  transform: none !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+}
+
+body.simplify-mode .animate-bounce,
+body.simplify-mode .animate-pulse,
+body.simplify-mode .animate-spin,
+body.simplify-mode .animate-ping {
+  animation: none !important;
+}
+
+/* Panic Mode — dims everything except the panic overlay */
+body.panic-mode > *:not([class*="z-[200]"]) {
+  filter: brightness(0.3) blur(2px);
+  pointer-events: none;
+}
