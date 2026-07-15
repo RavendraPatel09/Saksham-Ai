@@ -1,14 +1,15 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/geist";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/space-grotesk";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   .theme {
-    --font-heading: var(--font-sans);
-    --font-sans: 'Geist Variable', sans-serif;
+    --font-heading: 'Space Grotesk Variable', sans-serif;
+    --font-sans: 'Inter Variable', sans-serif;
   }
   
   :root {
@@ -20,7 +21,7 @@
     --popover-foreground: 222.2 84% 4.9%;
     
     /* Primary: Deep Blue #2563EB */
-    --primary: 221 83% 53%;
+    --primary: 221.2 83.2% 53.3%;
     --primary-foreground: 210 40% 98%;
     
     /* Secondary: Soft Mint #D1FAE5 */
@@ -157,6 +158,21 @@
     background: linear-gradient(135deg, #eff6ff, #f0f9ff, #ecfdf5);
   }
   
+  .dot-grid {
+    background-image: radial-gradient(rgba(37, 99, 235, 0.15) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: center;
+  }
+  
+  .v2-card {
+    @apply bg-white border border-[#E2E8F0] rounded-2xl transition-all duration-300 relative z-10;
+    border-width: 0.5px;
+  }
+
+  .dark .v2-card {
+    @apply bg-slate-900 border-white/10;
+  }
+  
   .bg-dashboard-gradient {
     background: linear-gradient(180deg, #ffffff, #f8fafc);
   }
@@ -226,13 +242,15 @@ body.simplify-mode .bg-clip-text {
 }
 
 body.simplify-mode .bg-hero-gradient,
-body.simplify-mode .bg-dashboard-gradient {
+body.simplify-mode .bg-dashboard-gradient,
+body.simplify-mode .dot-grid {
   background: var(--background) !important;
 }
 
-body.simplify-mode .premium-card:hover {
+body.simplify-mode .premium-card:hover,
+body.simplify-mode .v2-card:hover {
   transform: none !important;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+  box-shadow: none !important;
 }
 
 body.simplify-mode .animate-bounce,
