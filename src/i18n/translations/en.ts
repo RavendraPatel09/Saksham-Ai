@@ -44,6 +44,9 @@ export const en = {
   "more.menu.resume": "Resume Builder",
   "more.menu.roadmap": "Roadmap",
   "more.menu.tracker": "Application Tracker",
+  "more.menu.employers": "Inclusive Employers",
+  "more.menu.reserved_jobs": "Reserved Govt Jobs",
+  "more.menu.resume_bank": "Resume Bank Opt-In",
   
   "more.menu.access_settings": "Accessibility Settings",
   "more.menu.language": "Language & Region",
