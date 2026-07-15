@@ -436,13 +436,13 @@ export const Dashboard = () => {
         <h2 className="text-2xl font-bold mb-6">Advanced Tools</h2>
         <Card className="premium-card">
           <CardContent className="p-6">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 h-auto gap-2 bg-transparent">
-                <TabsTrigger value="career" className="py-3 data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm border"><Briefcase className="w-4 h-4 mr-2" /> Career</TabsTrigger>
-                <TabsTrigger value="accessibility" className="py-3 data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm border"><HandHeart className="w-4 h-4 mr-2" /> Accessibility</TabsTrigger>
-                <TabsTrigger value="finance" className="py-3 data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm border"><Landmark className="w-4 h-4 mr-2" /> Finance</TabsTrigger>
-                <TabsTrigger value="community" className="py-3 data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm border"><Users className="w-4 h-4 mr-2" /> Community</TabsTrigger>
-                <TabsTrigger value="safety" className="py-3 data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm border"><ShieldAlert className="w-4 h-4 mr-2" /> Safety</TabsTrigger>
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex-col">
+              <TabsList className="flex flex-wrap w-full h-auto gap-2 bg-transparent p-0 justify-start mb-4">
+                <TabsTrigger value="career" className="flex-1 min-w-[120px] py-3 data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm border rounded-xl"><Briefcase className="w-4 h-4 mr-2" /> Career</TabsTrigger>
+                <TabsTrigger value="accessibility" className="flex-1 min-w-[120px] py-3 data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm border rounded-xl"><HandHeart className="w-4 h-4 mr-2" /> Accessibility</TabsTrigger>
+                <TabsTrigger value="finance" className="flex-1 min-w-[120px] py-3 data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm border rounded-xl"><Landmark className="w-4 h-4 mr-2" /> Finance</TabsTrigger>
+                <TabsTrigger value="community" className="flex-1 min-w-[120px] py-3 data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm border rounded-xl"><Users className="w-4 h-4 mr-2" /> Community</TabsTrigger>
+                <TabsTrigger value="safety" className="flex-1 min-w-[120px] py-3 data-[state=active]:bg-primary data-[state=active]:text-white shadow-sm border rounded-xl"><ShieldAlert className="w-4 h-4 mr-2" /> Safety</TabsTrigger>
               </TabsList>
               
               <TabsContent value="career" className="mt-6">
