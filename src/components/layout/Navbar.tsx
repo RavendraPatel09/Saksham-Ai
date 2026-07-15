@@ -31,9 +31,6 @@ export const Navbar = ({ onOpenMore, onOpenAccessibility }: { onOpenMore?: () =>
     { name: t('nav.home'), path: '/' },
     { name: t('nav.learn'), path: '/learning' },
     { name: t('nav.jobs'), path: '/jobs' },
-    ...(workspaceMode === 'employer' 
-      ? [{ name: t('nav.employer_dashboard'), path: '/employer' }]
-      : (!workspaceMode ? [{ name: t('nav.employer_portal'), path: '/employer' }] : [])),
   ];
 
   return (
@@ -109,12 +106,12 @@ export const Navbar = ({ onOpenMore, onOpenAccessibility }: { onOpenMore?: () =>
           </Button>
 
           <div className="hidden md:flex gap-3">
-            {!workspaceMode ? (
+            {workspaceMode !== 'employer' ? (
               <>
                 <Link to="/employer" className={buttonVariants({ variant: "ghost", className: "hover:bg-primary/10 transition-colors" })}>
-                  {t('nav.employer_login')}
+                  For Employers
                 </Link>
-                <Link to="/register" className={buttonVariants({ className: "shadow-md hover:shadow-lg transition-all bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-600/90" })}>
+                <Link to="/register" className={buttonVariants({ variant: "ghost", className: "hover:bg-primary/10 transition-colors" })}>
                   {t('nav.get_started')}
                 </Link>
               </>
