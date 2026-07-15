@@ -111,8 +111,10 @@ export const OverlayProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const openOverlay = useCallback((type: OverlayType) => setActiveOverlay(type), []);
   const closeOverlay = useCallback(() => setActiveOverlay(null), []);
 
+  const value = React.useMemo(() => ({ activeOverlay, openOverlay, closeOverlay }), [activeOverlay, openOverlay, closeOverlay]);
+
   return (
-    <OverlayContext.Provider value={{ activeOverlay, openOverlay, closeOverlay }}>
+    <OverlayContext.Provider value={value}>
       {children}
     </OverlayContext.Provider>
   );

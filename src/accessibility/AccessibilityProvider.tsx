@@ -108,8 +108,16 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
     localStorage.setItem(WIZARD_COMPLETED_KEY, 'true');
   };
 
+  const value = React.useMemo(() => ({
+    prefs,
+    updatePrefs,
+    updateProfile,
+    isWizardCompleted,
+    completeWizard
+  }), [prefs, isWizardCompleted]);
+
   return (
-    <AccessibilityContext.Provider value={{ prefs, updatePrefs, updateProfile, isWizardCompleted, completeWizard }}>
+    <AccessibilityContext.Provider value={value}>
       <div className={prefs.darkMode || prefs.highContrast || prefs.profile.visual ? 'dark' : ''}>
         {children}
       </div>

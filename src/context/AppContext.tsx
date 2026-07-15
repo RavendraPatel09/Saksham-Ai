@@ -1,14 +1,26 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
+export interface CandidateProfile {
+  id: string;
+  name: string;
+  skills: string[];
+  accommodations: string[];
+  [key: string]: any; // Allow extensibility for mock data
+}
+
+export interface AssessmentScores {
+  [category: string]: number;
+}
+
 type WorkspaceMode = 'candidate' | 'employer' | 'accessibility' | null;
 
 type AppContextType = {
   workspaceMode: WorkspaceMode;
   setWorkspaceMode: (mode: WorkspaceMode) => void;
-  candidateProfile: any;
-  setCandidateProfile: (data: any) => void;
-  assessmentScores: any;
-  setAssessmentScores: (scores: any) => void;
+  candidateProfile: CandidateProfile | null;
+  setCandidateProfile: (data: CandidateProfile | null) => void;
+  assessmentScores: AssessmentScores | null;
+  setAssessmentScores: (scores: AssessmentScores | null) => void;
   isRegistered: boolean;
 };
 
@@ -46,18 +58,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const isRegistered = !!candidateProfile;
 
+  const value = React.useMemo(() => ({
+    workspaceMode,
+    setWorkspaceMode,
+    candidateProfile,
+    setCandidateProfile,
+    assessmentScores,
+    setAssessmentScores,
+    isRegistered,
+  }), [workspaceMode, candidateProfile, assessmentScores, isRegistered]);
+
   return (
-    <AppContext.Provider
-      value={{
-        workspaceMode,
-        setWorkspaceMode,
-        candidateProfile,
-        setCandidateProfile,
-        assessmentScores,
-        setAssessmentScores,
-        isRegistered,
-      }}
-    >
+    <AppContext.Provider value={value}>
       {children}
     </AppContext.Provider>
   );
