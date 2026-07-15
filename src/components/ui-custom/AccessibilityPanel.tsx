@@ -165,7 +165,6 @@ export const AccessibilityPanel = ({ isOpen, onClose }: AccessibilityPanelProps)
                   </p>
                 </div>
                 
-              </div>
       </div>
     </OverlayWrapper>
   );

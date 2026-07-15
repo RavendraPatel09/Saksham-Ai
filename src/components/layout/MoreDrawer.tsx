@@ -98,7 +98,6 @@ export const MoreDrawer: React.FC<MoreDrawerProps> = ({ isOpen, onClose, onOpenA
                 </div>
               ))}
             </div>
-            </div>
     </OverlayWrapper>
   );
 };

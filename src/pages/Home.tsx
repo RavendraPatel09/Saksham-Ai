@@ -247,6 +247,8 @@ export const Home = () => {
             </motion.div>
           ))}
         </motion.div>
+      </section>
+
       {/* FAQ Section */}
       <section className="py-24 container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">Frequently Asked Questions</h2>

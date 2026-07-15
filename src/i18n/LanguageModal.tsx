@@ -36,7 +36,6 @@ export const LanguageModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: (
                   <span className="text-base font-medium">{lang.label}</span>
                 </Button>
               ))}
-            </div>
       </div>
     </OverlayWrapper>
   );
