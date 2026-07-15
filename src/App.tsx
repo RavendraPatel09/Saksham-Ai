@@ -8,6 +8,9 @@ import { PageWrapper } from '@/components/layout/PageWrapper';
 import { Toaster } from '@/components/ui/sonner';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { Loader2 } from 'lucide-react';
+import { AccessibilityWizard } from '@/components/accessibility/AccessibilityWizard';
+import { LiveCaptions } from '@/components/captions/LiveCaptions';
+import { FocusManager } from '@/accessibility/FocusManager';
 
 // Lazy load pages for performance
 const Home = lazy(() => import('@/pages/Home').then(module => ({ default: module.Home })));
@@ -69,11 +72,17 @@ function AnimatedRoutes() {
 }
 
 function App() {
+  React.useEffect(() => {
+    FocusManager.getInstance().init();
+  }, []);
+
   return (
     <ErrorBoundary>
       <AccessibilityProvider>
         <AppProvider>
           <BrowserRouter>
+            <AccessibilityWizard />
+            <LiveCaptions />
             <Suspense fallback={<PageLoader />}>
               <AnimatedRoutes />
             </Suspense>
