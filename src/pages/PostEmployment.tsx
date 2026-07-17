@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Heart, MessageCircle, AlertTriangle, CheckCircle, Lightbulb } from 'lucide-react';
+import { Heart, MessageCircle, AlertTriangle, CheckCircle, Lightbulb, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -8,6 +9,33 @@ import { Textarea } from '@/components/ui/textarea';
 
 export const PostEmployment = () => {
   const [feedback, setFeedback] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmitFeedback = () => {
+    if (!feedback.trim()) {
+      toast.error('Please enter some feedback before submitting.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      const newFeedback = {
+        id: `fb-${Date.now()}`,
+        message: feedback.trim(),
+        category: 'wellness',
+        timestamp: new Date().toISOString(),
+      };
+      
+      const existing = JSON.parse(localStorage.getItem('saksham-feedback') || '[]');
+      localStorage.setItem('saksham-feedback', JSON.stringify([...existing, newFeedback]));
+      
+      setIsSubmitting(false);
+      setFeedback('');
+      toast.success('Feedback submitted successfully! Thank you for your input.');
+    }, 800);
+  };
   
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl">
@@ -68,7 +96,16 @@ export const PostEmployment = () => {
               />
             </CardContent>
             <CardFooter>
-              <Button>Submit Feedback</Button>
+              <Button onClick={handleSubmitFeedback} disabled={isSubmitting || !feedback.trim()}>
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  'Submit Feedback'
+                )}
+              </Button>
             </CardFooter>
           </Card>
         </TabsContent>
