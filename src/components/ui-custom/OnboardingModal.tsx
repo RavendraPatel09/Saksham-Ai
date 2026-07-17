@@ -8,6 +8,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 export const OnboardingModal = () => {
   const { workspaceMode, setWorkspaceMode } = useAppContext();
   const [show, setShow] = useState(false);
+  const [selectedMode, setSelectedMode] = useState<'candidate' | 'employer' | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -19,10 +20,11 @@ export const OnboardingModal = () => {
     }
   }, [workspaceMode, location.pathname]);
 
-  const handleSelect = (mode: 'candidate' | 'employer') => {
-    setWorkspaceMode(mode);
+  const handleContinue = () => {
+    if (!selectedMode) return;
+    setWorkspaceMode(selectedMode);
     setShow(false);
-    if (mode === 'employer') {
+    if (selectedMode === 'employer') {
       navigate('/employer');
     } else {
       navigate('/dashboard');
@@ -55,28 +57,41 @@ export const OnboardingModal = () => {
 
             <div className="relative z-10 grid gap-4">
               <button 
-                onClick={() => handleSelect('candidate')}
-                className="group relative flex flex-col items-center p-6 bg-background border-2 hover:border-primary rounded-xl transition-all hover:shadow-md text-left w-full overflow-hidden"
+                onClick={() => setSelectedMode('candidate')}
+                className={`group relative flex flex-col items-center p-6 bg-background border-2 rounded-xl transition-all hover:shadow-md text-left w-full overflow-hidden ${
+                  selectedMode === 'candidate' ? 'border-primary ring-1 ring-primary' : 'border-border hover:border-primary'
+                }`}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/5 to-primary/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                 <User className="w-10 h-10 text-primary mb-4" />
-                <h3 className="font-bold text-lg mb-1 group-hover:text-primary transition-colors">I am looking for jobs</h3>
+                <h3 className={`font-bold text-lg mb-1 transition-colors ${selectedMode === 'candidate' ? 'text-primary' : 'group-hover:text-primary'}`}>I am looking for jobs</h3>
                 <p className="text-sm text-muted-foreground text-center">Build skills, get AI mentorship, and find inclusive employers.</p>
               </button>
 
               <button 
-                onClick={() => handleSelect('employer')}
-                className="group relative flex flex-col items-center p-6 bg-background border-2 hover:border-indigo-500 rounded-xl transition-all hover:shadow-md text-left w-full overflow-hidden"
+                onClick={() => setSelectedMode('employer')}
+                className={`group relative flex flex-col items-center p-6 bg-background border-2 rounded-xl transition-all hover:shadow-md text-left w-full overflow-hidden ${
+                  selectedMode === 'employer' ? 'border-indigo-500 ring-1 ring-indigo-500' : 'border-border hover:border-indigo-500'
+                }`}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-indigo-500/5 to-indigo-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                 <Briefcase className="w-10 h-10 text-indigo-500 mb-4" />
-                <h3 className="font-bold text-lg mb-1 group-hover:text-indigo-600 transition-colors">I am hiring talent</h3>
+                <h3 className={`font-bold text-lg mb-1 transition-colors ${selectedMode === 'employer' ? 'text-indigo-600' : 'group-hover:text-indigo-600'}`}>I am hiring talent</h3>
                 <p className="text-sm text-muted-foreground text-center">Access the accessibility command center and find top diverse candidates.</p>
               </button>
             </div>
             
-            <div className="mt-6 flex justify-center">
-               <Button variant="ghost" onClick={() => setShow(false)} className="text-xs text-muted-foreground">Skip for now <ArrowRight className="w-3 h-3 ml-1" /></Button>
+            <div className="mt-8 flex flex-col items-center gap-4">
+              <Button 
+                onClick={handleContinue} 
+                disabled={!selectedMode}
+                className="w-full md:w-auto min-w-[200px]"
+              >
+                Continue
+              </Button>
+              <Button variant="ghost" onClick={() => setShow(false)} className="text-xs text-muted-foreground h-auto py-1">
+                Skip for now <ArrowRight className="w-3 h-3 ml-1" />
+              </Button>
             </div>
           </motion.div>
         </div>
