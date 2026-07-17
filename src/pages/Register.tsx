@@ -226,7 +226,7 @@ export const Register = () => {
           </Button>
           {step < totalSteps ? (
             <Button onClick={() => setStep(step + 1)}>
-              Next <ArrowRight className="ml-2 h-4 w-4" />
+              Continue <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           ) : (
             <Button onClick={handleComplete}>

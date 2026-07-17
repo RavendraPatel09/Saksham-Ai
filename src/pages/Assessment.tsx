@@ -274,7 +274,7 @@ export const Assessment = () => {
                 {isAnswered ? "Selection saved." : "Please select an option to continue."}
               </span>
               <Button size="lg" onClick={handleNext} disabled={!isAnswered} className="h-12 px-6 rounded-xl shadow-sm">
-                {currentQuestion === assessmentQuestions.length - 1 ? 'Finish Assessment' : 'Next Question'}
+                {currentQuestion === assessmentQuestions.length - 1 ? 'Finish Assessment' : 'Continue'}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </CardFooter>

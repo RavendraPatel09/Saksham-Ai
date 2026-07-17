@@ -79,8 +79,8 @@ export const AccessibilityWizard = () => {
             <Button variant="ghost" onClick={handleComplete} className="text-muted-foreground hover:text-foreground">
               Skip for now
             </Button>
-            <Button size="lg" onClick={handleComplete} className="shadow-lg shadow-primary/20 hover:shadow-primary/40">
-              Apply Settings <ArrowRight className="ml-2 w-5 h-5" />
+            <Button size="lg" onClick={handleComplete} disabled={Object.values(selected).every(v => !v)} className="shadow-lg shadow-primary/20 hover:shadow-primary/40 min-w-[140px]">
+              Continue <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
           </div>
         </div>
