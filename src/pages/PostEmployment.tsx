@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, MessageCircle, AlertTriangle, CheckCircle, Lightbulb, Loader2, Star, Calendar, TrendingUp, Activity, HeartPulse, Users, BookOpen, ArrowRight, Paperclip, Mic, Image, Check } from 'lucide-react';
+import { Heart, MessageCircle, AlertTriangle, CheckCircle, Lightbulb, Loader2, Star, Calendar, TrendingUp, Activity, HeartPulse, Users, BookOpen, ArrowRight, Paperclip, Mic, Image, Upload, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -86,14 +86,15 @@ export const PostEmployment = () => {
       setSelectedRating(0);
       setSelectedMood('');
       setSelectedCategories([]);
+      setIsAnonymous(false);
       const msg = 'Feedback submitted successfully.';
       setSuccessMessage(msg);
       toast.success(msg);
     }, 800);
   };
-  
+
   return (
-    <div className="container mx-auto px-4 py-8 max-w-5xl">
+    <div className="container mx-auto px-4 py-8 max-w-7xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Post-Employment Support</h1>
         <p className="text-muted-foreground">We're here to ensure your workplace journey is smooth and fully supported.</p>
@@ -107,69 +108,41 @@ export const PostEmployment = () => {
         </TabsList>
 
         <TabsContent value="wellness" className="space-y-6">
-          <div className="grid grid-cols-3 gap-4 w-full">
-            <Card className="flex flex-1 flex-col items-center justify-center text-center w-full min-w-[140px] p-4 h-full">
-              <CardHeader className="pb-2 text-center w-full px-0">
-                <CardTitle className="text-sm font-medium text-muted-foreground w-full whitespace-nowrap">Satisfaction Score</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col items-center justify-center w-full px-0 pb-0 text-center">
-                <div className="text-3xl font-bold text-primary mb-2 whitespace-nowrap">8.5 / 10</div>
-                <Progress value={85} className="h-2 w-full max-w-[120px]" />
-              </CardContent>
-            </Card>
-            <Card className="flex flex-1 flex-col items-center justify-center text-center w-full min-w-[140px] p-4 h-full">
-              <CardHeader className="pb-2 text-center w-full px-0">
-                <CardTitle className="text-sm font-medium text-muted-foreground w-full whitespace-nowrap">Comfort Level</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col items-center justify-center w-full px-0 pb-0 text-center">
-                <div className="text-3xl font-bold text-green-500 mb-2 whitespace-nowrap">High</div>
-                <Progress value={90} className="h-2 w-full max-w-[120px]" />
-              </CardContent>
-            </Card>
-            <Card className="flex flex-1 flex-col items-center justify-center text-center w-full min-w-[140px] p-4 h-full">
-              <CardHeader className="pb-2 text-center w-full px-0">
-                <CardTitle className="text-sm font-medium text-muted-foreground w-full whitespace-nowrap">Stress Level</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col items-center justify-center w-full px-0 pb-0 text-center">
-                <div className="text-3xl font-bold text-yellow-500 mb-2 whitespace-nowrap">Moderate</div>
-                <Progress value={40} className="h-2 w-full max-w-[120px] [&>div]:bg-yellow-500" />
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="grid lg:grid-cols-3 gap-6 w-full">
+          <div className="flex flex-col lg:flex-row gap-6 items-start">
             
-            {/* LEFT COLUMN: Main Feedback Experience */}
-            <div className="lg:col-span-2 space-y-6">
+            {/* LEFT COLUMN (Main Content - 70%) */}
+            <div className="flex-1 min-w-0 w-full space-y-6">
               
-              <Card className="w-full p-6 space-y-6">
+              {/* Metrics Section */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <Card className="flex flex-col items-center justify-center text-center p-5">
+                  <CardTitle className="text-sm font-medium text-muted-foreground whitespace-nowrap mb-3 flex items-center gap-2">😊 Satisfaction Score</CardTitle>
+                  <div className="text-3xl font-bold text-primary mb-3">8.5 / 10</div>
+                  <Progress value={85} className="h-2 w-full max-w-[120px]" />
+                </Card>
+                <Card className="flex flex-col items-center justify-center text-center p-5">
+                  <CardTitle className="text-sm font-medium text-muted-foreground whitespace-nowrap mb-3 flex items-center gap-2">💚 Comfort Level</CardTitle>
+                  <div className="text-3xl font-bold text-green-500 mb-3">High</div>
+                  <Progress value={90} className="h-2 w-full max-w-[120px] [&>div]:bg-green-500" />
+                </Card>
+                <Card className="flex flex-col items-center justify-center text-center p-5">
+                  <CardTitle className="text-sm font-medium text-muted-foreground whitespace-nowrap mb-3 flex items-center gap-2">⚠ Stress Level</CardTitle>
+                  <div className="text-3xl font-bold text-yellow-500 mb-3">Moderate</div>
+                  <Progress value={40} className="h-2 w-full max-w-[120px] [&>div]:bg-yellow-500" />
+                </Card>
+              </div>
+
+              {/* Monthly Check-in */}
+              <Card className="w-full p-6 space-y-8 shadow-sm">
                 <CardHeader className="px-0 pt-0">
-                  <CardTitle className="flex items-center gap-2 text-xl"><Heart className="h-6 w-6 text-red-500" /> Monthly Check-in</CardTitle>
-                  <CardDescription>How was your experience this month at HCL Accessibility Hub?</CardDescription>
+                  <CardTitle className="flex items-center gap-2 text-2xl"><Heart className="h-6 w-6 text-red-500" /> Monthly Workplace Check-in</CardTitle>
+                  <CardDescription className="text-base">Help us improve your workplace experience.</CardDescription>
                 </CardHeader>
                 <CardContent className="px-0 pb-0 space-y-8">
                   
-                  {/* Emoji Experience Selector */}
-                  <div>
-                    <Label className="mb-3 block font-medium">How are you feeling today?</Label>
-                    <div className="flex flex-wrap gap-2">
-                      {moods.map(m => (
-                        <Button
-                          key={m.label}
-                          type="button"
-                          variant="outline"
-                          onClick={() => setSelectedMood(m.label)}
-                          className={`rounded-full px-4 py-2 h-auto ${selectedMood === m.label ? 'bg-primary/10 border-primary text-primary hover:bg-primary/20 ring-2 ring-primary/20' : 'text-muted-foreground hover:text-foreground'}`}
-                        >
-                          <span className="text-xl mr-2">{m.emoji}</span> {m.label}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Rating Selector */}
-                  <div>
-                    <Label className="mb-3 block font-medium">Rate your overall experience</Label>
+                  {/* Section 1: Overall experience rating */}
+                  <div className="space-y-3">
+                    <Label className="text-base font-semibold">Overall experience rating</Label>
                     <div className="flex gap-2" role="radiogroup" aria-label="Rating">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <Button 
@@ -178,42 +151,67 @@ export const PostEmployment = () => {
                           variant="outline" 
                           size="sm" 
                           onClick={() => setSelectedRating(star)} 
-                          className={`h-12 w-12 rounded-full ${selectedRating >= star ? 'bg-primary/10 border-primary text-primary hover:bg-primary/20' : 'text-muted-foreground hover:text-foreground'}`}
+                          className={`h-14 w-14 rounded-xl transition-all ${selectedRating >= star ? 'bg-primary/10 border-primary text-primary hover:bg-primary/20 scale-105' : 'text-muted-foreground hover:text-foreground hover:bg-muted'}`}
                           aria-label={`${star} star${star > 1 ? 's' : ''}`}
                           role="radio"
                           aria-checked={selectedRating === star}
                         >
-                          <Star className={`w-5 h-5 ${selectedRating >= star ? 'fill-primary' : ''}`} />
+                          <Star className={`w-6 h-6 ${selectedRating >= star ? 'fill-primary text-primary' : ''}`} />
                         </Button>
                       ))}
                     </div>
                   </div>
+                  
+                  <div className="h-px bg-border/60" />
 
-                  {/* Quick Feedback Chips */}
-                  <div>
-                    <Label className="mb-3 block font-medium">Quick Feedback</Label>
-                    <div className="flex flex-wrap gap-2">
-                      {quickChips.map(chip => (
-                        <Badge 
-                          key={chip}
-                          variant={selectedCategories.includes(chip) ? 'default' : 'secondary'}
-                          className="cursor-pointer hover:bg-primary/80 transition-colors text-sm py-1.5 px-3 rounded-full"
-                          onClick={() => toggleCategory(chip)}
-                          role="button"
-                          tabIndex={0}
+                  {/* Section 2: Quick mood selector */}
+                  <div className="space-y-3">
+                    <Label className="text-base font-semibold">Quick mood selector</Label>
+                    <div className="flex flex-wrap gap-3">
+                      {moods.map(m => (
+                        <Button
+                          key={m.label}
+                          type="button"
+                          variant="outline"
+                          onClick={() => setSelectedMood(m.label)}
+                          className={`rounded-full px-5 py-2.5 h-auto transition-all ${selectedMood === m.label ? 'bg-primary/10 border-primary text-primary hover:bg-primary/20 ring-2 ring-primary/20 font-semibold' : 'text-muted-foreground hover:text-foreground'}`}
                         >
-                          {chip} {selectedCategories.includes(chip) && '✓'}
-                        </Badge>
+                          <span className="text-xl mr-2">{m.emoji}</span> {m.label}
+                        </Button>
                       ))}
                     </div>
                   </div>
+                  
+                  <div className="h-px bg-border/60" />
 
+                  {/* Section 3: Feedback categories */}
+                  <div className="space-y-4">
+                    <Label className="text-base font-semibold">Feedback categories</Label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {categoryOptions.map(cat => (
+                        <div 
+                          key={cat} 
+                          className="flex items-center space-x-3 p-3 rounded-lg border cursor-pointer hover:bg-muted/50 transition-colors"
+                          onClick={() => toggleCategory(cat)}
+                        >
+                          <div className={`w-5 h-5 rounded border flex items-center justify-center ${selectedCategories.includes(cat) ? 'bg-primary border-primary text-primary-foreground' : 'border-input bg-background'}`}>
+                            {selectedCategories.includes(cat) && <Check className="w-3.5 h-3.5" />}
+                          </div>
+                          <Label className="cursor-pointer font-medium leading-none">{cat}</Label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="h-px bg-border/60" />
+
+                  {/* Section 4: Comment box */}
                   <div className="space-y-3">
-                    <Label htmlFor="feedbackInput" className="font-medium block">Additional Details</Label>
+                    <Label htmlFor="feedbackInput" className="text-base font-semibold block">Additional comments</Label>
                     <Textarea 
                       id="feedbackInput"
-                      placeholder="Share any additional thoughts about your accommodations, workload, and team..."
-                      className="min-h-[120px] w-full resize-none text-base p-4"
+                      placeholder="Tell us what is going well and what can be improved."
+                      className="min-h-[140px] w-full resize-none text-base p-4 leading-relaxed"
                       value={feedbackText}
                       onChange={e => {
                         setFeedbackText(e.target.value);
@@ -222,14 +220,48 @@ export const PostEmployment = () => {
                       }}
                       aria-invalid={!!errorMessage}
                     />
-                    <div aria-live="polite" className="min-h-[20px] text-sm">
-                      {errorMessage && <span className="text-destructive font-medium flex items-center gap-1"><AlertTriangle className="w-4 h-4"/> {errorMessage}</span>}
-                      {successMessage && <span className="text-green-600 dark:text-green-400 font-medium flex items-center gap-1"><CheckCircle className="w-4 h-4"/> {successMessage}</span>}
+                    <div className="flex justify-between items-center text-sm">
+                      <div aria-live="polite" className="min-h-[20px]">
+                        {errorMessage && <span className="text-destructive font-medium flex items-center gap-1"><AlertTriangle className="w-4 h-4"/> {errorMessage}</span>}
+                        {successMessage && <span className="text-green-600 dark:text-green-400 font-medium flex items-center gap-1"><CheckCircle className="w-4 h-4"/> {successMessage}</span>}
+                      </div>
+                      <span className="text-muted-foreground">{feedbackText.length} characters</span>
                     </div>
                   </div>
+                  
+                  <div className="h-px bg-border/60" />
+
+                  {/* Section 5: Anonymous toggle */}
+                  <div className="flex items-center justify-between p-4 rounded-lg bg-muted/40 border">
+                    <div className="space-y-0.5">
+                      <Label className="text-base font-semibold">Submit anonymously</Label>
+                      <p className="text-sm text-muted-foreground">Your feedback will not be tied to your profile.</p>
+                    </div>
+                    <Switch checked={isAnonymous} onCheckedChange={setIsAnonymous} />
+                  </div>
+                  
+                  <div className="h-px bg-border/60" />
+
+                  {/* Section 6: Attachments */}
+                  <div className="space-y-3">
+                    <Label className="text-base font-semibold">Attachments (Optional)</Label>
+                    <div className="flex flex-wrap gap-3">
+                      <Button variant="outline" className="gap-2 text-muted-foreground hover:text-foreground" onClick={() => toast("Screenshot upload simulator activated")}>
+                        <Image className="w-4 h-4" /> Screenshot upload
+                      </Button>
+                      <Button variant="outline" className="gap-2 text-muted-foreground hover:text-foreground" onClick={() => toast("Voice note recording simulator activated")}>
+                        <Mic className="w-4 h-4" /> Voice note upload
+                      </Button>
+                      <Button variant="outline" className="gap-2 text-muted-foreground hover:text-foreground" onClick={() => toast("Document upload simulator activated")}>
+                        <Paperclip className="w-4 h-4" /> Document upload
+                      </Button>
+                    </div>
+                  </div>
+
                 </CardContent>
                 <CardFooter className="px-0 pb-0 pt-4">
-                  <Button size="lg" className="w-full text-base font-semibold" onClick={handleSubmitFeedback} disabled={submitting || !feedbackText.trim() || !selectedRating || !selectedMood}>
+                  {/* Section 7: Submit button */}
+                  <Button size="lg" className="w-full text-base font-semibold h-14" onClick={handleSubmitFeedback} disabled={submitting || !feedbackText.trim() || !selectedRating || !selectedMood}>
                     {submitting ? (
                       <>
                         <Loader2 className="mr-2 h-5 w-5 animate-spin" />
@@ -242,42 +274,12 @@ export const PostEmployment = () => {
                 </CardFooter>
               </Card>
 
-              {/* Your Feedback Journey */}
-              <Card className="w-full overflow-hidden border-primary/10">
-                 <CardHeader className="bg-primary/5 pb-4">
-                   <CardTitle>Your Feedback Journey</CardTitle>
-                   <CardDescription>Track your workplace experience over time.</CardDescription>
-                 </CardHeader>
-                 <CardContent className="pt-6">
-                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                     <div className="p-4 bg-muted/30 rounded-xl border border-border/50">
-                       <div className="text-3xl font-bold text-foreground/90">{feedbackHistory.length}</div>
-                       <div className="text-xs font-medium text-muted-foreground mt-2 uppercase tracking-wider">Submitted</div>
-                     </div>
-                     <div className="p-4 bg-muted/30 rounded-xl border border-border/50">
-                       <div className="text-3xl font-bold text-foreground/90 flex items-center justify-center gap-1">
-                         <Star className="w-5 h-5 fill-yellow-500 text-yellow-500" />
-                         {feedbackHistory.length ? (feedbackHistory.reduce((a,b) => a + (b.rating||0), 0) / feedbackHistory.length).toFixed(1) : 'N/A'}
-                       </div>
-                       <div className="text-xs font-medium text-muted-foreground mt-2 uppercase tracking-wider">Avg Rating</div>
-                     </div>
-                     <div className="p-4 bg-muted/30 rounded-xl border border-border/50">
-                       <div className="text-lg font-bold text-foreground/90 mt-1">{feedbackHistory[0]?.createdAt ? new Date(feedbackHistory[0].createdAt).toLocaleDateString() : 'N/A'}</div>
-                       <div className="text-xs font-medium text-muted-foreground mt-2 uppercase tracking-wider">Last Check-in</div>
-                     </div>
-                     <div className="p-4 bg-primary/10 rounded-xl border border-primary/20">
-                       <div className="text-xl font-bold text-primary mt-1">Improving ↑</div>
-                       <div className="text-xs font-medium text-primary/80 mt-2 uppercase tracking-wider">Trend</div>
-                     </div>
-                   </div>
-                 </CardContent>
-              </Card>
-
-              <div className="mt-8">
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-xl font-bold">Recent Feedback</h3>
+              {/* Recent Feedback Redesign */}
+              <div className="mt-12 space-y-6">
+                <div className="flex justify-between items-center border-b pb-4">
+                  <h3 className="text-2xl font-bold">Recent Feedback</h3>
                   <Dialog open={isHistoryModalOpen} onOpenChange={setIsHistoryModalOpen}>
-                    <DialogTrigger render={<Button variant="outline" size="sm">View All Feedback</Button>} />
+                    <DialogTrigger render={<Button variant="outline" size="sm">View All</Button>} />
                     <DialogContent className="max-w-2xl max-h-[85vh] flex flex-col">
                       <DialogHeader>
                         <DialogTitle>Feedback History</DialogTitle>
@@ -303,34 +305,27 @@ export const PostEmployment = () => {
                               if (historyFilter === 'Positive') return item.rating >= 4;
                               if (historyFilter === 'Neutral') return item.rating === 3;
                               if (historyFilter === 'Negative') return item.rating <= 2;
-                              return true; // simple mock filter logic
+                              return true;
                             })
                             .map(item => (
                             <Card key={item.id} className="w-full">
                                <CardContent className="p-5">
-                                 <div className="flex justify-between items-start mb-3">
-                                   <div className="flex flex-col gap-1.5">
-                                     <div className="flex gap-1" aria-label={`Rating: ${item.rating || 0} out of 5 stars`}>
-                                       {Array.from({length: 5}).map((_, i) => (
-                                         <Star key={i} className={`w-4 h-4 ${i < (item.rating || 0) ? 'text-primary fill-primary' : 'text-muted-foreground/30'}`} aria-hidden="true" />
-                                       ))}
-                                     </div>
-                                     {item.mood && (
-                                       <div className="flex items-center gap-2">
-                                         <Badge variant="outline" className="text-xs font-normal">{item.mood}</Badge>
-                                       </div>
-                                     )}
-                                   </div>
-                                   <span className="text-xs text-muted-foreground font-medium bg-muted px-2 py-1 rounded-md">{item.createdAt ? new Date(item.createdAt).toLocaleDateString() : new Date().toLocaleDateString()}</span>
-                                 </div>
-                                 {item.category && item.category.length > 0 && (
-                                   <div className="flex flex-wrap gap-1.5 mb-3">
-                                     {item.category.map((cat: string) => (
-                                       <span key={cat} className="text-[10px] bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full uppercase tracking-wider">{cat}</span>
+                                 <div className="flex justify-between items-start flex-wrap gap-4 mb-3">
+                                   <div className="flex gap-1" aria-label={`Rating: ${item.rating || 0} out of 5 stars`}>
+                                     {Array.from({length: 5}).map((_, i) => (
+                                       <Star key={i} className={`w-5 h-5 ${i < (item.rating || 0) ? 'text-primary fill-primary' : 'text-muted-foreground/30'}`} aria-hidden="true" />
                                      ))}
                                    </div>
-                                 )}
-                                 <p className="text-sm text-foreground/90 whitespace-pre-wrap">{item.message || item.text}</p>
+                                   <span className="text-sm text-muted-foreground font-medium">{item.createdAt ? new Date(item.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : new Date().toLocaleDateString()}</span>
+                                 </div>
+                                 <p className="text-base text-foreground/90 whitespace-pre-wrap leading-relaxed mb-4">"{item.message || item.text}"</p>
+                                 <div className="flex flex-wrap items-center gap-2">
+                                   {item.mood && <Badge variant="outline" className="font-normal bg-muted/50">Mood: {item.mood}</Badge>}
+                                   {item.category && item.category.length > 0 && item.category.map((cat: string) => (
+                                     <Badge key={cat} variant="secondary" className="font-normal">{cat}</Badge>
+                                   ))}
+                                   {item.isAnonymous && <Badge variant="outline" className="font-normal text-muted-foreground border-dashed">Anonymous</Badge>}
+                                 </div>
                                </CardContent>
                             </Card>
                           ))}
@@ -340,37 +335,43 @@ export const PostEmployment = () => {
                     </DialogContent>
                   </Dialog>
                 </div>
-                <div className="grid grid-cols-1 gap-4">
+
+                <div className="grid grid-cols-1 gap-6">
                   {feedbackHistory.slice(0, 3).map(item => (
                     <Card key={item.id} className="w-full border-border/60 hover:border-primary/30 transition-colors">
-                       <CardContent className="p-5">
-                         <div className="flex justify-between items-start mb-3">
-                           <div className="flex flex-col gap-1">
-                             <div className="flex gap-1" aria-label={`Rating: ${item.rating || 0} out of 5 stars`}>
-                               {Array.from({length: 5}).map((_, i) => (
-                                 <Star key={i} className={`w-4 h-4 ${i < (item.rating || 0) ? 'text-primary fill-primary' : 'text-muted-foreground/30'}`} aria-hidden="true" />
-                               ))}
-                             </div>
-                             {item.mood && <span className="text-xs font-medium text-muted-foreground flex items-center gap-1">Feeling: {item.mood}</span>}
+                       <CardContent className="p-6">
+                         <div className="flex justify-between items-start flex-wrap gap-4 mb-4">
+                           <div className="flex gap-1" aria-label={`Rating: ${item.rating || 0} out of 5 stars`}>
+                             {Array.from({length: 5}).map((_, i) => (
+                               <Star key={i} className={`w-5 h-5 ${i < (item.rating || 0) ? 'text-primary fill-primary' : 'text-muted-foreground/30'}`} aria-hidden="true" />
+                             ))}
                            </div>
-                           <span className="text-xs text-muted-foreground font-medium">{item.createdAt ? new Date(item.createdAt).toLocaleDateString() : new Date().toLocaleDateString()}</span>
+                           <span className="text-sm text-muted-foreground font-medium">{item.createdAt ? new Date(item.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : new Date().toLocaleDateString()}</span>
                          </div>
-                         <p className="text-sm text-foreground/90 whitespace-pre-wrap line-clamp-3">{item.message || item.text}</p>
+                         <p className="text-base text-foreground/90 whitespace-pre-wrap leading-relaxed mb-4">"{item.message || item.text}"</p>
+                         <div className="flex flex-wrap items-center gap-2">
+                           {item.category && item.category.length > 0 && item.category.map((cat: string) => (
+                             <Badge key={cat} variant="secondary" className="font-normal">{cat}</Badge>
+                           ))}
+                           {item.isAnonymous && <Badge variant="outline" className="font-normal text-muted-foreground border-dashed">Anonymous</Badge>}
+                         </div>
                        </CardContent>
                     </Card>
                   ))}
                   {feedbackHistory.length === 0 && (
-                    <div className="text-center py-10 border border-dashed rounded-xl border-border">
+                    <div className="text-center py-12 border border-dashed rounded-xl border-border">
                       <p className="text-sm text-muted-foreground italic">No recent feedback submissions found.</p>
                     </div>
                   )}
                 </div>
               </div>
+
             </div>
 
-            {/* RIGHT COLUMN: Summary & Quick Actions */}
-            <div className="space-y-6">
+            {/* RIGHT COLUMN (Sidebar - Fixed Width 320px-360px) */}
+            <div className="w-full lg:w-[320px] xl:w-[360px] shrink-0 space-y-6">
               
+              {/* Today's Well-being */}
               <Card className="bg-primary/5 border-primary/20 shadow-sm">
                 <CardHeader className="pb-4">
                   <CardTitle className="text-lg">Today's Well-being</CardTitle>
@@ -385,90 +386,113 @@ export const PostEmployment = () => {
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-2 font-medium">
+                      <span className="text-muted-foreground">Energy Level</span>
+                      <span className="text-yellow-600 dark:text-yellow-400">Moderate</span>
+                    </div>
+                    <Progress value={50} className="h-2 [&>div]:bg-yellow-500" />
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-sm mb-2 font-medium">
                       <span className="text-muted-foreground">Work-Life Balance</span>
                       <span className="text-primary">Good</span>
                     </div>
-                    <Progress value={60} className="h-2" />
+                    <Progress value={80} className="h-2" />
                   </div>
-                  <div className="pt-5 border-t border-primary/10">
-                    <p className="text-sm font-bold mb-3">Recommended Actions</p>
-                    <ul className="text-sm text-muted-foreground space-y-3">
-                      <li className="flex gap-2 items-start leading-tight">
-                        <CheckCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" /> 
-                        Take a 5-minute screen break to rest your eyes.
-                      </li>
-                      <li className="flex gap-2 items-start leading-tight">
-                        <CheckCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" /> 
-                        Log your ergonomic needs in the Issue Tracker.
-                      </li>
-                    </ul>
+                  <div className="pt-3 border-t border-primary/10 flex justify-between items-center">
+                    <span className="text-sm font-bold">Weekly Score</span>
+                    <Badge variant="default" className="text-sm px-3">82 / 100</Badge>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="shadow-sm">
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-lg">Quick Actions</CardTitle>
-                </CardHeader>
-                <CardContent className="grid grid-cols-2 gap-3">
-                  <Button variant="outline" className="h-auto py-4 px-2 flex flex-col gap-2.5 items-center text-center text-xs whitespace-normal bg-card hover:bg-muted/50 border-border/60">
-                    <div className="bg-primary/10 p-2 rounded-full"><Calendar className="w-4 h-4 text-primary" /></div>
-                    Schedule<br/>Check-in
-                  </Button>
-                  <Button variant="outline" className="h-auto py-4 px-2 flex flex-col gap-2.5 items-center text-center text-xs whitespace-normal bg-card hover:bg-muted/50 border-border/60">
-                    <div className="bg-primary/10 p-2 rounded-full"><Lightbulb className="w-4 h-4 text-primary" /></div>
-                    Open AI<br/>Mentor
-                  </Button>
-                  <Button variant="outline" className="h-auto py-4 px-2 flex flex-col gap-2.5 items-center text-center text-xs whitespace-normal bg-card hover:bg-muted/50 border-border/60">
-                    <div className="bg-primary/10 p-2 rounded-full"><AlertTriangle className="w-4 h-4 text-primary" /></div>
-                    Create<br/>Issue
-                  </Button>
-                  <Button variant="outline" className="h-auto py-4 px-2 flex flex-col gap-2.5 items-center text-center text-xs whitespace-normal bg-card hover:bg-muted/50 border-border/60">
-                    <div className="bg-primary/10 p-2 rounded-full"><CheckCircle className="w-4 h-4 text-primary" /></div>
-                    View<br/>Accommodations
-                  </Button>
-                </CardContent>
-              </Card>
-
+              {/* Personal Insights */}
               <Card className="shadow-sm">
                 <CardHeader className="pb-4">
                   <CardTitle className="text-lg">Personal Insights</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-5">
+                <CardContent className="space-y-4">
                   <div className="flex gap-3 items-start">
                     <TrendingUp className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
-                    <p className="text-sm leading-relaxed"><span className="font-semibold">Improved Comfort:</span> Your comfort score improved this month following your new chair request.</p>
+                    <p className="text-sm leading-relaxed"><span className="font-semibold block">Comfort improved</span> Your workspace comfort score is up 15% this week.</p>
+                  </div>
+                  <div className="flex gap-3 items-start">
+                    <Users className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+                    <p className="text-sm leading-relaxed"><span className="font-semibold block">Team collaboration</span> Excellent interactions noted in your recent syncs.</p>
                   </div>
                   <div className="flex gap-3 items-start">
                     <Activity className="w-5 h-5 text-yellow-500 shrink-0 mt-0.5" />
-                    <p className="text-sm leading-relaxed"><span className="font-semibold">Stress Monitor:</span> Stress levels increased by 12%. Consider utilizing flexible hours.</p>
+                    <p className="text-sm leading-relaxed"><span className="font-semibold block">Stress trend</span> Stress levels plateaued. Monitor your meeting load.</p>
                   </div>
                   <div className="flex gap-3 items-start">
-                    <Heart className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
-                    <p className="text-sm leading-relaxed"><span className="font-semibold">Team Synergy:</span> You gave positive feedback on team support recently. Keep it up!</p>
+                    <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <p className="text-sm leading-relaxed"><span className="font-semibold block">Accommodation status</span> New screen reader license is fully activated.</p>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-destructive/20 shadow-sm overflow-hidden">
-                <CardHeader className="bg-destructive/5 pb-4">
-                  <CardTitle className="text-lg flex items-center gap-2 text-destructive"><HeartPulse className="w-5 h-5" /> Need Immediate Support?</CardTitle>
+              {/* AI Recommendations */}
+              <Card className="shadow-sm border-primary/10">
+                <CardHeader className="pb-4 bg-primary/5 rounded-t-xl">
+                  <CardTitle className="text-lg flex items-center gap-2"><Lightbulb className="w-5 h-5 text-primary" /> AI Recommendations</CardTitle>
                 </CardHeader>
-                <CardContent className="pt-5 space-y-3 bg-card">
-                  <Button variant="outline" className="w-full justify-start text-sm border-border/60 hover:bg-muted/50">
-                    <MessageCircle className="w-4 h-4 mr-3 text-muted-foreground" /> Talk to AI Mentor
+                <CardContent className="pt-5 space-y-3">
+                  <Button variant="outline" className="w-full justify-start text-sm border-border/60 hover:bg-muted/50 h-auto py-3">
+                    <div className="text-left">
+                      <span className="block font-semibold mb-0.5">Take a break</span>
+                      <span className="text-xs text-muted-foreground font-normal">You've been active for 3 hours.</span>
+                    </div>
                   </Button>
-                  <Button variant="outline" className="w-full justify-start text-sm border-border/60 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30">
-                    <AlertTriangle className="w-4 h-4 mr-3 text-destructive/70" /> Report an Urgent Issue
+                  <Button variant="outline" className="w-full justify-start text-sm border-border/60 hover:bg-muted/50 h-auto py-3">
+                    <div className="text-left">
+                      <span className="block font-semibold mb-0.5">Schedule mentor support</span>
+                      <span className="text-xs text-muted-foreground font-normal">Review your Q3 goals.</span>
+                    </div>
                   </Button>
-                  <Button variant="outline" className="w-full justify-start text-sm border-border/60 hover:bg-muted/50">
-                    <Users className="w-4 h-4 mr-3 text-muted-foreground" /> Contact HR Support
+                  <Button variant="outline" className="w-full justify-start text-sm border-border/60 hover:bg-muted/50 h-auto py-3">
+                    <div className="text-left">
+                      <span className="block font-semibold mb-0.5">Explore accessibility tools</span>
+                      <span className="text-xs text-muted-foreground font-normal">New contrast settings available.</span>
+                    </div>
                   </Button>
-                  <Button variant="ghost" className="w-full justify-start text-sm text-primary hover:text-primary hover:bg-primary/10 mt-2">
-                    <BookOpen className="w-4 h-4 mr-3" /> Mental Wellness Resources <ArrowRight className="w-3 h-3 ml-auto"/>
+                  <Button variant="outline" className="w-full justify-start text-sm border-border/60 hover:bg-muted/50 h-auto py-3">
+                    <div className="text-left">
+                      <span className="block font-semibold mb-0.5">Talk to HR</span>
+                      <span className="text-xs text-muted-foreground font-normal">Regarding workstation upgrades.</span>
+                    </div>
                   </Button>
                 </CardContent>
               </Card>
+
+              {/* Team Synergy */}
+              <Card className="shadow-sm">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg">Team Synergy</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-5">
+                  <div className="space-y-1.5">
+                    <div className="flex justify-between text-sm font-medium">
+                      <span className="text-foreground">Collaboration</span>
+                      <span className="text-primary">92%</span>
+                    </div>
+                    <Progress value={92} className="h-1.5" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <div className="flex justify-between text-sm font-medium">
+                      <span className="text-foreground">Communication</span>
+                      <span className="text-primary">88%</span>
+                    </div>
+                    <Progress value={88} className="h-1.5" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <div className="flex justify-between text-sm font-medium">
+                      <span className="text-foreground">Inclusion</span>
+                      <span className="text-primary">95%</span>
+                    </div>
+                    <Progress value={95} className="h-1.5" />
+                  </div>
+                </CardContent>
+              </Card>
+
             </div>
           </div>
         </TabsContent>
