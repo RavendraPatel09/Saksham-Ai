@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, MessageCircle, AlertTriangle, CheckCircle, Lightbulb, Loader2, Star, Calendar, TrendingUp, Activity, HeartPulse, Users, BookOpen } from 'lucide-react';
+import { Heart, MessageCircle, AlertTriangle, CheckCircle, Lightbulb, Loader2, Star, Calendar, TrendingUp, Activity, HeartPulse, Users, BookOpen, ArrowRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -278,9 +278,7 @@ export const PostEmployment = () => {
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-xl font-bold">Recent Feedback</h3>
                   <Dialog open={isHistoryModalOpen} onOpenChange={setIsHistoryModalOpen}>
-                    <DialogTrigger asChild>
-                      <Button variant="outline" size="sm">View All Feedback</Button>
-                    </DialogTrigger>
+                    <DialogTrigger render={<Button variant="outline" size="sm">View All Feedback</Button>} />
                     <DialogContent className="max-w-2xl max-h-[85vh] flex flex-col">
                       <DialogHeader>
                         <DialogTitle>Feedback History</DialogTitle>
