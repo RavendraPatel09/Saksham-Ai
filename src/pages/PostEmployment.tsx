@@ -44,15 +44,15 @@ export const PostEmployment = () => {
     // Simulate API call
     setTimeout(() => {
       const newFeedback = {
-        id: `fb-${Date.now()}`,
-        text: trimmed,
+        id: crypto.randomUUID(),
+        message: trimmed,
         rating: selectedRating,
-        submittedAt: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
       };
       
-      const existing = JSON.parse(localStorage.getItem('saksham-feedback-history') || '[]');
+      const existing = JSON.parse(localStorage.getItem('saksham-feedback') || '[]');
       const updatedHistory = [newFeedback, ...existing];
-      localStorage.setItem('saksham-feedback-history', JSON.stringify(updatedHistory));
+      localStorage.setItem('saksham-feedback', JSON.stringify(updatedHistory));
       setFeedbackHistory(updatedHistory);
       
       setSubmitting(false);
@@ -79,42 +79,42 @@ export const PostEmployment = () => {
         </TabsList>
 
         <TabsContent value="wellness" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 w-full">
-            <Card className="flex flex-col items-center justify-center text-center w-full p-4 h-full">
+          <div className="grid grid-cols-3 gap-4 w-full">
+            <Card className="flex flex-1 flex-col items-center justify-center text-center w-full min-w-[140px] p-4 h-full">
               <CardHeader className="pb-2 text-center w-full px-0">
-                <CardTitle className="text-sm font-medium text-muted-foreground w-full break-words">Satisfaction Score</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground w-full whitespace-nowrap">Satisfaction Score</CardTitle>
               </CardHeader>
-              <CardContent className="flex flex-col items-center justify-center w-full px-0 pb-0">
-                <div className="text-3xl font-bold text-primary mb-2">8.5 / 10</div>
+              <CardContent className="flex flex-col items-center justify-center w-full px-0 pb-0 text-center">
+                <div className="text-3xl font-bold text-primary mb-2 whitespace-nowrap">8.5 / 10</div>
                 <Progress value={85} className="h-2 w-full max-w-[120px]" />
               </CardContent>
             </Card>
-            <Card className="flex flex-col items-center justify-center text-center w-full p-4 h-full">
+            <Card className="flex flex-1 flex-col items-center justify-center text-center w-full min-w-[140px] p-4 h-full">
               <CardHeader className="pb-2 text-center w-full px-0">
-                <CardTitle className="text-sm font-medium text-muted-foreground w-full break-words">Comfort Level</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground w-full whitespace-nowrap">Comfort Level</CardTitle>
               </CardHeader>
-              <CardContent className="flex flex-col items-center justify-center w-full px-0 pb-0">
-                <div className="text-3xl font-bold text-green-500 mb-2">High</div>
+              <CardContent className="flex flex-col items-center justify-center w-full px-0 pb-0 text-center">
+                <div className="text-3xl font-bold text-green-500 mb-2 whitespace-nowrap">High</div>
                 <Progress value={90} className="h-2 w-full max-w-[120px]" />
               </CardContent>
             </Card>
-            <Card className="flex flex-col items-center justify-center text-center w-full p-4 h-full">
+            <Card className="flex flex-1 flex-col items-center justify-center text-center w-full min-w-[140px] p-4 h-full">
               <CardHeader className="pb-2 text-center w-full px-0">
-                <CardTitle className="text-sm font-medium text-muted-foreground w-full break-words">Stress Level</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground w-full whitespace-nowrap">Stress Level</CardTitle>
               </CardHeader>
-              <CardContent className="flex flex-col items-center justify-center w-full px-0 pb-0">
-                <div className="text-3xl font-bold text-yellow-500 mb-2">Moderate</div>
+              <CardContent className="flex flex-col items-center justify-center w-full px-0 pb-0 text-center">
+                <div className="text-3xl font-bold text-yellow-500 mb-2 whitespace-nowrap">Moderate</div>
                 <Progress value={40} className="h-2 w-full max-w-[120px] [&>div]:bg-yellow-500" />
               </CardContent>
             </Card>
           </div>
 
-          <Card className="w-full mt-6">
-            <CardHeader>
+          <Card className="w-full mt-6 p-6 space-y-4">
+            <CardHeader className="px-0 pt-0">
               <CardTitle className="flex items-center gap-2"><Heart className="h-5 w-5 text-red-500" /> Monthly Check-in</CardTitle>
               <CardDescription>How was your experience this month at HCL Accessibility Hub?</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-0 pb-0">
               <div className="mb-4">
                 <Label className="mb-2 block font-medium">Rate your experience</Label>
                 <div className="flex gap-2" role="radiogroup" aria-label="Rating">
@@ -139,7 +139,7 @@ export const PostEmployment = () => {
               <Textarea 
                 id="feedbackInput"
                 placeholder="Share your thoughts about your accommodations, workload, and team..."
-                className="min-h-[120px] w-full resize-y"
+                className="min-h-[120px] w-full resize-none"
                 value={feedbackText}
                 onChange={e => {
                   setFeedbackText(e.target.value);
@@ -153,8 +153,8 @@ export const PostEmployment = () => {
                 {successMessage && <span className="text-green-600 dark:text-green-400 font-medium">{successMessage}</span>}
               </div>
             </CardContent>
-            <CardFooter>
-              <Button onClick={handleSubmitFeedback} disabled={submitting || !feedbackText.trim()}>
+            <CardFooter className="px-0 pb-0">
+              <Button className="w-full" onClick={handleSubmitFeedback} disabled={submitting || !feedbackText.trim()}>
                 {submitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -179,9 +179,9 @@ export const PostEmployment = () => {
                            <Star key={i} className={`w-4 h-4 ${i < (item.rating || 0) ? 'text-primary fill-primary' : 'text-muted-foreground/30'}`} aria-hidden="true" />
                          ))}
                        </div>
-                       <span className="text-xs text-muted-foreground font-medium">{new Date(item.submittedAt).toLocaleDateString()}</span>
+                       <span className="text-xs text-muted-foreground font-medium">{item.createdAt ? new Date(item.createdAt).toLocaleDateString() : new Date().toLocaleDateString()}</span>
                      </div>
-                     <p className="text-sm text-foreground/90 whitespace-pre-wrap">{item.text}</p>
+                     <p className="text-sm text-foreground/90 whitespace-pre-wrap">{item.message || item.text}</p>
                    </CardContent>
                 </Card>
               ))}
