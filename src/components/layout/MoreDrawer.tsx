@@ -65,7 +65,7 @@ export const MoreDrawer: React.FC<MoreDrawerProps> = ({ isOpen, onClose, onOpenA
       items: [
         { name: t('more.menu.gov_support'), path: "/government-support", icon: HeartHandshake },
         { name: t('more.menu.reserved_jobs'), path: "/reserved-jobs", icon: Landmark },
-        { name: t('more.menu.feedback'), path: "/", icon: MessageSquare },
+        { name: t('more.menu.feedback'), path: "/post-employment", icon: MessageSquare },
         { name: t('more.menu.help_center'), path: "/", icon: HelpCircle },
       ]
     }
