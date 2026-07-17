@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, MessageCircle, AlertTriangle, CheckCircle, Lightbulb, Loader2, Star, Calendar, TrendingUp, Activity, HeartPulse, Users, BookOpen, ArrowRight } from 'lucide-react';
+import { Heart, MessageCircle, AlertTriangle, CheckCircle, Lightbulb, Loader2, Star, Calendar, TrendingUp, Activity, HeartPulse, Users, BookOpen, ArrowRight, Paperclip, Mic, Image, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,12 +10,14 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Switch } from '@/components/ui/switch';
 
 export const PostEmployment = () => {
   const [feedbackText, setFeedbackText] = useState('');
   const [selectedRating, setSelectedRating] = useState<number>(0);
   const [selectedMood, setSelectedMood] = useState<string>('');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [isAnonymous, setIsAnonymous] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -25,31 +27,27 @@ export const PostEmployment = () => {
   const [historyFilter, setHistoryFilter] = useState('All');
 
   const moods = [
-    { emoji: '🙂', label: 'Excellent' },
-    { emoji: '😊', label: 'Good' },
+    { emoji: '😊', label: 'Great' },
+    { emoji: '🙂', label: 'Good' },
     { emoji: '😐', label: 'Neutral' },
-    { emoji: '😟', label: 'Difficult' },
-    { emoji: '😞', label: 'Need Support' }
+    { emoji: '😔', label: 'Difficult' },
+    { emoji: '😣', label: 'Stressful' }
   ];
 
-  const quickChips = [
-    'Workload', 'Accessibility', 'Team Support', 'Stress', 
-    'Equipment', 'Communication', 'Office Environment', 'Career Growth'
+  const categoryOptions = [
+    'Team support', 'Workplace accommodations', 'Accessibility tools',
+    'Communication', 'Workload', 'Manager support'
   ];
 
   useEffect(() => {
-    const history = JSON.parse(localStorage.getItem('saksham-feedback') || '[]');
+    const history = JSON.parse(localStorage.getItem('saksham-feedback-history') || '[]');
     setFeedbackHistory(history);
   }, []);
 
-  const toggleCategory = (chip: string) => {
+  const toggleCategory = (cat: string) => {
     setSelectedCategories(prev => 
-      prev.includes(chip) ? prev.filter(c => c !== chip) : [...prev, chip]
+      prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
     );
-    const textToAdd = `${chip} is... `;
-    if (!feedbackText.includes(chip)) {
-      setFeedbackText(prev => prev ? `${prev}\n${textToAdd}` : textToAdd);
-    }
   };
 
   const handleSubmitFeedback = () => {
@@ -74,12 +72,13 @@ export const PostEmployment = () => {
         rating: selectedRating,
         mood: selectedMood,
         category: selectedCategories,
+        isAnonymous,
         createdAt: new Date().toISOString(),
       };
       
-      const existing = JSON.parse(localStorage.getItem('saksham-feedback') || '[]');
+      const existing = JSON.parse(localStorage.getItem('saksham-feedback-history') || '[]');
       const updatedHistory = [newFeedback, ...existing];
-      localStorage.setItem('saksham-feedback', JSON.stringify(updatedHistory));
+      localStorage.setItem('saksham-feedback-history', JSON.stringify(updatedHistory));
       setFeedbackHistory(updatedHistory);
       
       setSubmitting(false);
