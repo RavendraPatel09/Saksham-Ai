@@ -20,6 +20,8 @@ export interface AccessibilityPreferences {
   textToSpeech: boolean;
   speechToText: boolean;
   screenReader: boolean;
+  blindMode: boolean;
+  voiceGuidance: boolean;
 }
 
 export const DEFAULT_PROFILE: AccessibilityProfile = {
@@ -44,6 +46,8 @@ export const DEFAULT_PREFERENCES: AccessibilityPreferences = {
   textToSpeech: false,
   speechToText: false,
   screenReader: false,
+  blindMode: false,
+  voiceGuidance: false,
 };
 
 export const ACCESSIBILITY_STORAGE_KEY = 'saksham_accessibility_prefs';
