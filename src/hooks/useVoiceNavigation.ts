@@ -44,7 +44,9 @@ export const useVoiceNavigation = () => {
       }
 
       const name = candidateProfile?.name || 'Rahul';
-      const greeting = `Welcome ${name}. How are you today? What can I help you with?`;
+      const greeting = `Hello ${name}, how can I help you today?`;
+      
+      console.log("[VOICE] Blind mode enabled");
       
       voiceAssistant.speak(greeting, () => {
         voiceAssistant.startListening();
@@ -76,10 +78,14 @@ export const useVoiceNavigation = () => {
         status: 'executed' 
       });
 
+      console.log("[VOICE] Command detected:", transcript, "->", parsed.type);
+
       if (parsed.type === 'navigate') {
+        console.log("[VOICE] Executing:", "navigate", parsed.payload);
         voiceAssistant.executeCommand(() => navigate(parsed.payload), parsed.confirm);
       } 
       else if (parsed.type === 'accessibility') {
+        console.log("[VOICE] Executing:", "accessibility", parsed.payload);
         voiceAssistant.executeCommand(() => {
           if (parsed.payload === 'highContrast_on') updatePrefs({ highContrast: true });
           if (parsed.payload === 'highContrast_off') updatePrefs({ highContrast: false });
@@ -90,6 +96,7 @@ export const useVoiceNavigation = () => {
         }, parsed.confirm);
       }
       else if (parsed.type === 'action') {
+        console.log("[VOICE] Executing:", "action", parsed.payload);
         if (parsed.payload === 'go_back') {
           voiceAssistant.executeCommand(() => navigate(-1), parsed.confirm);
         } else if (parsed.payload === 'submit_feedback') {
@@ -100,6 +107,7 @@ export const useVoiceNavigation = () => {
         }
       }
       else if (parsed.type === 'read_page') {
+        console.log("[VOICE] Executing: read_page");
         readCurrentPage();
       }
       else if (parsed.type === 'help') {
