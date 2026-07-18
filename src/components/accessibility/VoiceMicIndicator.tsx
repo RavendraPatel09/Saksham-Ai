@@ -47,6 +47,8 @@ export const VoiceMicIndicator: React.FC<VoiceMicIndicatorProps> = ({ status, de
       text = "Command executed.";
       bgColor = isHighContrast ? "bg-black border-2 border-green-400 text-green-400" : "bg-green-500/90";
       break;
+  }
+
   const isDev = import.meta.env.DEV;
 
   // REMOVE THE "IDLE" BUTTON ENTIRELY
