@@ -9,7 +9,7 @@ import { parseCommand, normalizeTranscript, type CommandResult } from '../voiceC
 describe('normalizeTranscript', () => {
   it('lowercases, trims, strips punctuation, collapses whitespace', () => {
     expect(normalizeTranscript('  Open  the JOBS!  ')).toBe('open the jobs');
-    expect(normalizeTranscript("Hello, how's it going?")).toBe('hells hows it going');
+    expect(normalizeTranscript("Hello, how's it going?")).toBe('hello hows it going');
   });
 });
 
