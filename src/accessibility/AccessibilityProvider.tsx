@@ -10,7 +10,7 @@ import type { AccessibilityPreferences, AccessibilityProfile } from './Accessibi
 export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [prefs, setPrefs] = useState<AccessibilityPreferences>(() => {
     const saved = localStorage.getItem(ACCESSIBILITY_STORAGE_KEY);
-    return saved ? JSON.parse(saved) : DEFAULT_PREFERENCES;
+    return saved ? { ...DEFAULT_PREFERENCES, ...JSON.parse(saved) } : DEFAULT_PREFERENCES;
   });
 
   const [isWizardCompleted, setIsWizardCompleted] = useState<boolean>(() => {
@@ -19,9 +19,9 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     localStorage.setItem(ACCESSIBILITY_STORAGE_KEY, JSON.stringify(prefs));
-    localStorage.setItem('saksham-blind-mode', prefs.blindMode.toString());
-    localStorage.setItem('saksham-voice-guidance', prefs.voiceGuidance.toString());
-    localStorage.setItem('saksham-voice-enabled', prefs.voiceGuidance.toString());
+    localStorage.setItem('saksham-blind-mode', String(!!prefs.blindMode));
+    localStorage.setItem('saksham-voice-guidance', String(!!prefs.voiceGuidance));
+    localStorage.setItem('saksham-voice-enabled', String(!!prefs.voiceGuidance));
     
     const root = document.documentElement;
     
