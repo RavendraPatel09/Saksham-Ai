@@ -1,15 +1,22 @@
 type CommandObserver = (transcript: string) => void;
+type DebugObserver = (debugInfo: { transcript: string; recognized: string; status: string }) => void;
 
 class VoiceAssistantService {
   private static instance: VoiceAssistantService;
   private recognition: any = null;
   private observers: CommandObserver[] = [];
+  private debugObservers: DebugObserver[] = [];
   public isSupported: boolean = false;
   private continuousListening: boolean = false;
   public status: 'idle' | 'listening' | 'processing' | 'executed' = 'idle';
   private statusListeners: ((status: string) => void)[] = [];
+  private isCurrentlySpeaking: boolean = false;
 
   private constructor() {
+    this.initRecognition();
+  }
+
+  private initRecognition() {
     if (typeof window !== 'undefined' && ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
       this.isSupported = true;
       const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
@@ -20,7 +27,7 @@ class VoiceAssistantService {
 
       this.recognition.onresult = (event: any) => {
         const current = event.resultIndex;
-        const transcript = event.results[current][0].transcript.toLowerCase().trim();
+        const transcript = event.results[current][0].transcript;
         this.setStatus('processing');
         
         // Notify observers (React hooks)
@@ -36,8 +43,8 @@ class VoiceAssistantService {
       };
 
       this.recognition.onend = () => {
-        // Automatically restart if continuous listening is enabled
-        if (this.continuousListening) {
+        // Restart automatically if we are still meant to be listening and not speaking
+        if (this.continuousListening && !this.isCurrentlySpeaking) {
           try {
             this.recognition.start();
           } catch (e) {
@@ -80,6 +87,17 @@ class VoiceAssistantService {
     };
   }
 
+  public subscribeDebug(observer: DebugObserver) {
+    this.debugObservers.push(observer);
+    return () => {
+      this.debugObservers = this.debugObservers.filter(obs => obs !== observer);
+    };
+  }
+
+  public emitDebug(debugInfo: { transcript: string; recognized: string; status: string }) {
+    this.debugObservers.forEach(obs => obs(debugInfo));
+  }
+
   public startListening() {
     if (!this.isSupported || !this.recognition) return;
     this.continuousListening = true;
@@ -101,22 +119,56 @@ class VoiceAssistantService {
   public speak(text: string, onEnd?: () => void) {
     if (typeof window === 'undefined') return;
     
-    // Stop any ongoing speech
+    // Stop ongoing speech
     window.speechSynthesis.cancel();
+    
+    // Pause recognition temporarily while speaking so it doesn't hear itself
+    if (this.recognition && this.continuousListening) {
+      this.recognition.stop();
+    }
+    this.isCurrentlySpeaking = true;
     
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = 1.0;
     utterance.pitch = 1.0;
 
-    if (onEnd) {
-      utterance.onend = onEnd;
-    }
+    utterance.onend = () => {
+      this.isCurrentlySpeaking = false;
+      if (onEnd) onEnd();
+      
+      // Resume listening
+      if (this.continuousListening && this.recognition) {
+        try {
+          this.recognition.start();
+        } catch (e) {
+          // ignore
+        }
+      }
+    };
     
     window.speechSynthesis.speak(utterance);
   }
-  
-  public stopSpeaking() {
-    if (typeof window === 'undefined') return;
+
+  public executeCommand(commandFunc: () => void, confirmMessage: string) {
+    this.setStatus('executed');
+    this.speak(confirmMessage);
+    commandFunc();
+  }
+
+  public toggleVoiceMode(enable: boolean) {
+    if (enable) {
+      this.startListening();
+    } else {
+      this.stopListening();
+      window.speechSynthesis.cancel();
+    }
+  }
+
+  public destroy() {
+    this.stopListening();
+    this.observers = [];
+    this.statusListeners = [];
+    this.debugObservers = [];
     window.speechSynthesis.cancel();
   }
 }
