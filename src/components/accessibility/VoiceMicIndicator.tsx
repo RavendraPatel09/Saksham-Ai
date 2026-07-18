@@ -64,29 +64,7 @@ export const VoiceMicIndicator: React.FC<VoiceMicIndicatorProps> = ({ status, de
         className="fixed bottom-6 right-6 z-[100] flex flex-col items-end gap-2 pointer-events-none"
         aria-live="polite"
       >
-        {isDev && debugInfo && (
-          <div className="bg-black/90 text-green-400 font-mono text-[11px] p-4 rounded-lg shadow-xl w-72 break-words border border-gray-700 pointer-events-auto">
-            <p className="font-bold text-white border-b border-gray-700 mb-2 pb-1 text-sm flex justify-between">
-              <span>Debug Panel (Dev Only)</span>
-            </p>
-            <div className="space-y-1">
-              <p><span className="text-gray-400">Blind Mode:</span> ✅</p>
-              <p><span className="text-gray-400">Speech Synthesis:</span> {isSupported ? '✅' : '❌'}</p>
-              <p><span className="text-gray-400">Speech Recognition:</span> {isSupported ? '✅' : '❌'}</p>
-              <p><span className="text-gray-400">Listening:</span> {status === 'listening' ? '✅' : '❌'}</p>
-              <div className="my-2 border-l-2 border-green-500 pl-2">
-                <p className="text-gray-400">Last transcript:</p>
-                <p className="text-white italic">"{debugInfo.transcript || 'none'}"</p>
-              </div>
-              <div className="my-2 border-l-2 border-blue-500 pl-2">
-                <p className="text-gray-400">Command executed:</p>
-                <p className="text-blue-300">{debugInfo.recognized || 'none'}</p>
-              </div>
-              <p><span className="text-gray-400">Current page:</span> {window.location.pathname}</p>
-              <p><span className="text-gray-400">Last error:</span> <span className="text-red-400">{debugInfo.error || 'none'}</span></p>
-            </div>
-          </div>
-        )}
+
         
         {shouldShowMic && (
           <div className={`flex items-center gap-3 px-4 py-3 rounded-full shadow-lg backdrop-blur text-white ${bgColor} ${pulse ? 'animate-pulse' : ''} border border-white/20 pointer-events-auto`}>
