@@ -50,7 +50,7 @@ export const VoiceMicIndicator: React.FC<VoiceMicIndicatorProps> = ({ status, de
   }
 
   const opacity = status === 'idle' ? 0.6 : 1;
-  const isDev = process.env.NODE_ENV === 'development';
+  const isDev = import.meta.env.DEV;
 
   return (
     <AnimatePresence>
