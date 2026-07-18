@@ -5,7 +5,7 @@ import { useAccessibility } from '@/context/AccessibilityContext';
 
 interface VoiceMicIndicatorProps {
   status: 'idle' | 'listening' | 'processing' | 'executed';
-  debugInfo?: { transcript: string; recognized: string; status: string };
+  debugInfo?: { transcript: string; recognized: string; status: string; error?: string };
   isSupported?: boolean;
 }
 
@@ -47,34 +47,53 @@ export const VoiceMicIndicator: React.FC<VoiceMicIndicatorProps> = ({ status, de
       text = "Command executed.";
       bgColor = isHighContrast ? "bg-black border-2 border-green-400 text-green-400" : "bg-green-500/90";
       break;
-  }
-
-  const opacity = status === 'idle' ? 0.6 : 1;
   const isDev = import.meta.env.DEV;
+
+  // REMOVE THE "IDLE" BUTTON ENTIRELY
+  const shouldShowMic = status !== 'idle';
 
   return (
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
-        animate={{ opacity, scale: 1, y: 0 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 20 }}
         transition={{ duration: isReducedMotion ? 0 : 0.3 }}
-        className="fixed bottom-6 right-6 z-[100] flex flex-col items-end gap-2"
+        className="fixed bottom-6 right-6 z-[100] flex flex-col items-end gap-2 pointer-events-none"
         aria-live="polite"
       >
-        {isDev && debugInfo && debugInfo.transcript && (
-          <div className="bg-black/80 text-green-400 font-mono text-xs p-3 rounded shadow-xl w-64 break-words">
-            <p className="font-bold text-white border-b border-gray-600 mb-1 pb-1">Debug Panel (Dev Only)</p>
-            <p><span className="text-gray-400">Heard:</span> {debugInfo.transcript}</p>
-            <p><span className="text-gray-400">Parsed:</span> {debugInfo.recognized}</p>
+        {isDev && debugInfo && (
+          <div className="bg-black/90 text-green-400 font-mono text-[11px] p-4 rounded-lg shadow-xl w-72 break-words border border-gray-700 pointer-events-auto">
+            <p className="font-bold text-white border-b border-gray-700 mb-2 pb-1 text-sm flex justify-between">
+              <span>Debug Panel (Dev Only)</span>
+            </p>
+            <div className="space-y-1">
+              <p><span className="text-gray-400">Blind Mode:</span> ✅</p>
+              <p><span className="text-gray-400">Speech Synthesis:</span> {isSupported ? '✅' : '❌'}</p>
+              <p><span className="text-gray-400">Speech Recognition:</span> {isSupported ? '✅' : '❌'}</p>
+              <p><span className="text-gray-400">Listening:</span> {status === 'listening' ? '✅' : '❌'}</p>
+              <div className="my-2 border-l-2 border-green-500 pl-2">
+                <p className="text-gray-400">Last transcript:</p>
+                <p className="text-white italic">"{debugInfo.transcript || 'none'}"</p>
+              </div>
+              <div className="my-2 border-l-2 border-blue-500 pl-2">
+                <p className="text-gray-400">Command executed:</p>
+                <p className="text-blue-300">{debugInfo.recognized || 'none'}</p>
+              </div>
+              <p><span className="text-gray-400">Current page:</span> {window.location.pathname}</p>
+              <p><span className="text-gray-400">Last error:</span> <span className="text-red-400">{debugInfo.error || 'none'}</span></p>
+            </div>
           </div>
         )}
-        <div className={`flex items-center gap-3 px-4 py-3 rounded-full shadow-lg backdrop-blur text-white ${bgColor} ${pulse ? 'animate-pulse' : ''} border border-white/20`}>
-          <div className="shrink-0 flex items-center justify-center">
-            {icon}
+        
+        {shouldShowMic && (
+          <div className={`flex items-center gap-3 px-4 py-3 rounded-full shadow-lg backdrop-blur text-white ${bgColor} ${pulse ? 'animate-pulse' : ''} border border-white/20 pointer-events-auto`}>
+            <div className="shrink-0 flex items-center justify-center">
+              {icon}
+            </div>
+            <span className="font-medium text-sm whitespace-nowrap">{text}</span>
           </div>
-          <span className="font-medium text-sm whitespace-nowrap">{text}</span>
-        </div>
+        )}
       </motion.div>
     </AnimatePresence>
   );
