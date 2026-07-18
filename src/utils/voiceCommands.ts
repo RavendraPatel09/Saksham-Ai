@@ -1,93 +1,209 @@
-export type CommandType = 
-  | { type: 'navigate'; payload: string; confirm: string }
-  | { type: 'action'; payload: string; confirm: string }
-  | { type: 'accessibility'; payload: string; confirm: string }
+// src/utils/voiceCommands.ts
+// Independently testable command parser with word-boundary regex matching
+
+export type CommandResult =
+  | { type: 'navigate'; route: string; confirm: string }
+  | { type: 'scroll'; direction: 'up' | 'down' | 'top' | 'bottom'; confirm: string }
+  | { type: 'search'; query: string; confirm: string }
+  | { type: 'accessibility'; key: string; value: boolean; confirm: string }
   | { type: 'read_page'; confirm: string }
   | { type: 'help'; confirm: string }
+  | { type: 'repeat'; confirm: string }
+  | { type: 'exit_blind_mode'; confirm: string }
   | { type: 'unknown' };
 
-export const normalizeCommand = (transcript: string): string => {
-  return transcript.toLowerCase().trim().replace(/[.,!?]/g, '');
+interface CommandDef {
+  pattern: RegExp;
+  action: (match: RegExpMatchArray) => CommandResult;
+  description: string;
+}
+
+// Route map — every page the user can navigate to by voice
+const ROUTE_MAP: Record<string, string> = {
+  home: '/',
+  jobs: '/jobs',
+  learning: '/learning',
+  learn: '/learning',
+  dashboard: '/dashboard',
+  profile: '/dashboard',
+  interview: '/interview',
+  community: '/community',
+  feedback: '/post-employment',
+  'post employment': '/post-employment',
+  'post-employment': '/post-employment',
+  'resume builder': '/resume-builder',
+  resume: '/resume-builder',
+  saved: '/saved',
+  'saved items': '/saved',
+  'saved jobs': '/saved',
+  'government support': '/government-support',
+  'government schemes': '/government-support',
+  schemes: '/government-support',
+  'career roadmap': '/career-roadmap',
+  calendar: '/calendar',
+  events: '/events',
+  safety: '/safety',
+  financial: '/financial',
+  mentors: '/mentors',
+  'employers directory': '/employers-directory',
+  employers: '/employers-directory',
+  'reserved jobs': '/reserved-jobs',
+  settings: '/dashboard',
+  more: '/dashboard',
 };
 
-export const parseCommand = (rawTranscript: string): CommandType => {
-  const cmd = normalizeCommand(rawTranscript);
+export const normalizeTranscript = (raw: string): string => {
+  return raw
+    .toLowerCase()
+    .trim()
+    .replace(/[.,!?'"]/g, '')
+    .replace(/\s+/g, ' ');
+};
 
-  // NAVIGATION
-  if (cmd.match(/go to job|open job|search job|show me job|i want job/)) {
-    return { type: 'navigate', payload: '/jobs', confirm: 'Opening jobs.' };
-  }
-  if (cmd.match(/open home|go home|take me home/)) {
-    return { type: 'navigate', payload: '/', confirm: 'Opening home.' };
-  }
-  if (cmd.match(/open learn|take me to learn|show learning/)) {
-    return { type: 'navigate', payload: '/learning', confirm: 'Opening learning.' };
-  }
-  if (cmd.match(/open feedback|read my latest feedback/)) {
-    return { type: 'navigate', payload: '/post-employment', confirm: 'Opening feedback.' };
-  }
-  if (cmd.match(/open community|show community/)) {
-    return { type: 'navigate', payload: '/community', confirm: 'Opening community.' };
-  }
-  if (cmd.match(/open dashboard|my dashboard/)) {
-    return { type: 'navigate', payload: '/dashboard', confirm: 'Opening dashboard.' };
-  }
-  if (cmd.match(/open profile|my profile/)) {
-    return { type: 'navigate', payload: '/dashboard', confirm: 'Opening your profile.' };
-  }
-  if (cmd.match(/go back|back/)) {
-    return { type: 'action', payload: 'go_back', confirm: 'Going back.' };
-  }
+const COMMANDS: CommandDef[] = [
+  // ── EXIT / STOP ─────────────────────────────────────────────
+  {
+    pattern: /\b(stop listening|exit blind mode|turn off blind mode|disable blind mode)\b/,
+    action: () => ({ type: 'exit_blind_mode', confirm: 'Exiting blind mode. Goodbye.' }),
+    description: 'Exit blind mode',
+  },
 
-  // ACTIONS
-  if (cmd.match(/start interview|interview practice/)) {
-    return { type: 'navigate', payload: '/interview', confirm: 'Starting interview practice.' };
-  }
-  if (cmd.match(/open resume|resume builder/)) {
-    return { type: 'navigate', payload: '/resume-builder', confirm: 'Opening resume builder.' };
-  }
-  if (cmd.match(/open saved|saved item|saved job/)) {
-    return { type: 'navigate', payload: '/saved', confirm: 'Showing your saved items.' };
-  }
-  if (cmd.match(/government scheme|open scheme/)) {
-    return { type: 'navigate', payload: '/government-support', confirm: 'Opening government schemes.' };
-  }
-  if (cmd.match(/post employment|post-employment/)) {
-    return { type: 'navigate', payload: '/post-employment', confirm: 'Opening post employment.' };
-  }
-  if (cmd.match(/submit feedback/)) {
-    return { type: 'action', payload: 'submit_feedback', confirm: 'Submitting feedback.' };
-  }
+  // ── NAVIGATION ──────────────────────────────────────────────
+  {
+    pattern: /\b(?:open|go to|navigate to|take me to|show me|show|i want)\b\s+(.+)/,
+    action: (match) => {
+      const target = match[1].trim().replace(/^the\s+/, '').replace(/\s+page$/, '');
+      const route = ROUTE_MAP[target];
+      if (route) {
+        return { type: 'navigate', route, confirm: `Opening ${target}.` };
+      }
+      // Try partial matching — find the first route key that the target includes
+      for (const [key, r] of Object.entries(ROUTE_MAP)) {
+        if (target.includes(key) || key.includes(target)) {
+          return { type: 'navigate', route: r, confirm: `Opening ${key}.` };
+        }
+      }
+      return { type: 'unknown' };
+    },
+    description: 'Navigate to a page',
+  },
+  {
+    pattern: /\bgo\s*back\b/,
+    action: () => ({ type: 'navigate', route: '__back__', confirm: 'Going back.' }),
+    description: 'Go back',
+  },
+  {
+    pattern: /\b(?:start|begin)\b.*\binterview\b/,
+    action: () => ({ type: 'navigate', route: '/interview', confirm: 'Starting interview practice.' }),
+    description: 'Start interview',
+  },
 
-  // ACCESSIBILITY
-  if (cmd.match(/enable high contrast|turn on high contrast/)) {
-    return { type: 'accessibility', payload: 'highContrast_on', confirm: 'Turning on high contrast.' };
-  }
-  if (cmd.match(/disable high contrast|turn off high contrast/)) {
-    return { type: 'accessibility', payload: 'highContrast_off', confirm: 'Disabling high contrast.' };
-  }
-  if (cmd.match(/increase text size|make text bigger|larger text/)) {
-    return { type: 'accessibility', payload: 'largeText_on', confirm: 'Increasing text size.' };
-  }
-  if (cmd.match(/reduce text size|make text smaller/)) {
-    return { type: 'accessibility', payload: 'largeText_off', confirm: 'Reducing text size.' };
-  }
-  if (cmd.match(/enable caption|turn on caption/)) {
-    return { type: 'accessibility', payload: 'textToSpeech_on', confirm: 'Enabling captions.' };
-  }
-  if (cmd.match(/disable caption|turn off caption/)) {
-    return { type: 'accessibility', payload: 'textToSpeech_off', confirm: 'Disabling captions.' };
-  }
+  // ── SEARCH ──────────────────────────────────────────────────
+  {
+    pattern: /\b(?:search|find|look)\s+(?:for\s+)?(.+)/,
+    action: (match) => {
+      const query = match[1].trim();
+      return { type: 'search', query, confirm: `Searching for ${query}.` };
+    },
+    description: 'Search for something',
+  },
 
-  // READ PAGE
-  if (cmd.match(/read this page|read page/)) {
-    return { type: 'read_page', confirm: '' }; // Handled specially
-  }
+  // ── SCROLL ──────────────────────────────────────────────────
+  {
+    pattern: /\bscroll\s+up\b/,
+    action: () => ({ type: 'scroll', direction: 'up', confirm: 'Scrolling up.' }),
+    description: 'Scroll up',
+  },
+  {
+    pattern: /\bscroll\s+down\b/,
+    action: () => ({ type: 'scroll', direction: 'down', confirm: 'Scrolling down.' }),
+    description: 'Scroll down',
+  },
+  {
+    pattern: /\bgo\s+to\s+(?:the\s+)?top\b/,
+    action: () => ({ type: 'scroll', direction: 'top', confirm: 'Going to top.' }),
+    description: 'Scroll to top',
+  },
+  {
+    pattern: /\bgo\s+to\s+(?:the\s+)?bottom\b/,
+    action: () => ({ type: 'scroll', direction: 'bottom', confirm: 'Going to bottom.' }),
+    description: 'Scroll to bottom',
+  },
 
-  // HELP
-  if (cmd.match(/help|what can i do|available command/)) {
-    return { type: 'help', confirm: '' }; // Handled specially
+  // ── ACCESSIBILITY ───────────────────────────────────────────
+  {
+    pattern: /\b(?:enable|turn on)\b.*\b(?:dark\s*mode)\b/,
+    action: () => ({ type: 'accessibility', key: 'darkMode', value: true, confirm: 'Turning on dark mode.' }),
+    description: 'Enable dark mode',
+  },
+  {
+    pattern: /\b(?:disable|turn off)\b.*\b(?:dark\s*mode)\b/,
+    action: () => ({ type: 'accessibility', key: 'darkMode', value: false, confirm: 'Turning off dark mode.' }),
+    description: 'Disable dark mode',
+  },
+  {
+    pattern: /\b(?:enable|turn on)\b.*\b(?:high\s*contrast|contrast)\b/,
+    action: () => ({ type: 'accessibility', key: 'highContrast', value: true, confirm: 'Turning on high contrast.' }),
+    description: 'Enable high contrast',
+  },
+  {
+    pattern: /\b(?:disable|turn off)\b.*\b(?:high\s*contrast|contrast)\b/,
+    action: () => ({ type: 'accessibility', key: 'highContrast', value: false, confirm: 'Disabling high contrast.' }),
+    description: 'Disable high contrast',
+  },
+  {
+    pattern: /\b(?:increase|bigger|larger|enlarge)\b.*\b(?:text|font|size)\b/,
+    action: () => ({ type: 'accessibility', key: 'largeText', value: true, confirm: 'Increasing text size.' }),
+    description: 'Increase text size',
+  },
+  {
+    pattern: /\b(?:decrease|smaller|reduce)\b.*\b(?:text|font|size)\b/,
+    action: () => ({ type: 'accessibility', key: 'largeText', value: false, confirm: 'Reducing text size.' }),
+    description: 'Decrease text size',
+  },
+
+  // ── READ PAGE ───────────────────────────────────────────────
+  {
+    pattern: /\bread\s+(?:this\s+)?(?:page|screen|content)\b/,
+    action: () => ({ type: 'read_page', confirm: '' }),
+    description: 'Read current page content',
+  },
+
+  // ── REPEAT ──────────────────────────────────────────────────
+  {
+    pattern: /\brepeat\b/,
+    action: () => ({ type: 'repeat', confirm: '' }),
+    description: 'Repeat the last spoken confirmation',
+  },
+
+  // ── HELP ────────────────────────────────────────────────────
+  {
+    pattern: /\b(?:help|what can (?:you|i) do|available commands?)\b/,
+    action: () => ({
+      type: 'help',
+      confirm: 'You can say: open jobs, open learning, open dashboard, open feedback, start interview, search for react jobs, scroll down, enable dark mode, read this page, repeat, or stop listening.',
+    }),
+    description: 'List available commands',
+  },
+];
+
+export const parseCommand = (rawTranscript: string): CommandResult => {
+  const normalized = normalizeTranscript(rawTranscript);
+
+  for (const cmd of COMMANDS) {
+    const match = normalized.match(cmd.pattern);
+    if (match) {
+      const result = cmd.action(match);
+      // If the action returns unknown (e.g. navigation target not found),
+      // continue checking other patterns
+      if (result.type !== 'unknown') {
+        return result;
+      }
+    }
   }
 
   return { type: 'unknown' };
 };
+
+// Export for testing
+export const _testInternals = { COMMANDS, ROUTE_MAP, normalizeTranscript };

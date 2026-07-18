@@ -1,165 +1,182 @@
-import { useEffect, useRef, useState } from 'react';
+// src/hooks/useVoiceNavigation.ts
+// React hook bridging FSM voice service ↔ React Router / Accessibility Context
+//
+// All mutable references (navigate, updatePrefs) are stored in refs
+// to avoid stale closures in the recognition callback.
+
+import { useEffect, useRef, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAccessibility } from '@/context/AccessibilityContext';
 import { useAppContext } from '@/context/AppContext';
-import { voiceAssistant } from '@/services/voiceAssistant';
-import { parseCommand } from '@/utils/voiceCommands';
+import { voiceAssistant, type BlindModeState } from '@/services/voiceAssistant';
+import { parseCommand, type CommandResult } from '@/utils/voiceCommands';
 
 export const useVoiceNavigation = () => {
   const navigate = useNavigate();
   const { prefs, updatePrefs } = useAccessibility();
   const { candidateProfile } = useAppContext();
-  
-  const [micStatus, setMicStatus] = useState(voiceAssistant.status);
-  const [debugInfo, setDebugInfo] = useState({ transcript: '', recognized: '', status: '' });
-  
-  const initialized = useRef(false);
-  const isBlindMode = prefs.blindMode;
 
+  const [fsmState, setFsmState] = useState<BlindModeState>(voiceAssistant.state);
+
+  // ── Refs for stale-closure prevention ──
+  const navigateRef = useRef(navigate);
+  navigateRef.current = navigate;
+  const updatePrefsRef = useRef(updatePrefs);
+  updatePrefsRef.current = updatePrefs;
+  const prefsRef = useRef(prefs);
+  prefsRef.current = prefs;
+
+  // ── Guard against React Strict Mode double-mount ──
+  const initialized = useRef(false);
+  const isBlindMode = !!prefs.blindMode;
+
+  // ── Subscribe to FSM state changes ──
   useEffect(() => {
-    const unsubscribeStatus = voiceAssistant.onStatusChange((s) => {
-      setMicStatus(s as any);
-      setDebugInfo(prev => ({ ...prev, status: s }));
-    });
-    
-    const unsubscribeDebug = voiceAssistant.subscribeDebug((info) => {
-      setDebugInfo(info);
-    });
-    
-    return () => {
-      unsubscribeStatus();
-      unsubscribeDebug();
-    };
+    return voiceAssistant.onStateChange((s) => setFsmState(s));
   }, []);
 
-  // Handle initialization and greeting
+  // ── Execute a parsed command ──
+  const executeCommand = useCallback((result: CommandResult) => {
+    switch (result.type) {
+      case 'navigate':
+        console.log('[BLIND MODE] Navigating to', result.route);
+        if (result.route === '__back__') {
+          navigateRef.current(-1);
+        } else {
+          navigateRef.current(result.route);
+        }
+        voiceAssistant.confirmAndResume(result.confirm);
+        break;
+
+      case 'search':
+        console.log('[BLIND MODE] Searching:', result.query);
+        navigateRef.current(`/jobs?search=${encodeURIComponent(result.query)}`);
+        voiceAssistant.confirmAndResume(result.confirm);
+        break;
+
+      case 'scroll':
+        console.log('[BLIND MODE] Scrolling:', result.direction);
+        switch (result.direction) {
+          case 'up': window.scrollBy({ top: -400, behavior: 'smooth' }); break;
+          case 'down': window.scrollBy({ top: 400, behavior: 'smooth' }); break;
+          case 'top': window.scrollTo({ top: 0, behavior: 'smooth' }); break;
+          case 'bottom': window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); break;
+        }
+        voiceAssistant.confirmAndResume(result.confirm);
+        break;
+
+      case 'accessibility':
+        console.log('[BLIND MODE] Accessibility:', result.key, '=', result.value);
+        updatePrefsRef.current({ [result.key]: result.value });
+        voiceAssistant.confirmAndResume(result.confirm);
+        break;
+
+      case 'read_page':
+        console.log('[BLIND MODE] Reading page');
+        readCurrentPage();
+        break;
+
+      case 'repeat':
+        console.log('[BLIND MODE] Repeating last');
+        const last = voiceAssistant.lastSpokenText;
+        voiceAssistant.confirmAndResume(last || 'Nothing to repeat.');
+        break;
+
+      case 'help':
+        console.log('[BLIND MODE] Help');
+        voiceAssistant.confirmAndResume(result.confirm);
+        break;
+
+      case 'exit_blind_mode':
+        console.log('[BLIND MODE] Exiting');
+        voiceAssistant.confirmAndResume(result.confirm);
+        // Give the confirmation time to speak, then disable blind mode
+        setTimeout(() => {
+          updatePrefsRef.current({ blindMode: false });
+        }, 2500);
+        break;
+
+      default:
+        console.log('[BLIND MODE] Unrecognized command');
+        voiceAssistant.confirmAndResume("Sorry, I didn't catch that. Please try again. Say help for available commands.");
+        break;
+    }
+  }, []);
+
+  // ── Transcript handler ──
+  const handleTranscript = useCallback((transcript: string) => {
+    const result = parseCommand(transcript);
+    console.log('[BLIND MODE] Parsed:', result.type, result.type !== 'unknown' ? JSON.stringify(result) : '');
+    executeCommand(result);
+  }, [executeCommand]);
+
+  // ── Blind Mode activation / deactivation ──
   useEffect(() => {
     if (isBlindMode && !initialized.current) {
       initialized.current = true;
-      
-      if (!voiceAssistant.isSupported) {
-        // We use a console or alert if browser unsupported, but we try not to crash
-        console.warn("Voice navigation is not supported in your browser.");
+      console.log('[BLIND MODE] Enabled');
+
+      if (!voiceAssistant.recognitionSupported) {
+        console.error('[BLIND MODE] Browser does not support speech recognition');
         return;
       }
 
-      const name = candidateProfile?.name || 'Rahul';
-      const greeting = `Hello ${name}, how can I help you today?`;
-      
-      console.log("[VOICE] Blind mode enabled");
-      
-      voiceAssistant.speak(greeting, () => {
-        voiceAssistant.startListening();
+      // Check microphone permission before greeting
+      voiceAssistant.checkMicPermission().then((perm) => {
+        if (perm === 'denied') {
+          console.error('[BLIND MODE] Microphone permission denied');
+          voiceAssistant.speak(
+            'Microphone access is blocked. Please enable it in your browser settings.'
+          );
+          return;
+        }
+        // Start the FSM: greet → listen
+        const name = candidateProfile?.name || '';
+        voiceAssistant.greet(name);
       });
-      
+
     } else if (!isBlindMode && initialized.current) {
+      console.log('[BLIND MODE] Disabled');
       initialized.current = false;
       voiceAssistant.destroy();
     }
-    
-    return () => {
-      if (!isBlindMode && initialized.current) {
-        voiceAssistant.destroy();
-      }
-    };
   }, [isBlindMode, candidateProfile]);
 
-  // Handle Command Routing
+  // ── Subscribe to transcripts ──
   useEffect(() => {
     if (!isBlindMode) return;
+    return voiceAssistant.onTranscript(handleTranscript);
+  }, [isBlindMode, handleTranscript]);
 
-    const handleCommand = (transcript: string) => {
-      const parsed = parseCommand(transcript);
-      
-      // Emit debug
-      voiceAssistant.emitDebug({ 
-        transcript, 
-        recognized: parsed.type !== 'unknown' ? JSON.stringify(parsed) : 'Unrecognized',
-        status: 'executed' 
-      });
-
-      console.log("[VOICE] Command detected:", transcript, "->", parsed.type);
-
-      if (parsed.type === 'navigate') {
-        console.log("[VOICE] Executing:", "navigate", parsed.payload);
-        voiceAssistant.executeCommand(() => navigate(parsed.payload), parsed.confirm);
-      } 
-      else if (parsed.type === 'accessibility') {
-        console.log("[VOICE] Executing:", "accessibility", parsed.payload);
-        voiceAssistant.executeCommand(() => {
-          if (parsed.payload === 'highContrast_on') updatePrefs({ highContrast: true });
-          if (parsed.payload === 'highContrast_off') updatePrefs({ highContrast: false });
-          if (parsed.payload === 'largeText_on') updatePrefs({ largeText: true });
-          if (parsed.payload === 'largeText_off') updatePrefs({ largeText: false });
-          if (parsed.payload === 'textToSpeech_on') updatePrefs({ textToSpeech: true });
-          if (parsed.payload === 'textToSpeech_off') updatePrefs({ textToSpeech: false });
-        }, parsed.confirm);
-      }
-      else if (parsed.type === 'action') {
-        console.log("[VOICE] Executing:", "action", parsed.payload);
-        if (parsed.payload === 'go_back') {
-          voiceAssistant.executeCommand(() => navigate(-1), parsed.confirm);
-        } else if (parsed.payload === 'submit_feedback') {
-          voiceAssistant.executeCommand(() => {
-            const btn = Array.from(document.querySelectorAll('button')).find(b => b.textContent?.toLowerCase().includes('submit feedback'));
-            if (btn) btn.click();
-          }, parsed.confirm);
-        }
-      }
-      else if (parsed.type === 'read_page') {
-        console.log("[VOICE] Executing: read_page");
-        readCurrentPage();
-      }
-      else if (parsed.type === 'help') {
-        voiceAssistant.executeCommand(() => {}, 
-          "You can say things like: Open jobs, Start interview practice, Open feedback, Read this page, Open community, Open learning, Search jobs."
-        );
-      }
-      else {
-        voiceAssistant.executeCommand(() => {}, "Sorry, I didn't understand that. Please try again.");
-      }
-    };
-
-    const unsubscribe = voiceAssistant.subscribe(handleCommand);
-    return () => unsubscribe();
-  }, [isBlindMode, navigate, updatePrefs]);
-
+  // ── Read current page content ──
   const readCurrentPage = () => {
     const main = document.querySelector('main') || document.body;
-    
-    // Semantic parsing skipping decorative/hidden elements
-    const elements = Array.from(main.querySelectorAll('h1, h2, h3, button, a, label, p, .card-title, .card-content'));
-    const textArray = elements
-      .map(el => {
-        let text = el.getAttribute('aria-label') || (el as HTMLElement).innerText || '';
-        
-        // Skip decorative elements or empty text
-        if (el.getAttribute('aria-hidden') === 'true' || !text.trim() || text.length < 2) return '';
-        
-        // Add type context semantically
-        if (el.tagName === 'BUTTON' || el.getAttribute('role') === 'button') return `Button: ${text}`;
-        if (el.tagName === 'A') return `Link: ${text}`;
-        if (el.tagName === 'LABEL') return `Form Label: ${text}`;
-        if (el.tagName === 'H1') return `Page Title: ${text}`;
-        if (el.tagName === 'H2' || el.tagName === 'H3') return `Heading: ${text}`;
-        
-        return text;
-      })
-      .filter(t => t.length > 0);
-      
-    const textToRead = Array.from(new Set(textArray)).join('. ');
+    const els = Array.from(main.querySelectorAll('h1, h2, h3, button, a[href], label, p'));
+    const seen = new Set<string>();
+    const parts: string[] = [];
 
-    if (textToRead) {
-      voiceAssistant.executeCommand(() => {}, "Reading page. " + textToRead);
-    } else {
-      voiceAssistant.executeCommand(() => {}, "No readable content found on this page.");
+    for (const el of els) {
+      if (el.getAttribute('aria-hidden') === 'true') continue;
+      if ((el as HTMLElement).offsetParent === null) continue;
+      const text = (el.getAttribute('aria-label') || (el as HTMLElement).innerText || '').trim();
+      if (text.length < 2 || seen.has(text)) continue;
+      seen.add(text);
+      const tag = el.tagName;
+      if (tag === 'H1') parts.push(`Page title: ${text}`);
+      else if (tag === 'H2' || tag === 'H3') parts.push(`Heading: ${text}`);
+      else if (tag === 'BUTTON' || el.getAttribute('role') === 'button') parts.push(`Button: ${text}`);
+      else if (tag === 'A') parts.push(`Link: ${text}`);
+      else if (tag === 'LABEL') parts.push(`Form label: ${text}`);
+      else parts.push(text);
     }
+
+    const full = parts.join('. ');
+    voiceAssistant.confirmAndResume(full ? 'Reading page. ' + full : 'No readable content found.');
   };
 
   return {
-    micStatus,
+    fsmState,
     isBlindMode,
-    debugInfo,
-    isSupported: voiceAssistant.isSupported
+    isSupported: voiceAssistant.recognitionSupported,
   };
 };

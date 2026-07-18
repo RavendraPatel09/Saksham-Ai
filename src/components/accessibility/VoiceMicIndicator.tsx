@@ -1,79 +1,80 @@
+// src/components/accessibility/VoiceMicIndicator.tsx
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mic, Loader2, Check } from 'lucide-react';
+import { Mic, Loader2, Check, Volume2 } from 'lucide-react';
 import { useAccessibility } from '@/context/AccessibilityContext';
+import type { BlindModeState } from '@/services/voiceAssistant';
 
-interface VoiceMicIndicatorProps {
-  status: 'idle' | 'listening' | 'processing' | 'executed';
-  debugInfo?: { transcript: string; recognized: string; status: string; error?: string };
-  isSupported?: boolean;
+interface Props {
+  fsmState: BlindModeState;
+  isSupported: boolean;
 }
 
-export const VoiceMicIndicator: React.FC<VoiceMicIndicatorProps> = ({ status, debugInfo, isSupported }) => {
+export const VoiceMicIndicator: React.FC<Props> = ({ fsmState, isSupported }) => {
   const { prefs } = useAccessibility();
-  
   if (!prefs.blindMode) return null;
 
-  if (isSupported === false) {
+  // Browser not supported
+  if (!isSupported) {
     return (
-      <div className="fixed bottom-6 right-6 z-[100] px-4 py-3 rounded-full shadow-lg bg-red-500/90 text-white font-medium text-sm border border-white/20">
-        Voice navigation is not supported in your browser.
+      <div
+        className="fixed bottom-6 right-6 z-[100] px-4 py-3 rounded-xl shadow-lg bg-red-500/90 text-white font-medium text-sm border border-white/20"
+        role="alert"
+      >
+        Voice navigation is only supported in Google Chrome or Microsoft Edge.
       </div>
     );
   }
 
-  const isReducedMotion = prefs.reducedMotion;
-  const isHighContrast = prefs.highContrast;
+  // IDLE state → render nothing (no "Idle" button)
+  if (fsmState === 'IDLE') return null;
 
-  let icon = <Mic className="w-5 h-5 text-white" />;
-  let text = "Idle";
-  let bgColor = isHighContrast ? "bg-black border-2 border-white" : "bg-primary/90";
+  const reduced = prefs.reducedMotion;
+  const hc = prefs.highContrast;
+
+  let icon: React.ReactNode;
+  let label: string;
+  let bg: string;
   let pulse = false;
 
-  switch (status) {
-    case 'listening':
+  switch (fsmState) {
+    case 'GREETING':
+    case 'SPEAKING':
+      icon = <Volume2 className="w-5 h-5 text-white" />;
+      label = 'Speaking...';
+      bg = hc ? 'bg-black border-2 border-purple-400' : 'bg-purple-500/90';
+      break;
+    case 'LISTENING':
       icon = <Mic className="w-5 h-5 text-white" />;
-      text = "Listening...";
-      bgColor = isHighContrast ? "bg-black border-2 border-yellow-400 text-yellow-400" : "bg-red-500/90";
-      pulse = !isReducedMotion;
+      label = 'Listening...';
+      bg = hc ? 'bg-black border-2 border-yellow-400' : 'bg-red-500/90';
+      pulse = !reduced;
       break;
-    case 'processing':
-      icon = <Loader2 className={`w-5 h-5 text-white ${!isReducedMotion ? 'animate-spin' : ''}`} />;
-      text = "Processing...";
-      bgColor = isHighContrast ? "bg-black border-2 border-blue-400 text-blue-400" : "bg-blue-500/90";
+    case 'PROCESSING':
+      icon = <Loader2 className={`w-5 h-5 text-white ${!reduced ? 'animate-spin' : ''}`} />;
+      label = 'Processing...';
+      bg = hc ? 'bg-black border-2 border-blue-400' : 'bg-blue-500/90';
       break;
-    case 'executed':
-      icon = <Check className="w-5 h-5 text-white" />;
-      text = "Command executed.";
-      bgColor = isHighContrast ? "bg-black border-2 border-green-400 text-green-400" : "bg-green-500/90";
-      break;
+    default:
+      return null;
   }
-
-  const isDev = import.meta.env.DEV;
-
-  // REMOVE THE "IDLE" BUTTON ENTIRELY
-  const shouldShowMic = status !== 'idle';
 
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        key="voice-indicator"
+        initial={{ opacity: 0, scale: 0.8, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.9, y: 20 }}
-        transition={{ duration: isReducedMotion ? 0 : 0.3 }}
-        className="fixed bottom-6 right-6 z-[100] flex flex-col items-end gap-2 pointer-events-none"
+        exit={{ opacity: 0, scale: 0.8, y: 20 }}
+        transition={{ duration: reduced ? 0 : 0.25 }}
+        className="fixed bottom-6 right-6 z-[100]"
+        role="status"
         aria-live="polite"
       >
-
-        
-        {shouldShowMic && (
-          <div className={`flex items-center gap-3 px-4 py-3 rounded-full shadow-lg backdrop-blur text-white ${bgColor} ${pulse ? 'animate-pulse' : ''} border border-white/20 pointer-events-auto`}>
-            <div className="shrink-0 flex items-center justify-center">
-              {icon}
-            </div>
-            <span className="font-medium text-sm whitespace-nowrap">{text}</span>
-          </div>
-        )}
+        <div className={`flex items-center gap-3 px-4 py-3 rounded-full shadow-lg backdrop-blur text-white ${bg} ${pulse ? 'animate-pulse' : ''} border border-white/20`}>
+          <div className="shrink-0">{icon}</div>
+          <span className="font-medium text-sm whitespace-nowrap">{label}</span>
+        </div>
       </motion.div>
     </AnimatePresence>
   );
