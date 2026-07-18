@@ -134,6 +134,35 @@ export const AccessibilityPanel = ({ isOpen, onClose }: AccessibilityPanelProps)
                     />
                   </div>
 
+                  <div className="flex items-center justify-between bg-primary/5 p-3 rounded-md border border-primary/20">
+                    <div className="flex items-center gap-2">
+                      <Eye className="w-4 h-4 text-primary" />
+                      <div>
+                        <label className="text-sm font-bold text-primary block">Blind Mode</label>
+                        <span className="text-xs text-muted-foreground">Activates full voice navigation</span>
+                      </div>
+                    </div>
+                    <input 
+                      type="checkbox" 
+                      className="toggle" 
+                      checked={prefs.blindMode}
+                      onChange={(e) => updatePrefs({ blindMode: e.target.checked })}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Volume2 className="w-4 h-4 text-muted-foreground" />
+                      <label className="text-sm font-medium">Voice Guidance</label>
+                    </div>
+                    <input 
+                      type="checkbox" 
+                      className="toggle" 
+                      checked={prefs.voiceGuidance}
+                      onChange={(e) => updatePrefs({ voiceGuidance: e.target.checked })}
+                    />
+                  </div>
+
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Monitor className="w-4 h-4 text-muted-foreground" />

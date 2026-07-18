@@ -16,6 +16,7 @@ import { FocusManager } from '@/accessibility/FocusManager';
 import { OnboardingModal } from '@/components/ui-custom/OnboardingModal';
 import { ProtectedRoute } from '@/components/layout/ProtectedRoute';
 import { OverlayProvider } from '@/context/OverlayContext';
+import { IntelligentVoiceAssistant } from '@/components/assistant/IntelligentVoiceAssistant';
 
 // Lazy load pages for performance
 const Home = lazy(() => import('@/pages/Home').then(module => ({ default: module.Home })));
@@ -63,7 +64,9 @@ function AnimatedRoutes() {
   const location = useLocation();
   
   return (
-    <AnimatePresence mode="wait">
+    <>
+      <IntelligentVoiceAssistant />
+      <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Layout />}>
           <Route index element={<PageWrapper><Home /></PageWrapper>} />
@@ -105,6 +108,7 @@ function AnimatedRoutes() {
         </Route>
       </Routes>
     </AnimatePresence>
+    </>
   );
 }
 

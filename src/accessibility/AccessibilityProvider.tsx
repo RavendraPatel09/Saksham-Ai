@@ -19,6 +19,9 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     localStorage.setItem(ACCESSIBILITY_STORAGE_KEY, JSON.stringify(prefs));
+    localStorage.setItem('saksham-blind-mode', prefs.blindMode.toString());
+    localStorage.setItem('saksham-voice-guidance', prefs.voiceGuidance.toString());
+    localStorage.setItem('saksham-voice-enabled', prefs.voiceGuidance.toString());
     
     const root = document.documentElement;
     
@@ -70,7 +73,13 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [prefs]);
 
   const updatePrefs = (newPrefs: Partial<AccessibilityPreferences>) => {
-    setPrefs((prev) => ({ ...prev, ...newPrefs }));
+    setPrefs((prev) => {
+      const next = { ...prev, ...newPrefs };
+      if (newPrefs.blindMode === true && !prev.blindMode) {
+        next.voiceGuidance = true;
+      }
+      return next;
+    });
   };
 
   const updateProfile = (profileUpdates: Partial<AccessibilityProfile>) => {
