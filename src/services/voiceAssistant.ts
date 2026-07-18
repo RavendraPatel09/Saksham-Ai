@@ -28,6 +28,7 @@ class VoiceAssistantService {
       this.recognition.onresult = (event: any) => {
         const current = event.resultIndex;
         const transcript = event.results[current][0].transcript;
+        console.log("[VOICE] Transcript:", transcript);
         this.setStatus('processing');
         
         // Notify observers (React hooks)
@@ -35,7 +36,7 @@ class VoiceAssistantService {
       };
 
       this.recognition.onerror = (event: any) => {
-        console.error("Speech recognition error:", event.error);
+        console.error("[VOICE ERROR]:", event.error);
         if (event.error === 'not-allowed') {
           this.continuousListening = false;
           this.setStatus('idle');
@@ -56,6 +57,7 @@ class VoiceAssistantService {
       };
       
       this.recognition.onstart = () => {
+        console.log("[VOICE] Starting recognition");
         this.setStatus('listening');
       };
     }
@@ -127,6 +129,7 @@ class VoiceAssistantService {
       this.recognition.stop();
     }
     this.isCurrentlySpeaking = true;
+    console.log("[VOICE] Speaking greeting/confirmation:", text);
     
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = 1.0;
@@ -151,6 +154,7 @@ class VoiceAssistantService {
 
   public executeCommand(commandFunc: () => void, confirmMessage: string) {
     this.setStatus('executed');
+    console.log("[VOICE] Executing action. Confirmation:", confirmMessage);
     this.speak(confirmMessage);
     commandFunc();
   }
