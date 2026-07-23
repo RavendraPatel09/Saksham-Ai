@@ -1,75 +1,23 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { Mic, Play, Square, Settings, Volume2, Type, RefreshCw, Send, Save, StopCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useCommunicationVoice } from '@/hooks/useCommunicationVoice';
 
 export const CommunicationAssistant = () => {
-  const [text, setText] = useState('');
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [isListening, setIsListening] = useState(false);
-  const [history, setHistory] = useState<{ id: string; text: string; type: 'tts' | 'stt'; time: string }[]>([]);
-  const synth = window.speechSynthesis;
-  const recognitionRef = useRef<any>(null);
-
-  useEffect(() => {
-    // Load history
-    const saved = localStorage.getItem('saksham-comm-history');
-    if (saved) setHistory(JSON.parse(saved));
-
-    // Setup speech recognition
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (SpeechRecognition) {
-      const recognition = new SpeechRecognition();
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      recognition.onresult = (event: any) => {
-        let current = '';
-        for (let i = event.resultIndex; i < event.results.length; ++i) {
-          current += event.results[i][0].transcript;
-        }
-        setText(current);
-      };
-      recognition.onerror = () => setIsListening(false);
-      recognition.onend = () => setIsListening(false);
-      recognitionRef.current = recognition;
-    }
-  }, []);
-
-  const saveHistory = (newHistory: any) => {
-    setHistory(newHistory);
-    localStorage.setItem('saksham-comm-history', JSON.stringify(newHistory));
-  };
-
-  const handleSpeak = (phrase: string = text) => {
-    if (!phrase.trim()) return;
-    if (synth.speaking) synth.cancel();
-    
-    const utterance = new SpeechSynthesisUtterance(phrase);
-    utterance.onend = () => setIsSpeaking(false);
-    
-    setIsSpeaking(true);
-    synth.speak(utterance);
-    
-    saveHistory([{ id: Date.now().toString(), text: phrase, type: 'tts', time: new Date().toLocaleTimeString() }, ...history]);
-  };
-
-  const stopSpeaking = () => {
-    synth.cancel();
-    setIsSpeaking(false);
-  };
-
-  const toggleListen = () => {
-    if (isListening) {
-      recognitionRef.current?.stop();
-      if (text) {
-        saveHistory([{ id: Date.now().toString(), text, type: 'stt', time: new Date().toLocaleTimeString() }, ...history]);
-      }
-    } else {
-      setText('');
-      recognitionRef.current?.start();
-      setIsListening(true);
-    }
-  };
+  const {
+    text,
+    setText,
+    isSpeaking,
+    isListening,
+    history,
+    saveHistory,
+    speak,
+    stopSpeaking,
+    toggleListen,
+    handleQuickPhrase,
+    debug
+  } = useCommunicationVoice();
 
   const quickPhrases = [
     "Yes", "No", "Thank you", "Please repeat", 
@@ -110,7 +58,7 @@ export const CommunicationAssistant = () => {
                   <Square className="w-4 h-4 mr-2" /> Stop
                 </Button>
               ) : (
-                <Button className="flex-1 bg-gradient-to-r from-primary to-indigo-600" onClick={() => handleSpeak(text)}>
+                <Button className="flex-1 bg-gradient-to-r from-primary to-indigo-600" onClick={() => speak(text)}>
                   <Play className="w-4 h-4 mr-2" /> Speak
                 </Button>
               )}
@@ -119,7 +67,7 @@ export const CommunicationAssistant = () => {
                 variant={isListening ? "destructive" : "outline"} 
                 className="flex-1" 
                 onClick={toggleListen}
-                disabled={!recognitionRef.current}
+                disabled={!debug.isRecognitionSupported}
               >
                 {isListening ? (
                   <><StopCircle className="w-4 h-4 mr-2" /> Stop Listening</>
@@ -137,7 +85,7 @@ export const CommunicationAssistant = () => {
                     key={i} 
                     variant="secondary" 
                     size="sm" 
-                    onClick={() => handleSpeak(phrase)}
+                    onClick={() => handleQuickPhrase(phrase)}
                     className="rounded-full"
                   >
                     {phrase}
@@ -172,6 +120,44 @@ export const CommunicationAssistant = () => {
           </CardContent>
         </Card>
       </div>
+
+      {import.meta.env.DEV && (
+        <Card className="mt-8 border-dashed border-2 border-muted-foreground/30 bg-muted/10">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-mono text-muted-foreground flex justify-between items-center">
+              [DEV] Voice Debug Panel
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs font-mono">
+              <div>
+                <span className="block text-muted-foreground mb-1">Supported</span>
+                Rec: {debug.isRecognitionSupported ? '✅' : '❌'} | Spk: {debug.isSpeechSupported ? '✅' : '❌'}
+              </div>
+              <div>
+                <span className="block text-muted-foreground mb-1">Permissions</span>
+                Mic: {debug.micPermission}
+              </div>
+              <div>
+                <span className="block text-muted-foreground mb-1">Status</span>
+                {debug.recognitionState} | Queue: {debug.speechQueueLength}
+              </div>
+              <div>
+                <span className="block text-muted-foreground mb-1">Language / Voice</span>
+                {debug.currentLanguage} / {debug.currentVoice}
+              </div>
+              <div className="col-span-2">
+                <span className="block text-muted-foreground mb-1">Last Command</span>
+                {debug.lastCommand}
+              </div>
+              <div className="col-span-2 text-red-500">
+                <span className="block text-muted-foreground mb-1">Last Error</span>
+                {debug.lastError}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };
